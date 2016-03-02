@@ -6,6 +6,8 @@
 --  used when creating the levels in the game
 ---------------
 
+local EnemyTable = require("enemy");
+
 local xx = display.contentWidth
 local yy = display.contentHeight
 
@@ -108,6 +110,9 @@ local sheetList =
 		["decor"]  = decorSheet,
 		["player"] = playerSheet,
 		["trap"]   = trapSheet,
+		["demon"]  = EnemyTable.demon.sheet,
+		["pest"]   = EnemyTable.pest.sheet,
+		["undead"] = EnemyTable.undead.sheet,
 }
 
 

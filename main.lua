@@ -47,8 +47,8 @@ objectList =
 {
 	--type, frameNum, x, y, passable, pushable
 	[1] = {"decor", 2, 3, 4, false, true},
-	[2] = {"trap", 1, 10, 6, true, false}
-
+	[2] = {"trap", 1, 10, 6, true, false},
+	[3] = {"undead", 2, 8, 2, false, false}
 }
 
 --Fill the map will objects on the tiles
