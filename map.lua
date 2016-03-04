@@ -7,6 +7,7 @@
 ---------------
 
 local EnemyTable = require("enemy");
+local ItemsTable = require("items");
 
 local xx = display.contentWidth
 local yy = display.contentHeight
@@ -44,31 +45,6 @@ local wOptions =
 
 local wallSheet = graphics.newImageSheet( "images/Objects/Wall.png", wOptions )
 
---Set up doors
-local dOptions =
-{
-	frames = {
-		{ x =  0,  y =   0,  width = 16, height = 16}, --wood door	
-		{ x = 16,  y =   0,  width = 16, height = 16}, --wood locked door
-		{ x =  0,  y =  16,  width = 16, height = 16}, --metal door	
-		{ x = 16,  y =  16,  width = 16, height = 16}, --metal locked door	
-		{ x =  0,  y =  80,  width = 16, height = 16}, --Open Path
-	}
-};
-
-local doorSheet = graphics.newImageSheet( "images/Objects/Door0.png", dOptions )
-
---Set up decor
-local decorOptions =
-{
-	frames = {
-		{ x =  16,  y =  48,  width = 16, height = 16}, -- Brown Pot
-		{ x =  48,  y =  48,  width = 16, height = 16}, -- Silver Pot
-	}
-};
-
-local decorSheet = graphics.newImageSheet( "images/Objects/Decor0.png", decorOptions )
-
 --Set up player character
 local pOptions =
 {
@@ -89,16 +65,6 @@ local iOptions =
 
 local iconSheet = graphics.newImageSheet( "images/Commissions/Icons.png", iOptions )
 
---Set up traps
-local tOptions =
-{
-	frames = {
-		{ x = 0,  y =  48,  width = 16, height = 16}, -- Spear Trap
-	}
-};
-
-local trapSheet = graphics.newImageSheet( "images/Objects/Trap0.png", tOptions )
-
 
 --Array used to keep track of created image sheets, use the text strings when passing into functions
 --  in order to get the correct image sheet
@@ -106,10 +72,10 @@ local sheetList =
 {
 		["tile"]   = tileSheet,
 		["wall"]   = wallSheet, 
-		["door"]   = doorSheet,
-		["decor"]  = decorSheet,
+		["door"]   = ItemsTable.door.sheet,
+		["decor"]  = ItemsTable.decor.sheet,
 		["player"] = playerSheet,
-		["trap"]   = trapSheet,
+		["trap"]   = ItemsTable.trap.sheet,
 		["demon"]  = EnemyTable.demon.sheet,
 		["pest"]   = EnemyTable.pest.sheet,
 		["undead"] = EnemyTable.undead.sheet,
@@ -140,6 +106,7 @@ tileFrame = 1
 function makeRoom(topDoor, leftDoor, rightDoor, bottomDoor)
 	
 	local mapArray = {}
+	local doorSheet = sheetList["door"];
 
 	for i=0, Nboxes-1 do
 
