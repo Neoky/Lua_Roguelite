@@ -11,6 +11,50 @@ local IMAGE_HEIGHT = 16;
 local ItemsTable = {};
 
 local ItemOptionsTable = {
+	armor =
+	{
+		options = {
+			frames = {
+				{ x = 0,  y = -1,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- orange armor
+				{ x = 48, y = -1,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- green armor
+				{ x = 80, y = -1,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- blue armor
+				{ x = 0,  y = 15,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- black armor
+			}
+		},
+	}, -- armor
+	chestClosed =
+	{
+		options = {
+			frames = {
+				{ x = 0,  y = -1,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- square chest
+				{ x = 15.5, y = 0,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- round top chest
+			}
+		},
+	}, -- chestClosed
+	chestOpen=
+	{
+		options = {
+			frames = {
+				{ x = 0,  y = -1,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- square chest
+				{ x = 15.5, y = 0,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- round top chest
+			}
+		},
+	}, -- chestOpen
+	decor =
+	{
+		options = {
+			frames = {
+				{ x =  16,  y = 48,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- brown pot
+				{ x =  48,  y = 48,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- silver pot
+				{ x =  0,  y = 64,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- empty bookcase
+				{ x =  80,  y = 64,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- bookcase with books #1
+				{ x =  96,  y = 64,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- bookcase with books #2
+				{ x =  0,  y = 111.5,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- chair #1
+				{ x =  16,  y = 111.5,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- round table
+				{ x =  32,  y = 111.5,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- chair #2
+			}
+		},
+	}, -- decor
 	door =
 	{
 		options = {
@@ -19,46 +63,110 @@ local ItemOptionsTable = {
 				{ x = 16,  y =   0,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, --wood locked door
 				{ x =  0,  y =  16,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, --metal door	
 				{ x = 16,  y =  16,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, --metal locked door	
-				{ x =  0,  y =  80,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, --Open Path
+				{ x =  0,  y =  80,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, --open Path
 			}
 		},
 	}, -- door
-	decor =
+	potion =
 	{
 		options = {
 			frames = {
-				{ x =  16,  y =  48,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- Brown Pot
-				{ x =  48,  y =  48,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- Silver Pot
+				{ x =  0,  y = 0,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- red 
+				{ x =  15.5,  y = 0,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- pink 
+				{ x =  31,  y = 0,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- orange 
+				{ x =  47,  y = 0,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- yellow 
+				{ x =  80,  y = 0,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- dark green 
+				{ x =  0,  y = 16,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- purple 
+				{ x =  0,  y = 32,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- gray 
 			}
 		},
-	}, -- decor
+	}, -- potion
+	shield =
+	{
+		options = {
+			frames = {
+				{ x = 0,  y = 0,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- bronze
+				{ x = 15.5,  y = 0,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- green with yellow outline
+				{ x = 31.5,  y = 0,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- brown with yellow symbol
+				{ x = 47.5,  y = 0,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- silver with small image
+				{ x = 80,  y = 0,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- round bronze
+				{ x = 95.5,  y = 0,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- blue
+			}
+		},
+	}, -- shield
 	trap =
 	{
 		options = {
 			frames = {
-				{ x = 0,  y =  48,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- Spear Trap
+				{ x = 0,  y = 48,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- spear trap
+				{ x = 47,  y = 48,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- spikes
+				{ x = 64,  y = 32,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- round hole
+				{ x = 80,  y = 32,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- square hole
 			}
 		},
 	}, -- trap
+	weapon=
+	{
+		options = {
+			frames = {
+				{ x = 0,  y = -1,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- sword #1
+				{ x = 16, y = -1,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- sword #2
+				{ x = 48, y = -1,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- sword #3
+				{ x = 64, y = -1,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- sword #4
+				{ x = 0, y = 16,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- single-sided axe
+				{ x = 16, y = 16,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- single-sided axe
+			}
+		},
+	}, -- weapon
 
 };  -- end ItemOptionsTable
 
 ItemsTable = {
-	door =
+	armor =
 	{
-		sheet = graphics.newImageSheet( "images/Objects/Door0.png", 
-			ItemOptionsTable.door.options ),
-	}, -- door
+		sheet = graphics.newImageSheet( "images/Items/Armor.png", 
+			ItemOptionsTable.armor.options ),
+	}, -- armor
+	chestClosed =
+	{
+		sheet = graphics.newImageSheet( "images/Items/Chest0.png", 
+			ItemOptionsTable.chestClosed.options ),
+	}, -- chestClosed
+	chestOpen =
+	{
+		sheet = graphics.newImageSheet( "images/Items/Chest1.png", 
+			ItemOptionsTable.chestOpen.options ),
+	}, -- chestOpen
 	decor =
 	{
 		sheet = graphics.newImageSheet( "images/Objects/Decor0.png", 
 			ItemOptionsTable.decor.options ),
 	}, -- decor
+	door =
+	{
+		sheet = graphics.newImageSheet( "images/Objects/Door0.png", 
+			ItemOptionsTable.door.options ),
+	}, -- door
+	potion =
+	{
+		sheet = graphics.newImageSheet( "images/Items/Potion.png", 
+			ItemOptionsTable.potion.options ),
+	}, -- potion
+	shield =
+	{
+		sheet = graphics.newImageSheet( "images/Items/Shield.png", 
+			ItemOptionsTable.shield.options ),
+	}, -- shield
 	trap =
 	{
 		sheet = graphics.newImageSheet( "images/Objects/Trap0.png", 
 			ItemOptionsTable.trap.options ),
 	}, -- trap
+	weapon =
+	{
+		sheet = graphics.newImageSheet( "images/Items/MedWep.png", 
+			ItemOptionsTable.weapon.options ),
+	}, -- weapon
 
 };  -- end ItemsTable
 
