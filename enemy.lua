@@ -10,6 +10,7 @@ local IMAGE_HEIGHT = 16;
 
 local EnemyTable = {};
 
+
 local EnemyOptionsTable = {
 	demon =
 	{

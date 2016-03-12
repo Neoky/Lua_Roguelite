@@ -6,8 +6,9 @@
 --  used when creating the levels in the game
 ---------------
 
-local EnemyTable = require("enemy");
 local ItemsTable = require("items");
+
+local EnemyClass = require("enemyClass");
 
 local xx = display.contentWidth
 local yy = display.contentHeight
@@ -85,9 +86,6 @@ local sheetList =
 		["potion"]  = ItemsTable.potion.sheet,
 		["shield"]  = ItemsTable.shield.sheet,
 		["weapon"]  = ItemsTable.weapon.sheet,
-		["demon"]  = EnemyTable.demon.sheet,
-		["pest"]   = EnemyTable.pest.sheet,
-		["undead"] = EnemyTable.undead.sheet,
 }
 
 
@@ -253,6 +251,28 @@ end
 --  The object that has been placed
 ------------------------
 function placeObject(mapArray, tileSheet, frameNum, xVal, yVal, passable, pushable)
+	if ( tileSheet == "demon" or tileSheet == "undead" or tileSheet == "pest" ) then
+		local newEnemyObj = nil;
+		newEnemyObj = EnemyClass:new();
+
+		-- initialize enemy attributes 
+		newEnemyObj:init( tileSheet, frameNum, "RANDOM" );
+
+		-- create image of enemy on tile
+		newEnemyObj:spawn( mapArray, xVal, yVal, tileScale );
+		
+		--- TEST JB
+		local function touchListener(event)
+			if (event.phase == "began") then
+				newEnemyObj:move();
+			end
+		end
+		newEnemyObj.shape:addEventListener("touch", touchListener);
+		---
+
+		return newEnemyObj;
+	end
+
 	newObject = display.newImage( sheetList[tileSheet], frameNum) 
 	newObject.x = mapArray[xVal][yVal].x
 	newObject.y = mapArray[xVal][yVal].y
@@ -263,6 +283,9 @@ function placeObject(mapArray, tileSheet, frameNum, xVal, yVal, passable, pushab
 	newObject:scale(tileScale,tileScale)
 
 	newObject:toFront( )
+
+	-- set object tag to tile
+	newObject.tag = tileSheet;
 
 	return newObject
 end
