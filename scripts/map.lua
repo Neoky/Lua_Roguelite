@@ -387,13 +387,6 @@ end
 --  The object representing the character
 ------------------------
 function placePlayer(mapArray, tileSheet, frameNum, xVal, yVal)
-	--newObject = display.newImage( sheetList[tileSheet], frameNum) 
-	--newObject.x = mapArray[xVal][yVal].x
-	--newObject.y = mapArray[xVal][yVal].y
-
-	--newObject:scale(tileScale,tileScale)
-
-	--newObject:toFront( )
 
 	local player = Player:new({hpCur=100, hpMax=100, attack=2, keys=0, rKey=0, gKey=0, bKey=0, xPos=mapArray[xVal][yVal].x, yPos=mapArray[xVal][yVal].y, map=self, tileSheet=tileSheet})
 	player:spawn()
