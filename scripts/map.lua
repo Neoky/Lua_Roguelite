@@ -5,10 +5,10 @@
 --  This file holds all of the map generation functionality that can be 
 --  used when creating the levels in the game
 ---------------
+local Player = require("scripts.player")
+local ItemsTable = require("scripts.items");
 
-local ItemsTable = require("items");
-
-local EnemyClass = require("enemyClass");
+local EnemyClass = require("scripts.enemyClass");
 
 local xx = display.contentWidth
 local yy = display.contentHeight
@@ -387,17 +387,24 @@ end
 --  The object representing the character
 ------------------------
 function placePlayer(mapArray, tileSheet, frameNum, xVal, yVal)
-	newObject = display.newImage( sheetList[tileSheet], frameNum) 
-	newObject.x = mapArray[xVal][yVal].x
-	newObject.y = mapArray[xVal][yVal].y
+	--newObject = display.newImage( sheetList[tileSheet], frameNum) 
+	--newObject.x = mapArray[xVal][yVal].x
+	--newObject.y = mapArray[xVal][yVal].y
 
-	newObject:scale(tileScale,tileScale)
+	--newObject:scale(tileScale,tileScale)
 
-	newObject:toFront( )
+	--newObject:toFront( )
+
+	local player = Player:new({hpCur=100, hpMax=100, attack=2, keys=0, rKey=0, gKey=0, bKey=0, xPos=mapArray[xVal][yVal].x, yPos=mapArray[xVal][yVal].y, map=self, tileSheet=tileSheet})
+	player:spawn()
+	player.body.x = mapArray[xVal][yVal].x
+	player.body.y = mapArray[xVal][yVal].y
+	player.body:scale(tileScale,tileScale)
+	player.body:toFront()
 
 	setArrows(mapArray, xVal, yVal)
 
-	return newObject
+	return player
 end
 
 

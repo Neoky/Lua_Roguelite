@@ -5,8 +5,8 @@
 --  This file holds ...
 ---------------
 
-local EnemyTable = require("enemy");
-local EnemyMovement = require("enemyMovement");
+local EnemyTable = require("scripts.enemy");
+local EnemyMovement = require("scripts.enemyMovement");
 
 local MIN_X_POS = 0;
 local MAX_X_POS = 15;
