@@ -1,30 +1,34 @@
 
 local composer = require("composer")
 local scene = composer.newScene()
-local map = require("scripts.map")
-local Items, Player, Enemy, enemyClass, Map = require('scripts.standardAssets')
+local Map = require("scripts.map")
+--local Items, Player, Enemy, enemyClass, Map = require('scripts.standardAssets')
+
+local map1
 
 function scene:create()
 	local sceneGroup = self.view
 	--Examples (these can be used to create each separate level)--
 
+	map1 = Map:new()
+
 	--Make a default room with doors
-	mapArray = makeRoom(true, true, true, true)
+	mapArray = map1:makeRoom(true, true, true, true)
 
 	print(mapArray[0][0].x)
 	print(mapArray[0][0].passable)
 
 	--Swap out a tile with a different one
-	mapArray[10][4] = swapTile(mapArray, "door", 1, 10, 4, false)
+	mapArray[10][4] = map1:swapTile("door", 1, 10, 4, false)
 
 	print(mapArray[10][4].x)
 	print(mapArray[10][4].passable)
 
 	--Place an object on top of a tile. Can specify if passable or pushable
-	pot = placeObject(mapArray, "decor", 2, 3, 2, false, true)
+	pot = map1:placeObject("decor", 2, 3, 2, false, true)
 
 	--Place the player character and generate arrows around him if possible
-	player = placePlayer(mapArray, "player", 1, 6, 6, false, false)
+	player = map1:placePlayer("player", 1, 6, 6, false, false)
 
 	print("Pot is at " .. pot.x .. "," .. pot.y)
 	print(pot.passable)
@@ -39,7 +43,7 @@ function scene:create()
 	}
 
 	--Swap out any of the default tiles with custom ones
-	mapArray = buildMap(mapArray, creatorList)
+	mapArray = map1:buildMap(creatorList)
 
 	--List to add objects
 	objectList = 
@@ -54,7 +58,7 @@ function scene:create()
 	}
 
 	--Fill the map will objects on the tiles
-	mapArray = fillMap(mapArray, objectList)
+	mapArray = map1:fillMap(objectList)
 end
 
 

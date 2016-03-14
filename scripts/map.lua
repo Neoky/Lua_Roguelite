@@ -1,5 +1,5 @@
 ---------------
---File: map.lua
+--File: Map.lua
 --
 --Description:
 --  This file holds all of the map generation functionality that can be 
@@ -9,6 +9,10 @@ local Player = require("scripts.player")
 local ItemsTable = require("scripts.items");
 
 local EnemyClass = require("scripts.enemyClass");
+
+local Map = {}
+
+
 
 local xx = display.contentWidth
 local yy = display.contentHeight
@@ -95,6 +99,16 @@ local tileSize  = 16 * tileScale
 doorFrame = 1
 tileFrame = 1
 
+
+function Map:new(o)
+	o = o or {}
+	setmetatable(o, self)
+	self.__index = self
+
+	return o
+end
+
+
 ------------------------
 --Function:    makeRoom
 --Description: 
@@ -110,7 +124,7 @@ tileFrame = 1
 --Returns:
 --  A map array of the tiles that make up the created room
 ------------------------ 
-function makeRoom(topDoor, leftDoor, rightDoor, bottomDoor)
+function Map:makeRoom(topDoor, leftDoor, rightDoor, bottomDoor)
 	
 	local mapArray = {}
 	local doorSheet = sheetList["door"];
@@ -218,7 +232,7 @@ end
 --Returns:
 --  A tile that has been swapped out
 ------------------------
-function swapTile(mapArray, tileSheet, frameNum, xVal, yVal, passable)
+function Map:swapTile(tileSheet, frameNum, xVal, yVal, passable)
 
 	newTile = display.newImage( sheetList[tileSheet], frameNum)
 
@@ -250,7 +264,7 @@ end
 --Returns:
 --  The object that has been placed
 ------------------------
-function placeObject(mapArray, tileSheet, frameNum, xVal, yVal, passable, pushable)
+function Map:placeObject(tileSheet, frameNum, xVal, yVal, passable, pushable)
 	if ( tileSheet == "demon" or tileSheet == "undead" or tileSheet == "pest" ) then
 		local newEnemyObj = nil;
 		newEnemyObj = EnemyClass:new();
@@ -305,7 +319,7 @@ end
 --Returns:
 --  Nothing
 ------------------------
-function setArrows(mapArray, xVal, yVal)
+function Map:setArrows(xVal, yVal)
 	upArrow    = nil
 	downArrow  = nil
 	leftArrow  = nil
@@ -386,7 +400,7 @@ end
 --Returns:
 --  The object representing the character
 ------------------------
-function placePlayer(mapArray, tileSheet, frameNum, xVal, yVal)
+function Map:placePlayer(tileSheet, frameNum, xVal, yVal)
 
 	local player = Player:new({hpCur=100, hpMax=100, attack=2, keys=0, rKey=0, gKey=0, bKey=0, xPos=mapArray[xVal][yVal].x, yPos=mapArray[xVal][yVal].y, map=self, tileSheet=tileSheet})
 	player:spawn()
@@ -395,7 +409,7 @@ function placePlayer(mapArray, tileSheet, frameNum, xVal, yVal)
 	player.body:scale(tileScale,tileScale)
 	player.body:toFront()
 
-	setArrows(mapArray, xVal, yVal)
+	Map:setArrows(xVal, yVal)
 
 	return player
 end
@@ -413,14 +427,13 @@ end
 --Returns:
 --  The array of map tiles for the level
 ------------------------
-function buildMap(mapArray, creatorList)
+function Map:buildMap(creatorList)
 
 	for i = 1, #creatorList do 
 		x = creatorList[i][3]
 		y = creatorList[i][4]
 
-		mapArray[x][y] = swapTile( 
-			mapArray, 
+		mapArray[x][y] = Map:swapTile(  
 			creatorList[i][1],
 			creatorList[i][2],
 			x,
@@ -444,14 +457,13 @@ end
 --Returns:
 --  The array of map tiles for the level
 ------------------------
-function fillMap(mapArray, objectList)
+function Map:fillMap(objectList)
 
 	for i = 1, #objectList do 
 		x = objectList[i][3]
 		y = objectList[i][4]
 
-		mapArray[x][y] = placeObject( 
-			mapArray, 
+		mapArray[x][y] = Map:placeObject(  
 			objectList[i][1],
 			objectList[i][2],
 			x,
@@ -464,3 +476,4 @@ function fillMap(mapArray, objectList)
 	
 end
 
+return Map
