@@ -8,7 +8,9 @@
 local Player = require("scripts.player")
 local ItemsTable = require("scripts.items");
 
-local EnemyClass = require("scripts.enemyClass");
+local DemonClass = require("scripts.demon");
+local UndeadClass = require("scripts.undead");
+local PestClass = require("scripts.pest");
 
 local Map = {}
 
@@ -265,17 +267,25 @@ end
 --  The object that has been placed
 ------------------------
 function Map:placeObject(tileSheet, frameNum, xVal, yVal, passable, pushable)
-	if ( tileSheet == "demon" or tileSheet == "undead" or tileSheet == "pest" ) then
-		local newEnemyObj = nil;
-		newEnemyObj = EnemyClass:new();
+	local newEnemyObj = nil;
 
-		-- initialize enemy attributes 
-		newEnemyObj:init( tileSheet, frameNum, "RANDOM" );
-
+	-- check for enemy objects
+	if ( tileSheet == "pest" ) then 
+		newEnemyObj = PestClass:new();
+		newEnemyObj:init( frameNum, "RANDOM" );  -- initialize enemy attributes 
+	elseif ( tileSheet == "undead" ) then
+		newEnemyObj = UndeadClass:new();
+		newEnemyObj:init( frameNum, "RANDOM" );  -- initialize enemy attributes 
+	elseif ( tileSheet == "demon" ) then
+		newEnemyObj = DemonClass:new();
+		newEnemyObj:init( frameNum, "STAND" );  -- initialize enemy attributes 
+	end
+	
+	if ( newEnemyObj ~= nil ) then
 		-- create image of enemy on tile
 		newEnemyObj:spawn( mapArray, xVal, yVal, tileScale );
 		
-		--- TEST JB
+		--- TEST JB : add touch listener to test enemy movement
 		local function touchListener(event)
 			if (event.phase == "began") then
 				newEnemyObj:move();

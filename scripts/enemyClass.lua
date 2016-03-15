@@ -16,7 +16,9 @@ local MAX_Y_POS = 8;
 
 ----- Bass Class declaration -----
 
-local EnemyClass = {tag="enemy", movePattern="STAND", HP=10, DAM=3, 
+-- HP = hit points
+-- ATT = attack points
+local EnemyClass = {tag="enemy", movePattern="STAND", HP=10, ATT=3, 
 	passable=false, pushable=false};
 
 
@@ -56,6 +58,20 @@ function EnemyClass:init (typeArg, frameNumArg, movePatternArg)
 	end
 
 	self.sheet = enemyAttrs.sheet;
+end
+
+------------------------
+--Function:    setMovePattern
+--Description: 
+--  Set the movement pattern for the enemy
+--
+--Arguments:
+--
+--Returns:
+--  
+------------------------
+function EnemyClass:setMovePattern (movePatternArg)
+	self.movePattern = movePatternArg;
 end
 
 ------------------------
@@ -204,10 +220,10 @@ function EnemyClass:move()
 	validMove, newX, newY = self.moveMgr:getNextMove( self.mapX, self.mapY );
 
 	if false == validMove then
-		print("[EnemyClass:move] Cannot move from current position!");
+		print("[EnemyClass:move] Cannot move from current position for " .. self.type .. "!");
 		return;
 	elseif newX == self.mapX and newY == self.mapY then
-		print("[EnemyClass:move] Standing in current position");
+		print("[EnemyClass:move] Standing in current position for " .. self.type);
 		return;
 	end
 
@@ -217,7 +233,7 @@ function EnemyClass:move()
 	self.mapArray[self.mapX][self.mapY].tag = "";
 	
 	-- move enemy to new tile location 
-	print("[EnemyClass:move] Moving from " .. self.mapX .. "," .. self.mapY .. " to " .. newX .. "," .. newY);
+	print("[EnemyClass:move] Moving from " .. self.mapX .. "," .. self.mapY .. " to " .. newX .. "," .. newY .. " for " .. self.type);
 	self.mapX, self.mapY = newX, newY;
 	self.shape.x = mapArray[self.mapX][self.mapY].x;
 	self.shape.y = mapArray[self.mapX][self.mapY].y;
@@ -235,7 +251,7 @@ end
 ------------------------
 function EnemyClass:attack(targetX, targetY)
 	print("[EnemyClass:attack] entered for " .. self.type);
-	self.mapArray[targetX][targetY]:hit(self.DAM);
+	self.mapArray[targetX][targetY]:hit(self.ATT);
 end
 
 ------------------------
