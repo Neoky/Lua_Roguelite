@@ -19,46 +19,47 @@ function scene:create()
 	print(mapArray[0][0].passable)
 
 	--Swap out a tile with a different one
+	--[[
 	mapArray[10][4] = map1:swapTile("door", 1, 10, 4, false)
 
 	print(mapArray[10][4].x)
 	print(mapArray[10][4].passable)
 
 	--Place an object on top of a tile. Can specify if passable or pushable
-	pot = map1:placeObject("decor", 2, 3, 2, false, true)
+	pot = map1:placeObject("object","decor", 2, 3, 2, false, true)
 
 	--Place the player character and generate arrows around him if possible
 
 	print("Pot is at " .. pot.x .. "," .. pot.y)
 	print(pot.passable)
 	print(pot.pushable)
-
+	]]--
 	--List to swap out tile
 	creatorList = 
 	{
 		--type, frameNum, x, y, passable
-		[1] = {"tile", 2, 3, 4, true},
+		[1] = {"tile", 2, 3, 4, true}, --TODO: This tiles specifically causes the player to be unable to move above it. Investigate
 		[2] = {"tile", 2, 5, 5, true},
 	}
 
 	--Swap out any of the default tiles with custom ones
 	mapArray = map1:buildMap(creatorList)
 
-	--List to add objects
+	--List to add objects layered on top of map
 	objectList = 
 	{
-		--type, frameNum, x, y, passable, pushable
-		[1] = {"decor", 2, 3, 4, false, true},
-		[2] = {"trap", 1, 10, 6, true, false},
-		[3] = {"armor", 4, 11, 3, false, false},
-		[4] = {"potion", 7, 3, 7, false, false},
-		[5] = {"undead", 1, 8, 1, false, false},
-		[6] = {"demon", 1, 1, 4, false, false},
+		--type, description/sheet, frameNum, x, y, passable, pushable
+		[1] = {"object","decor", 2, 3, 5, false, true},
+		[2] = {"object","trap", 1, 10, 6, true, false}, 
+		[3] = {"item","armor", 4, 11, 3, true, false}, 
+		[4] = {"item","potion", 7, 3, 7, true, false},
+		[5] = {"enemy","undead", 1, 8, 1, false, false},
+		[6] = {"enemy","demon", 1, 1, 4, false, false},
 	}
 
 	--Fill the map will objects on the tiles
-	mapArray = map1:fillMap(objectList)
-	player = map1:placePlayer("player", 1, 6, 6, false, false)
+	map1:fillMap(objectList)
+	player = map1:placePlayer("player", 1, 6, 6)
 end
 
 

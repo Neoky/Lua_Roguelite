@@ -66,6 +66,10 @@ end
 
 function Player:move(xPos, yPos)
 	if self.map.mapArray then
+		--Save this to update the current map's objectArray
+		previousX = self.xPos
+		previousY = self.yPos
+
 		-- Move Player object
 		self.xPos, self.yPos = xPos, yPos
 		self.body.x = self.map.mapArray[xPos][yPos].x
@@ -74,6 +78,8 @@ function Player:move(xPos, yPos)
 		xVal, yVal = self.xPos, self.yPos;
 		mapArray = self.map.mapArray
 
+		--self.map:setArrows(xPos,yPos)
+		--[[
 		-- Move Arrows
 		if mapArray[xVal][yVal-1].passable == true then
 			upArrow = self.map.upArrow
@@ -102,7 +108,10 @@ function Player:move(xPos, yPos)
 			rightArrow.y = mapArray[xVal+1][yVal].y
 			rightArrow.xVal, rightArrow.yVal = xVal+1, yVal	
 		end
+		]]--
 	end
+
+	return previousX, previousY
 end
 
 return Player;
