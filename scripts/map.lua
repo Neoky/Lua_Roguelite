@@ -12,9 +12,9 @@ local DemonClass = require("scripts.demon");
 local UndeadClass = require("scripts.undead");
 local PestClass = require("scripts.pest");
 
-local Map = {}
+local Map = {player={}, upArrow={},rightArrow={},downArrow={},leftArrow={},mapArray={}}
 
-
+local player;
 
 local xx = display.contentWidth
 local yy = display.contentHeight
@@ -128,7 +128,7 @@ end
 ------------------------ 
 function Map:makeRoom(topDoor, leftDoor, rightDoor, bottomDoor)
 	
-	local mapArray = {}
+	mapArray = {}
 	local doorSheet = sheetList["door"];
 
 	for i=0, Nboxes-1 do
@@ -214,7 +214,7 @@ function Map:makeRoom(topDoor, leftDoor, rightDoor, bottomDoor)
 
 	    end
 	end
-
+	self.mapArray=mapArray
 	return mapArray
 end
 
@@ -248,6 +248,7 @@ function Map:swapTile(tileSheet, frameNum, xVal, yVal, passable)
 
 	return mapArray[xVal][yVal]
 end
+
 
 ------------------------
 --Function:    placeObject
@@ -314,117 +315,6 @@ function Map:placeObject(tileSheet, frameNum, xVal, yVal, passable, pushable)
 	return newObject
 end
 
-
-------------------------
---Function:    setArrows
---Description: 
---  Places arrows around the player character. Will only place the arrow if the 
---  tile is something the player can pass through
---
---Arguments:
---  mapArray  - tile Array - Array that stores the level map
---  xVal      - integer    - x value for player
---  yVal      - integer    - y value for player
---
---Returns:
---  Nothing
-------------------------
-function Map:setArrows(xVal, yVal)
-	upArrow    = nil
-	downArrow  = nil
-	leftArrow  = nil
-	rightArrow = nil
-
-	if mapArray[xVal][yVal-1].passable == true then
-
-		upArrow = display.newImage( iconSheet, 1)
-		upArrow.x = mapArray[xVal][yVal-1].x
-		upArrow.y = mapArray[xVal][yVal-1].y
-
-		upArrow:toFront()
-
-		upArrow:scale( tileScale, tileScale )
-
-		--TODO: Create tap event here for movement
-	end
-
-	if mapArray[xVal][yVal+1].passable == true then
-		downArrow = display.newImage( iconSheet, 1) 
-
-		downArrow.x = mapArray[xVal][yVal+1].x
-		downArrow.y = mapArray[xVal][yVal+1].y
-
-		downArrow:rotate( 180 )
-
-		downArrow:toFront()
-
-		downArrow:scale( tileScale, tileScale )
-		
-		--TODO: Create tap event here for movement
-	end
-
-	if mapArray[xVal-1][yVal].passable == true then
-		leftArrow = display.newImage( iconSheet, 1) 
-
-		leftArrow.x = mapArray[xVal-1][yVal].x
-		leftArrow.y = mapArray[xVal-1][yVal].y
-
-		leftArrow:rotate( -90 )
-
-		leftArrow:toFront()
-
-		leftArrow:scale( tileScale, tileScale )
-
-		--TODO: Create tap event here for movement		
-	end
-
-	if mapArray[xVal+1][yVal].passable == true then
-		rightArrow = display.newImage( iconSheet, 1) 
-
-		rightArrow.x = mapArray[xVal+1][yVal].x
-		rightArrow.y = mapArray[xVal+1][yVal].y
-
-		rightArrow:rotate( 90 )
-
-		rightArrow:toFront()
-
-		rightArrow:scale( tileScale, tileScale )
-
-		--TODO: Create tap event here for movement		
-	end
-
-end
-
-------------------------
---Function:    placePlayer
---Description: 
---  Places a player character on the map
---
---Arguments:
---  mapArray  - tile Array - Array that stores the level map
---  tileSheet - String     - String used to specify tilesheet to use
---  frameNum  - integer    - Specifies frame to pull from tilesheet
---  xVal      - integer    - x value to place character at
---  yVal      - integer    - y value to place character at
---
---Returns:
---  The object representing the character
-------------------------
-function Map:placePlayer(tileSheet, frameNum, xVal, yVal)
-
-	local player = Player:new({hpCur=100, hpMax=100, attack=2, keys=0, rKey=0, gKey=0, bKey=0, xPos=mapArray[xVal][yVal].x, yPos=mapArray[xVal][yVal].y, map=self, tileSheet=tileSheet})
-	player:spawn()
-	player.body.x = mapArray[xVal][yVal].x
-	player.body.y = mapArray[xVal][yVal].y
-	player.body:scale(tileScale,tileScale)
-	player.body:toFront()
-
-	Map:setArrows(xVal, yVal)
-
-	return player
-end
-
-
 ------------------------
 --Function:    buildMap
 --Description: 
@@ -484,6 +374,127 @@ function Map:fillMap(objectList)
 
 	return mapArray
 	
+end
+
+
+------------------------
+--Function:    placePlayer
+--Description: 
+--  Places a player character on the map
+--
+--Arguments:
+--  mapArray  - tile Array - Array that stores the level map
+--  tileSheet - String     - String used to specify tilesheet to use
+--  frameNum  - integer    - Specifies frame to pull from tilesheet
+--  xVal      - integer    - x value to place character at
+--  yVal      - integer    - y value to place character at
+--
+--Returns:
+--  The object representing the character
+------------------------
+function Map:placePlayer(tileSheet, frameNum, xVal, yVal)
+
+	self.player = Player:new({hpCur=100, hpMax=100, attack=2, keys=0, rKey=0, gKey=0, bKey=0, xPos=xVal, yPos=yVal, map=self, tileSheet=tileSheet})
+	self.player:spawn()
+	self.player:move(xVal, yVal)
+	self.player.body:scale(tileScale,tileScale)
+	self.player.body:toFront()
+
+	player = self.player;
+	self:setArrows(xVal, yVal)
+
+	return player;
+end
+
+
+------------------------
+--Function:    setArrows
+--Description: 
+--  Places arrows around the player character. Will only place the arrow if the 
+--  tile is something the player can pass through
+--
+--Arguments:
+--  mapArray  - tile Array - Array that stores the level map
+--  xVal      - integer    - x value for player
+--  yVal      - integer    - y value for player
+--
+--Returns:
+--  Nothing
+------------------------
+function Map:setArrows(xVal, yVal)
+	upArrow    = nil
+	downArrow  = nil
+	leftArrow  = nil
+	rightArrow = nil
+
+	if mapArray[xVal][yVal-1].passable == true then
+
+		upArrow = display.newImage( iconSheet, 1)
+		upArrow.x = mapArray[xVal][yVal-1].x
+		upArrow.y = mapArray[xVal][yVal-1].y
+		upArrow.xVal, upArrow.yVal = xVal, yVal-1
+
+		upArrow:toFront()
+
+		upArrow:scale( tileScale, tileScale )
+		self.upArrow = upArrow
+
+		--TODO: Create tap event here for movement
+	end
+
+	if mapArray[xVal][yVal+1].passable == true then
+		downArrow = display.newImage( iconSheet, 1) 
+
+		downArrow.x = mapArray[xVal][yVal+1].x
+		downArrow.y = mapArray[xVal][yVal+1].y
+		downArrow.xVal, downArrow.yVal = xVal, yVal+1
+
+		downArrow:rotate( 180 )
+
+		downArrow:toFront()
+
+		downArrow:scale( tileScale, tileScale )
+		self.downArrow = downArrow
+		
+		--TODO: Create tap event here for movement
+	end
+
+	if mapArray[xVal-1][yVal].passable == true then
+		leftArrow = display.newImage( iconSheet, 1) 
+
+		leftArrow.x = mapArray[xVal-1][yVal].x
+		leftArrow.y = mapArray[xVal-1][yVal].y
+		leftArrow.xVal, leftArrow.yVal = xVal-1, yVal
+
+		leftArrow:rotate( -90 )
+
+		leftArrow:toFront()
+
+		leftArrow:scale( tileScale, tileScale )
+		self.leftArrow = leftArrow
+
+		--TODO: Create tap event here for movement		
+	end
+
+	if mapArray[xVal+1][yVal].passable == true then
+		rightArrow = display.newImage( iconSheet, 1) 
+
+		rightArrow.x = mapArray[xVal+1][yVal].x
+		rightArrow.y = mapArray[xVal+1][yVal].y
+		rightArrow.xVal, rightArrow.yVal = xVal+1, yVal
+
+		rightArrow:rotate( 90 )
+
+		rightArrow:toFront()
+
+		rightArrow:scale( tileScale, tileScale )
+		self.rightArrow = rightArrow
+
+		--TODO: Create tap event here for movement		
+	end
+
+	--local params = {x=rightArrow.x,y=leftArrow.y}
+
 end
 
 return Map

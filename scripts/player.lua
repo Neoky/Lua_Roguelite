@@ -9,7 +9,7 @@ xPos and yPos - hopefully be used store map postion.
 map={} - The map should be the parent of the player, so I want to store it to reference it.
 ]]--------------------------------------
 
-Player = {hpCur=100, hpMax=100, attack=2, keys=0, rKey=0, gKey=0, bKey=0, xPos=0, yPos=0, map={}, tileSheet={}}
+Player = {tag="player", hpCur=100, hpMax=100, attack=2, keys=0, rKey=0, gKey=0, bKey=0, xPos=1, yPos=1, map={}, tileSheet={}}
 
 local spriteOpt =
 {
@@ -38,6 +38,8 @@ function Player:spawn()
 	self.body.tag = "player";
 	self.body.x = xPos;
 	self.body.y = yPos;
+	self.hpCur = hpCur;
+	--self.map = map;
 	--physics.addBody( self.body, "kinematic" );
 	return self.body
 end
@@ -62,9 +64,45 @@ function Player:restoreHP(d)
 	end
 end
 
-function Player:move(x,y)
-	self.body.x = x
-	self.body.y = y
+function Player:move(xPos, yPos)
+	if self.map.mapArray then
+		-- Move Player object
+		self.xPos, self.yPos = xPos, yPos
+		self.body.x = self.map.mapArray[xPos][yPos].x
+		self.body.y = self.map.mapArray[xPos][yPos].y
+		-- Create shortcuts
+		xVal, yVal = self.xPos, self.yPos;
+		mapArray = self.map.mapArray
+
+		-- Move Arrows
+		if mapArray[xVal][yVal-1].passable == true then
+			upArrow = self.map.upArrow
+			upArrow.x = mapArray[xVal][yVal-1].x
+			upArrow.y = mapArray[xVal][yVal-1].y
+			upArrow.xVal, upArrow.yVal = xVal, yVal-1
+		end
+
+		if mapArray[xVal][yVal+1].passable == true then
+			downArrow = self.map.downArrow
+			downArrow.x = mapArray[xVal][yVal+1].x
+			downArrow.y = mapArray[xVal][yVal+1].y
+			downArrow.xVal, downArrow.yVal = xVal, yVal+1
+		end
+
+		if mapArray[xVal-1][yVal].passable == true then
+			leftArrow = self.map.leftArrow
+			leftArrow.x = mapArray[xVal-1][yVal].x
+			leftArrow.y = mapArray[xVal-1][yVal].y
+			leftArrow.xVal, leftArrow.yVal = xVal-1, yVal
+		end
+
+		if mapArray[xVal+1][yVal].passable == true then
+			rightArrow = self.map.rightArrow
+			rightArrow.x = mapArray[xVal+1][yVal].x
+			rightArrow.y = mapArray[xVal+1][yVal].y
+			rightArrow.xVal, rightArrow.yVal = xVal+1, yVal	
+		end
+	end
 end
 
 return Player;

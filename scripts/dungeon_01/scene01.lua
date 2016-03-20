@@ -28,7 +28,6 @@ function scene:create()
 	pot = map1:placeObject("decor", 2, 3, 2, false, true)
 
 	--Place the player character and generate arrows around him if possible
-	player = map1:placePlayer("player", 1, 6, 6, false, false)
 
 	print("Pot is at " .. pot.x .. "," .. pot.y)
 	print(pot.passable)
@@ -59,6 +58,7 @@ function scene:create()
 
 	--Fill the map will objects on the tiles
 	mapArray = map1:fillMap(objectList)
+	player = map1:placePlayer("player", 1, 6, 6, false, false)
 end
 
 
@@ -74,6 +74,15 @@ function scene:show( event )
 		-- Called when the scene is now on screen
 		-- Insert code here to make the scene come alive
 		-- Example: start timers, begin animation, play audio, etc.
+		local function movePlayer(event)
+			if event.phase == "began" then
+				map1.player:move(event.target.xVal,event.target.yVal)
+			end
+		end
+		map1.leftArrow:addEventListener("touch", movePlayer)
+		map1.upArrow:addEventListener("touch", movePlayer)
+		map1.rightArrow:addEventListener("touch", movePlayer)
+		map1.downArrow:addEventListener("touch", movePlayer)
 	end
 end
 
