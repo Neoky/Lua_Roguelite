@@ -66,6 +66,10 @@ end
 
 function Player:move(xPos, yPos)
 	if self.map.mapArray then
+		--Save this to update the current map's objectArray
+		previousX = self.xPos
+		previousY = self.yPos
+
 		-- Move Player object
 		self.xPos, self.yPos = xPos, yPos
 		self.body.x = self.map.mapArray[xPos][yPos].x
@@ -74,6 +78,7 @@ function Player:move(xPos, yPos)
 		xVal, yVal = self.xPos, self.yPos;
 		mapArray = self.map.mapArray
 
+		--self.map:setArrows(xPos,yPos)
 		-- Move Arrows
 		upArrow = self.map.upArrow
 		leftArrow = self.map.leftArrow
@@ -121,6 +126,8 @@ function Player:move(xPos, yPos)
 
 		self.map:enemyTurn()
 	end
+
+	return previousX, previousY
 end
 
 return Player;

@@ -12,7 +12,7 @@ local DemonClass = require("scripts.demon");
 local UndeadClass = require("scripts.undead");
 local PestClass = require("scripts.pest");
 
-local Map = {player={}, upArrow={},rightArrow={},downArrow={},leftArrow={},mapArray={}}
+local Map = {player={}, upArrow={},rightArrow={},downArrow={},leftArrow={},mapArray={}, objectArray={}}
 
 local player;
 
@@ -20,11 +20,20 @@ local xx = display.contentWidth
 local yy = display.contentHeight
 
 --16:9 aspect ratio is the default screen size (Maybe change this?)
-local Nboxes = 80/5
+local Nboxes = 80/5 - 3 --Subtract 3 for Info screen on right side
 local Mboxes = 45/5
 
 local sizeX = ( display.actualContentWidth  / Nboxes)
 local sizeY = ( display.actualContentHeight / Mboxes)
+
+--Set up Information View
+local hpText = nil
+local atkText = nil
+local keysText = nil
+local rKeyText = nil
+local gKeyText = nil
+local bKeyText = nil
+
 
 --Set up floor tiles
 local tOptions =
@@ -100,6 +109,11 @@ local tileSize  = 16 * tileScale
 
 doorFrame = 1
 tileFrame = 1
+
+local upArrow    = nil
+local downArrow  = nil
+local leftArrow  = nil
+local rightArrow = nil
 
 
 function Map:new(o)
@@ -215,7 +229,23 @@ function Map:makeRoom(topDoor, leftDoor, rightDoor, bottomDoor)
 	    end
 	end
 	self.mapArray=mapArray
+	
+	--Create empty objectArray
+	objectArray = {}
+	for i=0, Nboxes-1 do
+		objectArray[i] = {}
+	    for j=0, Mboxes-1 do
+	    	objectArray[i][j] = nil
+	    end
+	end
+
+	self.objectArray = objectArray
+
 	return mapArray
+end
+
+function Map:getObjectArray()
+	return objectArray
 end
 
 ------------------------
@@ -224,7 +254,6 @@ end
 --  Swaps out a floor tile with a different floor tile
 --
 --Arguments:
---  mapArray  - tile Array - Array that stores the level map
 --  tileSheet - String     - String used to specify tilesheet to use
 --  frameNum  - integer    - Specifies frame to pull from tilesheet
 --  xVal      - integer    - x value for tile
@@ -242,7 +271,7 @@ function Map:swapTile(tileSheet, frameNum, xVal, yVal, passable)
 	newTile.y = mapArray[xVal][yVal].y
 	newTile.passable = passable
 
-
+	mapArray[xVal][xVal] = nil
 	mapArray[xVal][xVal] = newTile
 	mapArray[xVal][xVal]:scale(tileScale, tileScale)
 
@@ -256,62 +285,89 @@ end
 --  Places an object on top of a tile on the map
 --
 --Arguments:
---  mapArray  - tile Array - Array that stores the level map
---  tileSheet - String     - String used to specify tilesheet to use
---  frameNum  - integer    - Specifies frame to pull from tilesheet
---  xVal      - integer    - x value for tile
---  yVal      - integer    - y value for tile
---  passable  - boolean    - specifies if the tile is passable
---  pushable  - boolean    - specifies if the tile is pushable
+--  objectType - object type - Specifies what the object is that is being added
+--  tileSheet  - String      - String used to specify tilesheet to use
+--  frameNum   - integer     - Specifies frame to pull from tilesheet
+--  xVal       - integer     - x value for tile
+--  yVal       - integer     - y value for tile
+--  passable   - boolean     - specifies if the tile is passable
+--  pushable   - boolean     - specifies if the tile is pushable
 --
 --Returns:
 --  The object that has been placed
 ------------------------
-function Map:placeObject(tileSheet, frameNum, xVal, yVal, passable, pushable)
-	local newEnemyObj = nil;
+function Map:placeObject(objectType, tileSheet, frameNum, xVal, yVal, passable, pushable)
+	
+	local newObject = nil;
 
-	-- check for enemy objects
-	if ( tileSheet == "pest" ) then 
-		newEnemyObj = PestClass:new();
-		newEnemyObj:init( frameNum, "RANDOM" );  -- initialize enemy attributes 
-	elseif ( tileSheet == "undead" ) then
-		newEnemyObj = UndeadClass:new();
-		newEnemyObj:init( frameNum, "RANDOM" );  -- initialize enemy attributes 
-	elseif ( tileSheet == "demon" ) then
-		newEnemyObj = DemonClass:new();
-		newEnemyObj:init( frameNum, "STAND" );  -- initialize enemy attributes 
+	if(objectType == "enemy") then
+
+		-- check for enemy objects
+		if ( tileSheet == "pest" ) then 
+			newObject = PestClass:new();
+			newObject:init( frameNum, "RANDOM" );  -- initialize enemy attributes 
+		elseif ( tileSheet == "undead" ) then
+			newObject = UndeadClass:new();
+			newObject:init( frameNum, "RANDOM" );  -- initialize enemy attributes 
+		elseif ( tileSheet == "demon" ) then
+			newObject = DemonClass:new();
+			newObject:init( frameNum, "STAND" );  -- initialize enemy attributes 
+		end
+		
+		if ( newObject ~= nil ) then
+			-- create image of enemy on tile
+			newObject:spawn( mapArray, xVal, yVal, tileScale );
+			
+			--- TEST JB : add touch listener to test enemy movement
+			local function touchListener(event)
+				if (event.phase == "began") then
+					newObject:move();
+				end
+			end
+			newObject.shape:addEventListener("touch", touchListener);
+			---
+		end
+
+	elseif(objectType == "item") then
+
+		--TODO:Create Item class object here instead of this
+		newObject = display.newImage( sheetList[tileSheet], frameNum) 
+		newObject.x = mapArray[xVal][yVal].x
+		newObject.y = mapArray[xVal][yVal].y
+
+		newObject.passable = passable
+		newObject.pushable = pushable
+
+		newObject:scale(tileScale,tileScale)
+
+		newObject:toFront( )
+
+		-- set object tag to tile
+		newObject.tag = tileSheet;
+
+	elseif(objectType == "object") then
+		--TODO:Create Object class object here instead of this
+		-- This is currently a catch-all for all objects we haven't classified yet (Pushable stuff, spike pits, immovable scenery, etc.)
+
+		newObject = display.newImage( sheetList[tileSheet], frameNum) 
+		newObject.x = mapArray[xVal][yVal].x
+		newObject.y = mapArray[xVal][yVal].y
+
+		newObject.passable = passable
+		newObject.pushable = pushable
+
+		newObject:scale(tileScale,tileScale)
+
+		newObject:toFront( )
+
+		-- set object tag to tile
+		newObject.tag = tileSheet;
+
+	else
+		print("Could not find matching type for object at " .. xVal .. "," .. yVal)
 	end
 	
-	if ( newEnemyObj ~= nil ) then
-		-- create image of enemy on tile
-		newEnemyObj:spawn( mapArray, xVal, yVal, tileScale );
-		
-		--- TEST JB : add touch listener to test enemy movement
-		local function touchListener(event)
-			if (event.phase == "began") then
-				newEnemyObj:move();
-			end
-		end
-		newEnemyObj.shape:addEventListener("touch", touchListener);
-		---
-
-		return newEnemyObj;
-	end
-
-	newObject = display.newImage( sheetList[tileSheet], frameNum) 
-	newObject.x = mapArray[xVal][yVal].x
-	newObject.y = mapArray[xVal][yVal].y
-
-	newObject.passable = passable
-	newObject.pushable = pushable
-
-	newObject:scale(tileScale,tileScale)
-
-	newObject:toFront( )
-
-	-- set object tag to tile
-	newObject.tag = tileSheet;
-
+	--TODO: Should probably throw some exception here if this returns nil
 	return newObject
 end
 
@@ -321,7 +377,6 @@ end
 --  Builds a map over the default map based on a user-specified list
 --
 --Arguments:
---  mapArray    - tile Array - Array that stores the level map
 --  creatorList - info Array - Array listing tiles to replace in the map
 --
 --Returns:
@@ -351,7 +406,6 @@ end
 --  Place objects on the map based on a user-specified list
 --
 --Arguments:
---  mapArray    - tile Array - Array that stores the level map
 --  objectList  - info Array - Array listing objects to place in the map
 --
 --Returns:
@@ -360,22 +414,108 @@ end
 function Map:fillMap(objectList)
 
 	for i = 1, #objectList do 
-		x = objectList[i][3]
-		y = objectList[i][4]
+		x = objectList[i][4]
+		y = objectList[i][5]
 
-		mapArray[x][y] = Map:placeObject(  
-			objectList[i][1],
+		objectArray[x][y] = Map:placeObject(
+			objectList[i][1],  
 			objectList[i][2],
+			objectList[i][3],
 			x,
 			y,
-			objectList[i][5],
-			objectList[i][6])
+			objectList[i][6],
+			objectList[i][7])
 	end
 
-	return mapArray
+	return objectArray
 	
 end
 
+------------------------
+--Function:    updateInfoScreen
+--Description: 
+--  Updates the information that shows important player status
+------------------------
+function updateInfoScreen()
+
+	if(hpText == nil) then 	
+		hpText = display.newText ( 
+		{
+			text="HP: ", 
+			x = xx-125, 
+			y = 100, 
+			fontSize = 30
+		});
+	end
+
+	if(atkText == nil) then 	
+		atkText = display.newText ( 
+		{
+			text="Atk: ", 
+			x = xx - 185, 
+			y = hpText.y + 50, 
+			fontSize = 30
+		});
+	end
+
+	if(keysText == nil) then 	
+		keysText = display.newText ( 
+		{
+			text="Keys Collected ", 
+			x = xx - 120, 
+			y = atkText.y + 70, 
+			fontSize = 30
+		});
+	end
+
+	if(rKeyText == nil) then 	
+		rKeyText = display.newText ( 
+		{
+			text="Red: ", 
+			x = keysText.x + 40, 
+			y = keysText.y + 60, 
+			fontSize = 30
+		});
+
+		rKeyText.anchorX = 1
+		rKeyText.anchorY = 1
+	end
+
+	if(gKeyText == nil) then 	
+		gKeyText = display.newText ( 
+		{
+			text="Green: ", 
+			x = rKeyText.x, 
+			y = rKeyText.y + 35, 
+			fontSize = 30
+		});
+
+		gKeyText.anchorX = 1
+		gKeyText.anchorY = 1
+	end
+
+	if(bKeyText == nil) then 	
+		bKeyText = display.newText ( 
+		{
+			text="Blue: ", 
+			x = gKeyText.x, 
+			y = gKeyText.y + 35, 
+			fontSize = 30
+		});
+
+		bKeyText.anchorX = 1
+		bKeyText.anchorY = 1
+	end
+
+	--This is acutal update part
+	hpText.text = "HP: " .. player.hpCur .. " / " .. player.hpMax
+	atkText.text = "ATK: " .. player.attack
+
+	rKeyText.text = "Red: " .. player.rKey
+	gKeyText.text = "Green: " .. player.gKey
+	bKeyText.text = "Blue: " .. player.bKey
+
+end
 
 ------------------------
 --Function:    placePlayer
@@ -383,7 +523,6 @@ end
 --  Places a player character on the map
 --
 --Arguments:
---  mapArray  - tile Array - Array that stores the level map
 --  tileSheet - String     - String used to specify tilesheet to use
 --  frameNum  - integer    - Specifies frame to pull from tilesheet
 --  xVal      - integer    - x value to place character at
@@ -393,7 +532,7 @@ end
 --  The object representing the character
 ------------------------
 function Map:placePlayer(tileSheet, frameNum, xVal, yVal)
-
+	--TODO: Need to pass player data to this function when placing between scene transitions
 	self.player = Player:new({hpCur=100, hpMax=100, attack=2, keys=0, rKey=0, gKey=0, bKey=0, xPos=xVal, yPos=yVal, map=self, tileSheet=tileSheet})
 	self.player:spawn()
 	self.player:move(xVal, yVal)
@@ -403,9 +542,33 @@ function Map:placePlayer(tileSheet, frameNum, xVal, yVal)
 	player = self.player;
 	self:setArrows(xVal, yVal)
 
+	objectArray[xVal][yVal] = player
+
+	updateInfoScreen()
+
 	return player;
 end
 
+------------------------
+--Function:    movePlayer
+--Description: 
+--  Listener function that triggers when one of the movement arrows is tapped
+--  Moves the player, updates the objectArray, sets new Arrows, and updates the Info screen
+------------------------
+local function movePlayer(event)
+	if event.phase == "began" then
+		oldX, oldY = player:move(event.target.xVal,event.target.yVal)
+		
+		objectArray[event.target.xVal][event.target.yVal] = player
+		objectArray[oldX][oldY] = nil
+
+		Map:setArrows(event.target.xVal, event.target.yVal)
+
+		--TODO:Call player functions to handle combat/picking up items
+
+		updateInfoScreen()
+	end
+end
 
 ------------------------
 --Function:    setArrows
@@ -414,7 +577,6 @@ end
 --  tile is something the player can pass through
 --
 --Arguments:
---  mapArray  - tile Array - Array that stores the level map
 --  xVal      - integer    - x value for player
 --  yVal      - integer    - y value for player
 --
@@ -422,78 +584,109 @@ end
 --  Nothing
 ------------------------
 function Map:setArrows(xVal, yVal)
-	upArrow    = nil
-	downArrow  = nil
-	leftArrow  = nil
-	rightArrow = nil
+	print(xVal .. "," .. yVal)
+
+	if upArrow ~= nil then
+		upArrow:removeSelf( )
+		upArrow = nil
+	end
+
+	if downArrow ~= nil then
+		downArrow:removeSelf( )
+		downArrow = nil
+	end
+
+	if leftArrow ~= nil then
+		leftArrow:removeSelf( )
+		leftArrow = nil
+	end
+
+	if rightArrow ~= nil then
+		rightArrow:removeSelf( )
+		rightArrow = nil
+	end	
+
 
 	if mapArray[xVal][yVal-1].passable == true then
+		--Check if there is an object present, or if there is, make sure its passable
+		if(objectArray[xVal][yVal-1] == nil) or (objectArray[xVal][yVal-1].passable) then
+			upArrow = display.newImage( iconSheet, 1)
+			upArrow.x = mapArray[xVal][yVal-1].x
+			upArrow.y = mapArray[xVal][yVal-1].y
+			upArrow.xVal, upArrow.yVal = xVal, yVal-1
 
-		upArrow = display.newImage( iconSheet, 1)
-		upArrow.x = mapArray[xVal][yVal-1].x
-		upArrow.y = mapArray[xVal][yVal-1].y
-		upArrow.xVal, upArrow.yVal = xVal, yVal-1
+			upArrow:toFront()
 
-		upArrow:toFront()
+			upArrow:scale( tileScale, tileScale )
+			self.upArrow = upArrow
 
-		upArrow:scale( tileScale, tileScale )
-		self.upArrow = upArrow
+			upArrow:addEventListener("touch", movePlayer)
+		end
 
-		--TODO: Create tap event here for movement
 	end
 
 	if mapArray[xVal][yVal+1].passable == true then
-		downArrow = display.newImage( iconSheet, 1) 
 
-		downArrow.x = mapArray[xVal][yVal+1].x
-		downArrow.y = mapArray[xVal][yVal+1].y
-		downArrow.xVal, downArrow.yVal = xVal, yVal+1
+		if(objectArray[xVal][yVal+1] == nil) or (objectArray[xVal][yVal+1].passable) then
+			downArrow = display.newImage( iconSheet, 1) 
 
-		downArrow:rotate( 180 )
+			downArrow.x = mapArray[xVal][yVal+1].x
+			downArrow.y = mapArray[xVal][yVal+1].y
+			downArrow.xVal, downArrow.yVal = xVal, yVal+1
 
-		downArrow:toFront()
+			downArrow:rotate( 180 )
 
-		downArrow:scale( tileScale, tileScale )
-		self.downArrow = downArrow
-		
-		--TODO: Create tap event here for movement
+			downArrow:toFront()
+
+			downArrow:scale( tileScale, tileScale )
+			self.downArrow = downArrow
+
+			downArrow:addEventListener("touch", movePlayer)
+		end
+
 	end
 
 	if mapArray[xVal-1][yVal].passable == true then
-		leftArrow = display.newImage( iconSheet, 1) 
+		
+		if(objectArray[xVal-1][yVal] == nil) or (objectArray[xVal-1][yVal].passable) then
+			leftArrow = display.newImage( iconSheet, 1) 
 
-		leftArrow.x = mapArray[xVal-1][yVal].x
-		leftArrow.y = mapArray[xVal-1][yVal].y
-		leftArrow.xVal, leftArrow.yVal = xVal-1, yVal
+			leftArrow.x = mapArray[xVal-1][yVal].x
+			leftArrow.y = mapArray[xVal-1][yVal].y
+			leftArrow.xVal, leftArrow.yVal = xVal-1, yVal
 
-		leftArrow:rotate( -90 )
+			leftArrow:rotate( -90 )
 
-		leftArrow:toFront()
+			leftArrow:toFront()
 
-		leftArrow:scale( tileScale, tileScale )
-		self.leftArrow = leftArrow
+			leftArrow:scale( tileScale, tileScale )
+			self.leftArrow = leftArrow
 
-		--TODO: Create tap event here for movement		
+			leftArrow:addEventListener("touch", movePlayer)	
+		end
+			
 	end
 
 	if mapArray[xVal+1][yVal].passable == true then
-		rightArrow = display.newImage( iconSheet, 1) 
 
-		rightArrow.x = mapArray[xVal+1][yVal].x
-		rightArrow.y = mapArray[xVal+1][yVal].y
-		rightArrow.xVal, rightArrow.yVal = xVal+1, yVal
+		if(objectArray[xVal+1][yVal] == nil) or (objectArray[xVal+1][yVal].passable) then
+			rightArrow = display.newImage( iconSheet, 1) 
 
-		rightArrow:rotate( 90 )
+			rightArrow.x = mapArray[xVal+1][yVal].x
+			rightArrow.y = mapArray[xVal+1][yVal].y
+			rightArrow.xVal, rightArrow.yVal = xVal+1, yVal
 
-		rightArrow:toFront()
+			rightArrow:rotate( 90 )
 
-		rightArrow:scale( tileScale, tileScale )
-		self.rightArrow = rightArrow
+			rightArrow:toFront()
 
-		--TODO: Create tap event here for movement		
+			rightArrow:scale( tileScale, tileScale )
+			self.rightArrow = rightArrow
+
+			rightArrow:addEventListener("touch", movePlayer)	
+		end
+
 	end
-
-	--local params = {x=rightArrow.x,y=leftArrow.y}
 
 end
 
