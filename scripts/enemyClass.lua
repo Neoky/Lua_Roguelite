@@ -9,7 +9,7 @@ local EnemyTable = require("scripts.enemy");
 local EnemyMovement = require("scripts.enemyMovement");
 
 local MIN_X_POS = 0;
-local MAX_X_POS = 15;
+local MAX_X_POS = 12;
 local MIN_Y_POS = 0;
 local MAX_Y_POS = 8;
 
@@ -17,9 +17,9 @@ local MAX_Y_POS = 8;
 ----- Bass Class declaration -----
 
 -- HP = hit points
--- ATT = attack points
-local EnemyClass = {tag="enemy", movePattern="STAND", HP=10, ATT=3, 
-	passable=false, pushable=false};
+-- ATK = attack points
+local EnemyClass = {tag="enemy", movePattern="STAND", HP=10, ATK=3, 
+	passable=true, pushable=false};
 
 
 function EnemyClass:new (o) --constructor
@@ -203,9 +203,9 @@ function EnemyClass:move()
 	-- first look at neighboring tiles
 	foundPlayer, targetX, targetY = self:playerLocalSearch();
 	if foundPlayer == true then
-		--print("[EnemyClass:move] Discovered target at local position: " .. targetX .. "," .. targetY);
-		-- attack target
-		self:attack(targetX, targetY);
+		print("[EnemyClass:move] Attacking player at position: " .. targetX .. "," .. targetY);
+		-- Attack target
+		--self:Attack(targetX, targetY);
 		return;
 	else
 		-- look at distant tiles for the player
@@ -229,7 +229,6 @@ function EnemyClass:move()
 
 	-- Reset current tile attributes before moving enemy to next tile. This will allow 
 	-- the enemy and other dynamic entities to enter the tile after the enemy moves.
-	self.mapArray[self.mapX][self.mapY].passable = true;
 	self.mapArray[self.mapX][self.mapY].tag = "";
 	
 	-- move enemy to new tile location 
@@ -240,24 +239,24 @@ function EnemyClass:move()
 end
 
 ------------------------
---Function:    attack
+--Function:    Attack
 --Description: 
---  Performs an attack on a target in a nearby tile
+--  Performs an Attack on a target in a nearby tile
 --
 --Arguments:
 --
 --Returns:
 --  
 ------------------------
-function EnemyClass:attack(targetX, targetY)
-	print("[EnemyClass:attack] entered for " .. self.type);
-	self.mapArray[targetX][targetY]:hit(self.ATT);
+function EnemyClass:Attack(targetX, targetY)
+	print("[EnemyClass:Attack] entered for " .. self.type);
+	self.mapArray[targetX][targetY]:hit(self.ATK);
 end
 
 ------------------------
 --Function:    hit
 --Description: 
---  Called when the enemy has been attacked
+--  Called when the enemy has been Attacked
 --
 --Arguments:
 --
