@@ -75,33 +75,51 @@ function Player:move(xPos, yPos)
 		mapArray = self.map.mapArray
 
 		-- Move Arrows
-		if mapArray[xVal][yVal-1].passable == true then
-			upArrow = self.map.upArrow
+		upArrow = self.map.upArrow
+		leftArrow = self.map.leftArrow
+		rightArrow = self.map.rightArrow
+		downArrow = self.map.downArrow
+		if mapArray[xVal][yVal-1] ~= nil and mapArray[xVal][yVal-1].passable == true then
 			upArrow.x = mapArray[xVal][yVal-1].x
 			upArrow.y = mapArray[xVal][yVal-1].y
 			upArrow.xVal, upArrow.yVal = xVal, yVal-1
+			upArrow.isVisible=true;
+		else
+			upArrow.isVisible=false;
 		end
 
-		if mapArray[xVal][yVal+1].passable == true then
-			downArrow = self.map.downArrow
+		if mapArray[xVal][yVal+1] ~= nil and mapArray[xVal][yVal+1].passable == true then
 			downArrow.x = mapArray[xVal][yVal+1].x
 			downArrow.y = mapArray[xVal][yVal+1].y
 			downArrow.xVal, downArrow.yVal = xVal, yVal+1
+			downArrow.isVisible=true;
+		else
+			downArrow.isVisible=false;
 		end
 
-		if mapArray[xVal-1][yVal].passable == true then
-			leftArrow = self.map.leftArrow
+		if mapArray[xVal-1][yVal] ~= nil and mapArray[xVal-1][yVal].passable == true then
 			leftArrow.x = mapArray[xVal-1][yVal].x
 			leftArrow.y = mapArray[xVal-1][yVal].y
 			leftArrow.xVal, leftArrow.yVal = xVal-1, yVal
+			leftArrow.isVisible=true;
+		else
+			leftArrow.isVisible=false;
 		end
 
-		if mapArray[xVal+1][yVal].passable == true then
-			rightArrow = self.map.rightArrow
+		if mapArray[xVal+1][yVal] ~= nil and mapArray[xVal+1][yVal].passable == true then
 			rightArrow.x = mapArray[xVal+1][yVal].x
 			rightArrow.y = mapArray[xVal+1][yVal].y
 			rightArrow.xVal, rightArrow.yVal = xVal+1, yVal	
+			rightArrow.isVisible=true;
+		else
+			rightArrow.isVisible=false;
 		end
+
+		if mapArray[xVal][yVal].pushable == true then
+			-- Pushable object logic
+		end
+
+		self.map:enemyTurn()
 	end
 end
 

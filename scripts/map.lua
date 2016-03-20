@@ -497,4 +497,8 @@ function Map:setArrows(xVal, yVal)
 
 end
 
+function Map:enemyTurn()
+	-- Logic and function calls for enemy movement goes here.
+end
+
 return Map
