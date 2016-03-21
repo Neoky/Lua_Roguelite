@@ -9,9 +9,10 @@ local Player = require("scripts.player");
 local Arrows = require("scripts.arrows");
 local ItemsTable = require("scripts.items");
 
-local DemonClass = require("scripts.demon");
-local UndeadClass = require("scripts.undead");
-local PestClass = require("scripts.pest");
+local ItemClass = require("scripts.itemClass");
+local DemonClass = require("scripts.enemies.demon");
+local UndeadClass = require("scripts.enemies.undead");
+local PestClass = require("scripts.enemies.pest");
 
 local Map = {player={}, arrows={}, upArrow={},rightArrow={},downArrow={},leftArrow={},mapArray={}, objectArray={}}
 
@@ -333,20 +334,11 @@ function Map:placeObject(objectType, tileSheet, frameNum, xVal, yVal, passable, 
 
 	elseif(objectType == "item") then
 
-		--TODO:Create Item class object here instead of this
-		newObject = display.newImage( sheetList[tileSheet], frameNum) 
-		newObject.x = mapArray[xVal][yVal].x
-		newObject.y = mapArray[xVal][yVal].y
+		-- create item class object
+		newObject = ItemClass:new();
+		newObject:spawn(tileSheet, frameNum, mapArray, xVal, yVal, tileScale);
 
-		newObject.passable = passable
-		newObject.pushable = pushable
-
-		newObject:scale(tileScale,tileScale)
-
-		newObject:toFront( )
-
-		-- set object tag to tile
-		newObject.tag = tileSheet;
+		return newObject;
 
 	elseif(objectType == "object") then
 		--TODO:Create Object class object here instead of this
