@@ -9,7 +9,7 @@ xPos and yPos - hopefully be used store map postion.
 map={} - The map should be the parent of the player, so I want to store it to reference it.
 ]]--------------------------------------
 
-Player = {tag="player", hpCur=100, hpMax=100, attack=2, keys=0, rKey=0, gKey=0, bKey=0, xPos=1, yPos=1, map={}, tileSheet={}}
+Player = {tag="player", hpCur=100, hpMax=100, attack=2, keys=0, rKey=0, gKey=0, bKey=0, xPos=1, yPos=1, map={}, tileSheet={}, arrows={}}
 
 local spriteOpt =
 {
@@ -39,8 +39,7 @@ function Player:spawn()
 	self.body.x = xPos;
 	self.body.y = yPos;
 	self.hpCur = hpCur;
-	--self.map = map;
-	--physics.addBody( self.body, "kinematic" );
+
 	return self.body
 end
 
@@ -80,6 +79,7 @@ function Player:move(xPos, yPos)
 
 		--self.map:setArrows(xPos,yPos)
 		-- Move Arrows
+		--[[
 		upArrow = self.map.upArrow
 		leftArrow = self.map.leftArrow
 		rightArrow = self.map.rightArrow
@@ -123,7 +123,7 @@ function Player:move(xPos, yPos)
 		if mapArray[xVal][yVal].pushable == true then
 			-- Pushable object logic
 		end
-
+		]]--
 		self.map:enemyTurn()
 	end
 
