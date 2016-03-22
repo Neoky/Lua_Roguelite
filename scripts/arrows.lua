@@ -57,6 +57,15 @@ function Arrows:new(o)
 			--player:restoreHP(armor.power)
 		elseif objectList[x][y] and objectList[x][y].tag == "pushable" then
 			local pushable = objectList[x][y]
+			--plX, plY = player.xPos, player.yPos
+			--puX, puY = pushable.xPos, pushable.yPos
+			plX, plY = player.x, player.y
+			puX, puY = pushable.x, pushable.y
+			iX = plX-puX
+			iY = plY-puY
+			--arX, arY = e.x, e.y
+			jX = iX - e.x
+			jY = iY - e.y
 			--[[if pushable.move() == false then
 				return false
 			else

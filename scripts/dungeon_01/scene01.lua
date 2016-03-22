@@ -2,8 +2,8 @@
 local composer = require("composer")
 local scene = composer.newScene()
 local Map = require("scripts.map")
+local File = require("scripts.saveGame")
 --local Items, Player, Enemy, enemyClass, Map = require('scripts.standardAssets')
-
 local map1
 
 function scene:create()
@@ -11,15 +11,19 @@ function scene:create()
 	--Examples (these can be used to create each separate level)--
 
 	map1 = Map:new()
+	--file = File.loadTable("myTable.json", system.DocumentsDirectory)
+	
+	--local loadedSettings = loadsave.loadTable( "settings.json" )
 
 	--Make a default room with doors
 	mapArray = map1:makeRoom(true, true, true, true)
-
-	print(mapArray[1][1].x)
-	print(mapArray[1][1].passable)
+	--map1 = file
+	creatorList = fil
+	--print(mapArray[1][1].x)
+	--print(mapArray[1][1].passable)
 
 	--Swap out a tile with a different one
-	--[[
+	--
 	mapArray[10][4] = map1:swapTile("door", 1, 10, 4, false)
 
 	print(mapArray[10][4].x)
@@ -33,8 +37,9 @@ function scene:create()
 	print("Pot is at " .. pot.x .. "," .. pot.y)
 	print(pot.passable)
 	print(pot.pushable)
-	]]--
+	--]]--
 	--List to swap out tile
+	--
 	creatorList = 
 	{
 		--type, frameNum, x, y, passable
@@ -60,6 +65,7 @@ function scene:create()
 	--Fill the map will objects on the tiles
 	map1:fillMap(objectList)
 	player = map1:placePlayer("player", 1, 6, 6)
+	--]]--
 end
 
 

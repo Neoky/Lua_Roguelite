@@ -14,6 +14,8 @@ local DemonClass = require("scripts.enemies.demon");
 local UndeadClass = require("scripts.enemies.undead");
 local PestClass = require("scripts.enemies.pest");
 
+local File = require('scripts.saveGame')
+
 local Map = {player={}, arrows={}, upArrow={},rightArrow={},downArrow={},leftArrow={},mapArray={}, objectArray={}}
 
 --local player;
@@ -382,8 +384,6 @@ function Map:buildMap(creatorList)
 	for i = 1, #creatorList do 
 		x = creatorList[i][3]
 		y = creatorList[i][4]
-		print("creatorList")
-		print(x, y)
 
 		mapArray[x][y] = Map:swapTile(  
 			creatorList[i][1],
@@ -509,6 +509,8 @@ function Map:updateInfoScreen()
 	rKeyText.text = "Red: " .. self.player.rKey
 	gKeyText.text = "Green: " .. self.player.gKey
 	bKeyText.text = "Blue: " .. self.player.bKey
+	
+	File.saveTable(self, "myTable.json", system.DocumentsDirectory)
 end
 
 ------------------------
