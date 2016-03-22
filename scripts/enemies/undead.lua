@@ -11,7 +11,7 @@ local EnemyTable = require("scripts.enemy");
 ----- Undead Class declaration -----
 
 local EnemyClass = require("scripts.enemyClass");
-Undead = EnemyClass:new( {type="undead", movePATKern="RANDOM", 
+Undead = EnemyClass:new( {type="undead", movePattern="RANDOM", 
 	sheet=EnemyTable.undead.sheet, HP=10, ATK=3} );
 
 ------------------------
@@ -38,9 +38,9 @@ end
 --Returns:
 --  
 ------------------------
-function Undead:init (frameNumArg, movePATKernArg)
+function Undead:init (frameNumArg, movePatternArg)
 	self.frameNum = frameNumArg;
-	self.movePATKern = movePATKernArg;
+	self.movePattern = movePatternArg;
 end
 
 

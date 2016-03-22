@@ -62,20 +62,6 @@ function EnemyMovement:init(typeArg, mapArg, x, y)
 end
 
 ------------------------
---Function:    getType
---Description: 
---  Returns the current movement pattern
---
---Arguments:
---
---Returns:
---  
-------------------------
-function EnemyMovement:getType()
-	return self.type;
-end
-
-------------------------
 --Function:    setType
 --Description: 
 --  Sets the movement pattern
@@ -105,6 +91,58 @@ function EnemyMovement:setType(arg)
 		self.minY = MIN_Y_POS;
 		self.maxY = MAX_Y_POS;
 	end
+end
+
+------------------------
+--Function:    playerLocalSearch
+--Description: 
+--  Searches the neighboring tiles for the player
+--
+--Arguments:
+--
+--Returns:
+--  
+------------------------
+function EnemyMovement:playerLocalSearch(enemyX, enemyY, playerX, playerY)
+	--print("[EnemyMovement:playerLocalSearch] entered");
+
+	if playerX == enemyX and playerY == (enemyY+1) then
+		return true;
+	elseif playerX == (enemyX-1) and playerY == enemyY then
+		return true;
+	elseif playerX == enemyX and playerY == (enemyY-1) then
+		return true;
+	elseif playerX == (enemyX+1) and playerY == enemyY then
+		return true;
+	end
+
+	return false;
+end
+
+------------------------
+--Function:    playerDistantSearch
+--Description: 
+--  Searches the distant tiles for the player
+--
+--Arguments:
+--
+--Returns:
+--  
+------------------------
+function EnemyMovement:playerDistantSearch(enemyX, enemyY, playerX, playerY)
+	--print("[EnemyMovement:playerDistantSearch] entered");
+
+	if playerX == enemyX and playerY == (enemyY+2) then
+		return self.mapArray[enemyX][enemyY+1].passable, enemyX, (enemyY+1);
+	elseif playerX == (enemyX-2) and playerY == enemyY then
+		return self.mapArray[enemyX-1][enemyY].passable, (enemyX-1), enemyY;
+	elseif playerX == enemyX and playerY == (enemyY-2) then
+		return self.mapArray[enemyX][enemyY-1].passable, enemyX, (enemyY-1);
+	elseif playerX == (enemyX+2) and playerY == enemyY then
+		return self.mapArray[enemyX+1][enemyY].passable, (enemyX+1), enemyY;
+	end
+
+	return false;
 end
 
 ------------------------
@@ -274,7 +312,29 @@ end
 --Returns:
 --  
 ------------------------
-function EnemyMovement:getNextMove(x, y)
+function EnemyMovement:getNextMove(x, y, playerX, playerY)
+	local foundPlayer = false;
+
+	-- first look at neighboring tiles for player
+	foundPlayer = self:playerLocalSearch(playerX, playerY);
+	if foundPlayer == true then
+		return "ATTACK", x, y; -- stay in current tile and attack player
+	end
+
+	if self.type ~= "STAND" then
+		-- moving enemies can look at distant tiles for player
+		foundPlayer, newX, newY = self.playerDistantSearch(x, y, playerX, playerY);
+		if foundPlayer == true then
+			print("[EnemyMovement:getNextMove] going into SEEK mode");
+			self:setType("SEEK");
+			return true, newX, newY;
+		elseif self.type == "SEEK" then
+			-- somehow lost player during SEEK mode so return to RANDOM mode
+			print("[EnemyMovement:getNextMove] returning to RANDOM mode");
+			self:setType("RANDOM");
+		end
+	end
+
 	if self.type == "RANDOM" then
 		return self:getRandomNextMove(x, y);
 	elseif self.type == "PATROL_HORZ" then

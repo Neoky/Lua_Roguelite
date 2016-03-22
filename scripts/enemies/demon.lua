@@ -11,7 +11,7 @@ local EnemyTable = require("scripts.enemy");
 ----- Demon Class declaration -----
 
 local EnemyClass = require("scripts.enemyClass");
-Demon = EnemyClass:new( {type="demon", movePATKern="STAND", 
+Demon = EnemyClass:new( {type="demon", movePattern="STAND", 
 	sheet=EnemyTable.demon.sheet, HP=20, ATK=5} );
 
 ------------------------
@@ -38,9 +38,9 @@ end
 --Returns:
 --  
 ------------------------
-function Demon:init (frameNumArg, movePATKernArg)
+function Demon:init (frameNumArg, movePatternArg)
 	self.frameNum = frameNumArg;
-	self.movePATKern = movePATKernArg;
+	self.movePattern = movePatternArg;
 end
 
 
