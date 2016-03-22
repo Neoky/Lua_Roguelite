@@ -53,7 +53,7 @@ function scene:create()
 		[2] = {"object","trap", 1, 10, 6, true, false}, 
 		[3] = {"item","armor", 4, 11, 3, true, false}, 
 		[4] = {"item","potion", 7, 3, 7, true, false},
-		[5] = {"enemy","undead", 1, 8, 1, false, false},
+		[5] = {"enemy","undead", 1, 8, 6, false, false},
 		--[6] = {"enemy","demon", 1, 1, 4, false, false},
 	}
 
