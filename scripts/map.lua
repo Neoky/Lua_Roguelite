@@ -154,7 +154,6 @@ function Map:makeRoom(topDoor, leftDoor, rightDoor, bottomDoor)
 		mapArray[i] = {}
 
 	    for j=1, Mboxes do
-
 	        --Top row
 	        if j == 1 then
 	        	--Top Left Corner
@@ -219,8 +218,9 @@ function Map:makeRoom(topDoor, leftDoor, rightDoor, bottomDoor)
 	        	tile.passable = true  
 	        end
 
+	        -- Change all the above wall tiles to non-passable
 	        if tile.passable == nil then
-	        	tile.passable = false
+	        	tile.passable = true
 	        end
 
 	        tile:scale (tileScale, tileScale)
@@ -229,16 +229,15 @@ function Map:makeRoom(topDoor, leftDoor, rightDoor, bottomDoor)
 			tile.y = tileSize/2 + tileSize*j - tileSize
 
 			mapArray[i][j] = tile
-
 	    end
 	end
 	self.mapArray=mapArray
 	
 	--Create empty objectArray
 	objectArray = {}
-	for i=0, Nboxes-1 do
+	for i=1, Nboxes do
 		objectArray[i] = {}
-	    for j=0, Mboxes-1 do
+	    for j=1, Mboxes do
 	    	objectArray[i][j] = nil
 	    end
 	end
@@ -275,9 +274,10 @@ function Map:swapTile(tileSheet, frameNum, xVal, yVal, passable)
 	newTile.y = mapArray[xVal][yVal].y
 	newTile.passable = passable
 
-	mapArray[xVal][xVal] = nil
-	mapArray[xVal][xVal] = newTile
-	mapArray[xVal][xVal]:scale(tileScale, tileScale)
+	--mapArray[xVal][xVal] = nil
+	mapArray[xVal][yVal]:removeSelf()
+	mapArray[xVal][yVal] = newTile
+	mapArray[xVal][yVal]:scale(tileScale, tileScale)
 
 	return mapArray[xVal][yVal]
 end
@@ -382,6 +382,8 @@ function Map:buildMap(creatorList)
 	for i = 1, #creatorList do 
 		x = creatorList[i][3]
 		y = creatorList[i][4]
+		print("creatorList")
+		print(x, y)
 
 		mapArray[x][y] = Map:swapTile(  
 			creatorList[i][1],
@@ -416,10 +418,8 @@ function Map:fillMap(objectList)
 			objectList[i][1],  
 			objectList[i][2],
 			objectList[i][3],
-			x,
-			y,
-			objectList[i][6],
-			objectList[i][7])
+			objectList[i][4],
+			objectList[i][5])
 	end
 
 	return objectArray
@@ -509,7 +509,6 @@ function Map:updateInfoScreen()
 	rKeyText.text = "Red: " .. self.player.rKey
 	gKeyText.text = "Green: " .. self.player.gKey
 	bKeyText.text = "Blue: " .. self.player.bKey
-
 end
 
 ------------------------
@@ -549,152 +548,6 @@ function Map:placePlayer(tileSheet, frameNum, xVal, yVal)
 	return self.player;
 end
 
---[[
-------------------------
---Function:    movePlayer
---Description: 
---  Listener function that triggers when one of the movement arrows is tapped
---  Moves the player, updates the objectArray, sets new Arrows, and updates the Info screen
-------------------------
-local function Map:movePlayer(event)
-	if event.phase == "began" then
-		oldX, oldY = player:move(event.target.xVal,event.target.yVal)
-		
-		objectArray[event.target.xVal][event.target.yVal] = self.player
-		objectArray[oldX][oldY] = nil
-
-		Map:setArrows(event.target.xVal, event.target.yVal)
-
-		--TODO:Call player functions to handle combat/picking up items
-
-		updateInfoScreen()
-	end
-end
-
-------------------------
---Function:    setArrows
---Description: 
---  Places arrows around the player character. Will only place the arrow if the 
---  tile is something the player can pass through
---
---Arguments:
---  xVal      - integer    - x value for player
---  yVal      - integer    - y value for player
---
---Returns:
---  Nothing
-------------------------
-function Map:setArrows(xVal, yVal)
-	print(xVal .. "," .. yVal)
-
-	if upArrow ~= nil then
-		upArrow:removeSelf( )
-		upArrow = nil
-	end
-
-	if downArrow ~= nil then
-		downArrow:removeSelf( )
-		downArrow = nil
-	end
-
-	if leftArrow ~= nil then
-		leftArrow:removeSelf( )
-		leftArrow = nil
-	end
-
-	if rightArrow ~= nil then
-		rightArrow:removeSelf( )
-		rightArrow = nil
-	end	
-	print("Table Size")
-	print(table.getn(mapArray))
-	print(table.getn(mapArray[1]))
-	--print(self.player.xPos, self.player.yPos)
-	print(self.player.xPos, self.player.yPos)
-	print(self.player.x, self.player.y)
-	if (mapArray[xVal][yVal-1] ~= nil) and mapArray[xVal][yVal-1].passable == true then
-		--Check if there is an object present, or if there is, make sure its passable
-		if(objectArray[xVal][yVal-1] == nil) or (objectArray[xVal][yVal-1].passable) then
-			upArrow = display.newImage( iconSheet, 1)
-			upArrow.x = mapArray[xVal][yVal-1].x
-			upArrow.y = mapArray[xVal][yVal-1].y
-			upArrow.xVal, upArrow.yVal = xVal, yVal-1
-
-			upArrow:toFront()
-
-			upArrow:scale( tileScale, tileScale )
-			self.upArrow = upArrow
-
-			upArrow:addEventListener("touch", self.movePlayer())
-		end
-
-	end
-
-	if (mapArray[xVal][yVal+1] ~= nil) and mapArray[xVal][yVal+1].passable == true then
-
-		if(objectArray[xVal][yVal+1] == nil) or (objectArray[xVal][yVal+1].passable) then
-			downArrow = display.newImage( iconSheet, 1) 
-
-			downArrow.x = mapArray[xVal][yVal+1].x
-			downArrow.y = mapArray[xVal][yVal+1].y
-			downArrow.xVal, downArrow.yVal = xVal, yVal+1
-
-			downArrow:rotate( 180 )
-
-			downArrow:toFront()
-
-			downArrow:scale( tileScale, tileScale )
-			self.downArrow = downArrow
-
-			downArrow:addEventListener("touch", self.movePlayer())
-		end
-
-	end
-
-	if (mapArray[xVal-1][yVal] ~= nil) and mapArray[xVal-1][yVal].passable == true then
-		
-		if(objectArray[xVal-1][yVal] == nil) or (objectArray[xVal-1][yVal].passable) then
-			leftArrow = display.newImage( iconSheet, 1) 
-
-			leftArrow.x = mapArray[xVal-1][yVal].x
-			leftArrow.y = mapArray[xVal-1][yVal].y
-			leftArrow.xVal, leftArrow.yVal = xVal-1, yVal
-
-			leftArrow:rotate( -90 )
-
-			leftArrow:toFront()
-
-			leftArrow:scale( tileScale, tileScale )
-			self.leftArrow = leftArrow
-
-			leftArrow:addEventListener("touch", self.movePlayer())	
-		end
-			
-	end
-
-	if (mapArray[xVal+1][yVal] ~= nil) and mapArray[xVal+1][yVal].passable == true then
-
-		if(objectArray[xVal+1][yVal] == nil) or (objectArray[xVal+1][yVal].passable) then
-			rightArrow = display.newImage( iconSheet, 1) 
-
-			rightArrow.x = mapArray[xVal+1][yVal].x
-			rightArrow.y = mapArray[xVal+1][yVal].y
-			rightArrow.xVal, rightArrow.yVal = xVal+1, yVal
-
-			rightArrow:rotate( 90 )
-
-			rightArrow:toFront()
-
-			rightArrow:scale( tileScale, tileScale )
-			self.rightArrow = rightArrow
-
-			rightArrow:addEventListener("touch", self.movePlayer())	
-		end
-
-	end
-
-end
-]]--
 function Map:enemyTurn()
 	-- Logic and function calls for enemy movement goes here.
 end

@@ -61,6 +61,7 @@ end
 ------------------------
 function Arrows:setArrows(xVal, yVal)
 	print(xVal .. "," .. yVal)
+	print(self.map.mapArray[xVal][yVal].passable, self.map.mapArray[xVal][yVal].pushable)
 
 	if upArrow ~= nil then
 		upArrow:removeSelf( )
@@ -86,79 +87,74 @@ function Arrows:setArrows(xVal, yVal)
 
 	if (mapArray[xVal][yVal-1] ~= nil) and mapArray[xVal][yVal-1].passable == true then
 		--Check if there is an object present, or if there is, make sure its passable
-		if(objectArray[xVal][yVal-1] == nil) or (objectArray[xVal][yVal-1].passable) then
-			upArrow = display.newImage( iconSheet, 1)
-			upArrow.x = mapArray[xVal][yVal-1].x
-			upArrow.y = mapArray[xVal][yVal-1].y
-			upArrow.xVal, upArrow.yVal = xVal, yVal-1
+		--if objectArray[xVal][yVal-1] and objectArray[xVal][yVal-1].passable then
+		upArrow = display.newImage( iconSheet, 1)
+		upArrow.x = mapArray[xVal][yVal-1].x
+		upArrow.y = mapArray[xVal][yVal-1].y
+		upArrow.xVal, upArrow.yVal = xVal, yVal-1
 
-			upArrow:toFront()
+		upArrow:toFront()
 
-			upArrow:scale( tileScale, tileScale )
-			self.upArrow = upArrow
+		upArrow:scale( tileScale, tileScale )
+		self.upArrow = upArrow
 
-			upArrow:addEventListener("touch", movePlayer)
-		end
-
+		upArrow:addEventListener("touch", movePlayer)
+		--end
 	end
 
 	if (mapArray[xVal][yVal+1] ~= nil) and mapArray[xVal][yVal+1].passable == true then
+		--if (objectArray[xVal][yVal+1] and objectArray[xVal][yVal+1].passable) then
+		downArrow = display.newImage( iconSheet, 1)
+		downArrow.x = mapArray[xVal][yVal+1].x
+		downArrow.y = mapArray[xVal][yVal+1].y
+		downArrow.xVal, downArrow.yVal = xVal, yVal+1
 
-		if(objectArray[xVal][yVal+1] == nil) or (objectArray[xVal][yVal+1].passable) then
-			downArrow = display.newImage( iconSheet, 1)
-			downArrow.x = mapArray[xVal][yVal+1].x
-			downArrow.y = mapArray[xVal][yVal+1].y
-			downArrow.xVal, downArrow.yVal = xVal, yVal+1
+		downArrow:rotate( 180 )
 
-			downArrow:rotate( 180 )
+		downArrow:toFront()
 
-			downArrow:toFront()
+		downArrow:scale( tileScale, tileScale )
+		self.downArrow = downArrow
 
-			downArrow:scale( tileScale, tileScale )
-			self.downArrow = downArrow
-
-			downArrow:addEventListener("touch", movePlayer)
-		end
-
+		downArrow:addEventListener("touch", movePlayer)
+		--end
 	end
 
-	if (mapArray[xVal-1][yVal] ~= nil) and mapArray[xVal-1][yVal].passable == true then
-		
-		if(objectArray[xVal-1][yVal] == nil) or (objectArray[xVal-1][yVal].passable) then
-			leftArrow = display.newImage( iconSheet, 1)
-			leftArrow.x = mapArray[xVal-1][yVal].x
-			leftArrow.y = mapArray[xVal-1][yVal].y
-			leftArrow.xVal, leftArrow.yVal = xVal-1, yVal
+	if (xVal > 1) and mapArray[xVal-1][yVal].passable == true then	
+		--if (objectArray[xVal-1][yVal] and objectArray[xVal-1][yVal].passable) then
+		leftArrow = display.newImage( iconSheet, 1)
+		leftArrow.x = mapArray[xVal-1][yVal].x
+		leftArrow.y = mapArray[xVal-1][yVal].y
+		leftArrow.xVal, leftArrow.yVal = xVal-1, yVal
 
-			leftArrow:rotate( -90 )
+		leftArrow:rotate( -90 )
 
-			leftArrow:toFront()
+		leftArrow:toFront()
 
-			leftArrow:scale( tileScale, tileScale )
-			self.leftArrow = leftArrow
+		leftArrow:scale( tileScale, tileScale )
+		self.leftArrow = leftArrow
 
-			leftArrow:addEventListener("touch", movePlayer)	
-		end
-			
+		leftArrow:addEventListener("touch", movePlayer)	
+		--end		
 	end
 
-	if (mapArray[xVal+1][yVal] ~= nil) and mapArray[xVal+1][yVal].passable == true then
+	if (xVal < table.getn(mapArray)) and mapArray[xVal+1][yVal].passable == true then
+		--print(xVal, table.getn(mapArray))
+		--if (objectArray[xVal+1][yVal] and objectArray[xVal+1][yVal].passable) then
+		rightArrow = display.newImage( iconSheet, 1)
+		rightArrow.x = mapArray[xVal+1][yVal].x
+		rightArrow.y = mapArray[xVal+1][yVal].y
+		rightArrow.xVal, rightArrow.yVal = xVal+1, yVal
 
-		if(objectArray[xVal+1][yVal] == nil) or (objectArray[xVal+1][yVal].passable) then
-			rightArrow = display.newImage( iconSheet, 1)
-			rightArrow.x = mapArray[xVal+1][yVal].x
-			rightArrow.y = mapArray[xVal+1][yVal].y
-			rightArrow.xVal, rightArrow.yVal = xVal+1, yVal
+		rightArrow:rotate( 90 )
 
-			rightArrow:rotate( 90 )
+		rightArrow:toFront()
 
-			rightArrow:toFront()
+		rightArrow:scale( tileScale, tileScale )
+		self.rightArrow = rightArrow
 
-			rightArrow:scale( tileScale, tileScale )
-			self.rightArrow = rightArrow
-
-			rightArrow:addEventListener("touch", movePlayer)	
-		end
+		rightArrow:addEventListener("touch", movePlayer)	
+		--end
 	end
 end
 
