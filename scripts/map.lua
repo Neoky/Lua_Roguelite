@@ -5,7 +5,8 @@
 --  This file holds all of the map generation functionality that can be 
 --  used when creating the levels in the game
 ---------------
-local Player = require("scripts.player")
+local Player = require("scripts.player");
+local Arrows = require("scripts.arrows");
 local ItemsTable = require("scripts.items");
 
 local ItemClass = require("scripts.itemClass");
@@ -13,9 +14,11 @@ local DemonClass = require("scripts.enemies.demon");
 local UndeadClass = require("scripts.enemies.undead");
 local PestClass = require("scripts.enemies.pest");
 
-local Map = {player={}, upArrow={},rightArrow={},downArrow={},leftArrow={},mapArray={}, objectArray={}}
+local File = require('scripts.saveGame')
 
-local player;
+local Map = {player={}, arrows={}, upArrow={},rightArrow={},downArrow={},leftArrow={},mapArray={}, objectArray={}}
+
+--local player;
 
 local xx = display.contentWidth
 local yy = display.contentHeight
@@ -72,6 +75,7 @@ local pOptions =
 
 local playerSheet = graphics.newImageSheet( "images/Characters/Player0.png", pOptions )
 
+--[[
 --Set up movement arrows (and other icons)
 local iOptions =
 {
@@ -81,6 +85,7 @@ local iOptions =
 };
 
 local iconSheet = graphics.newImageSheet( "images/Commissions/Icons.png", iOptions )
+]]--
 
 
 --Array used to keep track of created image sheets, use the text strings when passing into functions
@@ -146,19 +151,18 @@ function Map:makeRoom(topDoor, leftDoor, rightDoor, bottomDoor)
 	mapArray = {}
 	local doorSheet = sheetList["door"];
 
-	for i=0, Nboxes-1 do
+	for i=1, Nboxes do
 
 		mapArray[i] = {}
 
-	    for j=0, Mboxes-1 do
-
+	    for j=1, Mboxes do
 	        --Top row
-	        if j == 0 then
+	        if j == 1 then
 	        	--Top Left Corner
-	        	if i == 0 then 
+	        	if i == 1 then 
 	        		tile = display.newImage (wallSheet, 1)
 	        	--Top Right Corner
-	        	elseif i == Nboxes-1 then
+	        	elseif i == Nboxes then
 	        		tile = display.newImage (wallSheet, 3)
 	       		else
 		        	--Check for door
@@ -171,9 +175,9 @@ function Map:makeRoom(topDoor, leftDoor, rightDoor, bottomDoor)
 	       		end
 
 	        --Left side
-	        elseif i == 0 then
+	        elseif i == 1 then
 	        	--Bottom left corner
-	        	if j == Mboxes -1 then
+	        	if j == Mboxes then
 	        		tile = display.newImage (wallSheet, 5)
 	        	else
 		        	--Check for door
@@ -186,9 +190,9 @@ function Map:makeRoom(topDoor, leftDoor, rightDoor, bottomDoor)
 		        end
 
 	       --Right side
-	        elseif i == Nboxes-1  then
+	        elseif i == Nboxes  then
 	        	--Bottom right corner
-	        	if j == Mboxes -1 then
+	        	if j == Mboxes then
 	        		tile = display.newImage (wallSheet, 6)
 	        	else
 		        	--Check for door
@@ -201,7 +205,7 @@ function Map:makeRoom(topDoor, leftDoor, rightDoor, bottomDoor)
 	       		end
 
 	       	--Bottom Row
-	        elseif j == Mboxes-1 then
+	        elseif j == Mboxes then
 		        --Check for door
 		        if(bottomDoor == true) and (i == math.floor(Nboxes/2)) then
 		        	tile = display.newImage (doorSheet, doorFrame)
@@ -216,26 +220,26 @@ function Map:makeRoom(topDoor, leftDoor, rightDoor, bottomDoor)
 	        	tile.passable = true  
 	        end
 
+	        -- Change all the above wall tiles to non-passable
 	        if tile.passable == nil then
-	        	tile.passable = false
+	        	tile.passable = true
 	        end
 
 	        tile:scale (tileScale, tileScale)
 
-	        tile.x = tileSize/2 + tileSize*i
-			tile.y = tileSize/2 + tileSize*j   
+	        tile.x = tileSize/2 + tileSize*i - tileSize
+			tile.y = tileSize/2 + tileSize*j - tileSize
 
 			mapArray[i][j] = tile
-
 	    end
 	end
 	self.mapArray=mapArray
 	
 	--Create empty objectArray
 	objectArray = {}
-	for i=0, Nboxes-1 do
+	for i=1, Nboxes do
 		objectArray[i] = {}
-	    for j=0, Mboxes-1 do
+	    for j=1, Mboxes do
 	    	objectArray[i][j] = nil
 	    end
 	end
@@ -272,9 +276,10 @@ function Map:swapTile(tileSheet, frameNum, xVal, yVal, passable)
 	newTile.y = mapArray[xVal][yVal].y
 	newTile.passable = passable
 
+	mapArray[xVal][yVal]:removeSelf()
 	mapArray[xVal][xVal] = nil
-	mapArray[xVal][xVal] = newTile
-	mapArray[xVal][xVal]:scale(tileScale, tileScale)
+	mapArray[xVal][yVal] = newTile
+	mapArray[xVal][yVal]:scale(tileScale, tileScale)
 
 	return mapArray[xVal][yVal]
 end
@@ -404,10 +409,8 @@ function Map:fillMap(objectList)
 			objectList[i][1],  
 			objectList[i][2],
 			objectList[i][3],
-			x,
-			y,
-			objectList[i][6],
-			objectList[i][7])
+			objectList[i][4],
+			objectList[i][5])
 	end
 
 	return objectArray
@@ -419,7 +422,7 @@ end
 --Description: 
 --  Updates the information that shows important player status
 ------------------------
-function updateInfoScreen()
+function Map:updateInfoScreen()
 
 	if(hpText == nil) then 	
 		hpText = display.newText ( 
@@ -491,13 +494,14 @@ function updateInfoScreen()
 	end
 
 	--This is acutal update part
-	hpText.text = "HP: " .. player.hpCur .. " / " .. player.hpMax
-	atkText.text = "ATK: " .. player.attack
+	hpText.text = "HP: " .. self.player.hpCur .. " / " .. self.player.hpMax
+	atkText.text = "ATK: " .. self.player.attack
 
-	rKeyText.text = "Red: " .. player.rKey
-	gKeyText.text = "Green: " .. player.gKey
-	bKeyText.text = "Blue: " .. player.bKey
-
+	rKeyText.text = "Red: " .. self.player.rKey
+	gKeyText.text = "Green: " .. self.player.gKey
+	bKeyText.text = "Blue: " .. self.player.bKey
+	
+	File.saveTable(self, "myTable.json", system.DocumentsDirectory)
 end
 
 ------------------------
@@ -522,155 +526,19 @@ function Map:placePlayer(tileSheet, frameNum, xVal, yVal)
 	self.player.body:scale(tileScale,tileScale)
 	self.player.body:toFront()
 
-	player = self.player;
-	self:setArrows(xVal, yVal)
+	--player = self.player;
+	--self:setArrows(xVal, yVal)
 
-	objectArray[xVal][yVal] = player
+	print(self.arrows)
+	local arrows = Arrows:new({player=self.player, map=self})
+	print(self.arrows)
+	arrows:setArrows(xVal, yVal)
 
-	updateInfoScreen()
+	objectArray[xVal][yVal] = self.player
 
-	return player;
-end
+	self:updateInfoScreen()
 
-------------------------
---Function:    movePlayer
---Description: 
---  Listener function that triggers when one of the movement arrows is tapped
---  Moves the player, updates the objectArray, sets new Arrows, and updates the Info screen
-------------------------
-local function movePlayer(event)
-	if event.phase == "began" then
-		oldX, oldY = player:move(event.target.xVal,event.target.yVal)
-		
-		objectArray[event.target.xVal][event.target.yVal] = player
-		objectArray[oldX][oldY] = nil
-
-		Map:setArrows(event.target.xVal, event.target.yVal)
-
-		--TODO:Call player functions to handle combat/picking up items
-
-		updateInfoScreen()
-	end
-end
-
-------------------------
---Function:    setArrows
---Description: 
---  Places arrows around the player character. Will only place the arrow if the 
---  tile is something the player can pass through
---
---Arguments:
---  xVal      - integer    - x value for player
---  yVal      - integer    - y value for player
---
---Returns:
---  Nothing
-------------------------
-function Map:setArrows(xVal, yVal)
-	print(xVal .. "," .. yVal)
-
-	if upArrow ~= nil then
-		upArrow:removeSelf( )
-		upArrow = nil
-	end
-
-	if downArrow ~= nil then
-		downArrow:removeSelf( )
-		downArrow = nil
-	end
-
-	if leftArrow ~= nil then
-		leftArrow:removeSelf( )
-		leftArrow = nil
-	end
-
-	if rightArrow ~= nil then
-		rightArrow:removeSelf( )
-		rightArrow = nil
-	end	
-
-
-	if mapArray[xVal][yVal-1].passable == true then
-		--Check if there is an object present, or if there is, make sure its passable
-		if(objectArray[xVal][yVal-1] == nil) or (objectArray[xVal][yVal-1].passable) then
-			upArrow = display.newImage( iconSheet, 1)
-			upArrow.x = mapArray[xVal][yVal-1].x
-			upArrow.y = mapArray[xVal][yVal-1].y
-			upArrow.xVal, upArrow.yVal = xVal, yVal-1
-
-			upArrow:toFront()
-
-			upArrow:scale( tileScale, tileScale )
-			self.upArrow = upArrow
-
-			upArrow:addEventListener("touch", movePlayer)
-		end
-
-	end
-
-	if mapArray[xVal][yVal+1].passable == true then
-
-		if(objectArray[xVal][yVal+1] == nil) or (objectArray[xVal][yVal+1].passable) then
-			downArrow = display.newImage( iconSheet, 1) 
-
-			downArrow.x = mapArray[xVal][yVal+1].x
-			downArrow.y = mapArray[xVal][yVal+1].y
-			downArrow.xVal, downArrow.yVal = xVal, yVal+1
-
-			downArrow:rotate( 180 )
-
-			downArrow:toFront()
-
-			downArrow:scale( tileScale, tileScale )
-			self.downArrow = downArrow
-
-			downArrow:addEventListener("touch", movePlayer)
-		end
-
-	end
-
-	if mapArray[xVal-1][yVal].passable == true then
-		
-		if(objectArray[xVal-1][yVal] == nil) or (objectArray[xVal-1][yVal].passable) then
-			leftArrow = display.newImage( iconSheet, 1) 
-
-			leftArrow.x = mapArray[xVal-1][yVal].x
-			leftArrow.y = mapArray[xVal-1][yVal].y
-			leftArrow.xVal, leftArrow.yVal = xVal-1, yVal
-
-			leftArrow:rotate( -90 )
-
-			leftArrow:toFront()
-
-			leftArrow:scale( tileScale, tileScale )
-			self.leftArrow = leftArrow
-
-			leftArrow:addEventListener("touch", movePlayer)	
-		end
-			
-	end
-
-	if mapArray[xVal+1][yVal].passable == true then
-
-		if(objectArray[xVal+1][yVal] == nil) or (objectArray[xVal+1][yVal].passable) then
-			rightArrow = display.newImage( iconSheet, 1) 
-
-			rightArrow.x = mapArray[xVal+1][yVal].x
-			rightArrow.y = mapArray[xVal+1][yVal].y
-			rightArrow.xVal, rightArrow.yVal = xVal+1, yVal
-
-			rightArrow:rotate( 90 )
-
-			rightArrow:toFront()
-
-			rightArrow:scale( tileScale, tileScale )
-			self.rightArrow = rightArrow
-
-			rightArrow:addEventListener("touch", movePlayer)	
-		end
-
-	end
-
+	return self.player;
 end
 
 function Map:enemyTurn()

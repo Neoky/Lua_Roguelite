@@ -9,7 +9,7 @@ xPos and yPos - hopefully be used store map postion.
 map={} - The map should be the parent of the player, so I want to store it to reference it.
 ]]--------------------------------------
 
-Player = {tag="player", hpCur=100, hpMax=100, attack=2, keys=0, rKey=0, gKey=0, bKey=0, xPos=1, yPos=1, map={}, tileSheet={}}
+Player = {tag="player", hpCur=100, hpMax=100, attack=2, keys=0, rKey=0, gKey=0, bKey=0, xPos=1, yPos=1, map={}, tileSheet={}, arrows={}}
 
 local spriteOpt =
 {
@@ -39,8 +39,7 @@ function Player:spawn()
 	self.body.x = xPos;
 	self.body.y = yPos;
 	self.hpCur = hpCur;
-	--self.map = map;
-	--physics.addBody( self.body, "kinematic" );
+
 	return self.body
 end
 
@@ -77,52 +76,6 @@ function Player:move(xPos, yPos)
 		-- Create shortcuts
 		xVal, yVal = self.xPos, self.yPos;
 		mapArray = self.map.mapArray
-
-		--self.map:setArrows(xPos,yPos)
-		-- Move Arrows
-		upArrow = self.map.upArrow
-		leftArrow = self.map.leftArrow
-		rightArrow = self.map.rightArrow
-		downArrow = self.map.downArrow
-		if mapArray[xVal][yVal-1] ~= nil and mapArray[xVal][yVal-1].passable == true then
-			upArrow.x = mapArray[xVal][yVal-1].x
-			upArrow.y = mapArray[xVal][yVal-1].y
-			upArrow.xVal, upArrow.yVal = xVal, yVal-1
-			upArrow.isVisible=true;
-		else
-			upArrow.isVisible=false;
-		end
-
-		if mapArray[xVal][yVal+1] ~= nil and mapArray[xVal][yVal+1].passable == true then
-			downArrow.x = mapArray[xVal][yVal+1].x
-			downArrow.y = mapArray[xVal][yVal+1].y
-			downArrow.xVal, downArrow.yVal = xVal, yVal+1
-			downArrow.isVisible=true;
-		else
-			downArrow.isVisible=false;
-		end
-
-		if mapArray[xVal-1][yVal] ~= nil and mapArray[xVal-1][yVal].passable == true then
-			leftArrow.x = mapArray[xVal-1][yVal].x
-			leftArrow.y = mapArray[xVal-1][yVal].y
-			leftArrow.xVal, leftArrow.yVal = xVal-1, yVal
-			leftArrow.isVisible=true;
-		else
-			leftArrow.isVisible=false;
-		end
-
-		if mapArray[xVal+1][yVal] ~= nil and mapArray[xVal+1][yVal].passable == true then
-			rightArrow.x = mapArray[xVal+1][yVal].x
-			rightArrow.y = mapArray[xVal+1][yVal].y
-			rightArrow.xVal, rightArrow.yVal = xVal+1, yVal	
-			rightArrow.isVisible=true;
-		else
-			rightArrow.isVisible=false;
-		end
-
-		if mapArray[xVal][yVal].pushable == true then
-			-- Pushable object logic
-		end
 
 		self.map:enemyTurn()
 	end
