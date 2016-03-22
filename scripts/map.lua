@@ -274,8 +274,8 @@ function Map:swapTile(tileSheet, frameNum, xVal, yVal, passable)
 	newTile.y = mapArray[xVal][yVal].y
 	newTile.passable = passable
 
-	--mapArray[xVal][xVal] = nil
 	mapArray[xVal][yVal]:removeSelf()
+	mapArray[xVal][xVal] = nil
 	mapArray[xVal][yVal] = newTile
 	mapArray[xVal][yVal]:scale(tileScale, tileScale)
 
