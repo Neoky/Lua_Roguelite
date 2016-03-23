@@ -651,8 +651,8 @@ function Map:enemyTurn()
 	-- Logic and function calls for enemy movement goes here.
 
 	-- search object array for enemy objects
-	for i=1, Nboxes-2 do
-		for j=1, Mboxes-2 do
+	for i=1, roomWidth-2 do
+		for j=1, roomHeight-2 do
 
 			if objectArray[i][j] ~= nil then
 				-- move enemy if they have not moved yet during this turn
@@ -672,8 +672,8 @@ function Map:enemyTurn()
 	end  -- for loop
 
 	-- reset moved flag for enemy objects
-	for i=1, Nboxes-2 do
-		for j=1, Mboxes-2 do
+	for i=1, roomWidth-2 do
+		for j=1, roomHeight-2 do
 			if objectArray[i][j] ~= nil and objectArray[i][j].tag == "enemy" then
 				objectArray[i][j].moved = false;
 			end
