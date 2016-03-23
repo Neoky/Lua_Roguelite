@@ -40,6 +40,7 @@ function Player:spawn()
 	self:load()
 	self.body = display.newSprite(spriteSheet, spriteSeqData);
 	self.body:setSequence("warrior")
+	self.body:play()
 	self.body.pp = self;
 	self.body.tag = "player";
 	if self.map.mapArray[self.xPos][self.yPos] ~= nil then
