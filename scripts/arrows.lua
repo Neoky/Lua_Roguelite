@@ -89,8 +89,10 @@ function Arrows:new(o)
 			if interaction == false then
 				oldX, oldY = o.player:move(event.target.xVal,event.target.yVal)
 				
-				objectArray[event.target.xVal][event.target.yVal] = self.player
-				objectArray[oldX][oldY] = nil
+				objectArray[event.target.xVal][event.target.yVal] = o.player
+				if objectArray[oldX][oldY] == o.player then
+					objectArray[oldX][oldY] = nil
+				end
 
 				o:setArrows(event.target.xVal, event.target.yVal)
 
