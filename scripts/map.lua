@@ -390,27 +390,18 @@ function Map:placeObject(objectType, tileSheet, frameNum, xVal, yVal, passable, 
 		-- check for enemy objects
 		if ( tileSheet == "pest" ) then 
 			newObject = PestClass:new();
-			newObject:init( frameNum, "RANDOM" );  -- initialize enemy attributes 
+			newObject:init( frameNum, "RANDOM", mapArray, xVal, yVal, tileScale, objectArray );
 		elseif ( tileSheet == "undead" ) then
 			newObject = UndeadClass:new();
-			newObject:init( frameNum, "RANDOM" );  -- initialize enemy attributes 
+			newObject:init( frameNum, "RANDOM", mapArray, xVal, yVal, tileScale, objectArray );
 		elseif ( tileSheet == "demon" ) then
 			newObject = DemonClass:new();
-			newObject:init( frameNum, "STAND" );  -- initialize enemy attributes 
+			newObject:init( frameNum, "STAND", mapArray, xVal, yVal, tileScale, objectArray );
 		end
 		
 		if ( newObject ~= nil ) then
 			-- create image of enemy on tile
-			newObject:spawn( mapArray, xVal, yVal, tileScale );
-			
-			--- TEST JB : add touch listener to test enemy movement
-			local function touchListener(event)
-				if (event.phase == "began") then
-					newObject:move();
-				end
-			end
-			newObject.shape:addEventListener("touch", touchListener);
-			---
+			newObject:spawn();
 		end
 
 	elseif(objectType == "item") then
@@ -658,6 +649,37 @@ end
 
 function Map:enemyTurn()
 	-- Logic and function calls for enemy movement goes here.
+
+	-- search object array for enemy objects
+	for i=1, roomWidth-2 do
+		for j=1, roomHeight-2 do
+
+			if objectArray[i][j] ~= nil then
+				-- move enemy if they have not moved yet during this turn
+				if objectArray[i][j].tag == "enemy" and objectArray[i][j].moved == false then
+					result, newX, newY = objectArray[i][j]:move(self.player.xPos, self.player.yPos);
+					objectArray[i][j].moved = true; -- set flag so enemy is not moved again during turn
+
+					if "TRUE" == result then
+						-- update enemy location in object array if enemy moved
+						objectArray[newX][newY] = objectArray[i][j];
+						objectArray[i][j] = nil;						
+					end
+				end
+			end
+
+		end  -- for loop
+	end  -- for loop
+
+	-- reset moved flag for enemy objects
+	for i=1, roomWidth-2 do
+		for j=1, roomHeight-2 do
+			if objectArray[i][j] ~= nil and objectArray[i][j].tag == "enemy" then
+				objectArray[i][j].moved = false;
+			end
+		end  -- for loop
+	end  -- for loop
+
 end
 
 return Map

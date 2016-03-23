@@ -6,9 +6,9 @@
 ---------------
 
 -- Room boundaries
-local MIN_X_POS = 0;
-local MAX_X_POS = 12;
-local MIN_Y_POS = 0;
+local MIN_X_POS = 1;
+local MAX_X_POS = 11;
+local MIN_Y_POS = 1;
 local MAX_Y_POS = 8;
 
 local DOWN  = "down";
@@ -40,10 +40,11 @@ end
 --Returns:
 --  
 ------------------------
-function EnemyMovement:init(typeArg, mapArg, x, y)
+function EnemyMovement:init(typeArg, mapArrayArg, x, y, objArrayArg)
 	--print("[EnemyMovement:init] entered with type = " .. typeArg);
 	self.type = typeArg;  -- movement pattern (PATROL, RANDOM, etc.)
-	self.mapArray = mapArg;  -- save reference to room map
+	self.mapArray = mapArrayArg;  -- save reference to room map
+	self.objectArray = objArrayArg;
 
 	-- initialize attributes for patrol movements
 	if self.type == "PATROL_HORZ" then
@@ -59,20 +60,6 @@ function EnemyMovement:init(typeArg, mapArg, x, y)
 		self.minY = math.max( MIN_Y_POS, (y-3) );
 		self.maxY = math.min( MAX_Y_POS, (y+3) );
 	end
-end
-
-------------------------
---Function:    getType
---Description: 
---  Returns the current movement pattern
---
---Arguments:
---
---Returns:
---  
-------------------------
-function EnemyMovement:getType()
-	return self.type;
 end
 
 ------------------------
@@ -108,6 +95,58 @@ function EnemyMovement:setType(arg)
 end
 
 ------------------------
+--Function:    playerLocalSearch
+--Description: 
+--  Searches the neighboring tiles for the player
+--
+--Arguments:
+--
+--Returns:
+--  
+------------------------
+function EnemyMovement:playerLocalSearch(enemyX, enemyY, playerX, playerY)
+	--print("[EnemyMovement:playerLocalSearch] entered");
+
+	if playerX == enemyX and playerY == (enemyY+1) then
+		return true;
+	elseif playerX == (enemyX-1) and playerY == enemyY then
+		return true;
+	elseif playerX == enemyX and playerY == (enemyY-1) then
+		return true;
+	elseif playerX == (enemyX+1) and playerY == enemyY then
+		return true;
+	end
+
+	return false;
+end
+
+------------------------
+--Function:    playerDistantSearch
+--Description: 
+--  Searches the distant tiles for the player
+--
+--Arguments:
+--
+--Returns:
+--  
+------------------------
+function EnemyMovement:playerDistantSearch(enemyX, enemyY, playerX, playerY)
+	--print("[EnemyMovement:playerDistantSearch] entered");
+
+	if playerX == enemyX and playerY == (enemyY+2) then
+		return self.mapArray[enemyX][enemyY+1].passable, enemyX, (enemyY+1);
+	elseif playerX == (enemyX-2) and playerY == enemyY then
+		return self.mapArray[enemyX-1][enemyY].passable, (enemyX-1), enemyY;
+	elseif playerX == enemyX and playerY == (enemyY-2) then
+		return self.mapArray[enemyX][enemyY-1].passable, enemyX, (enemyY-1);
+	elseif playerX == (enemyX+2) and playerY == enemyY then
+		return self.mapArray[enemyX+1][enemyY].passable, (enemyX+1), enemyY;
+	end
+
+	return false;
+end
+
+------------------------
 --Function:    getRandomNextMove
 --Description: 
 --  Randomly determines the next move for the enemy
@@ -124,18 +163,22 @@ function EnemyMovement:getRandomNextMove(x, y)
 
 	-- check all valid moves
 	if ( self.mapArray[x][y+1].passable == true and 
+		 self.objectArray[x][y+1] == nil and
 	     (y+1) < self.maxY ) then
 		table.insert(movesArray, DOWN);
 	end
 	if ( self.mapArray[x-1][y].passable == true and 
+		 self.objectArray[x-1][y] == nil and
 	     (x-1) > self.minX ) then
 		table.insert(movesArray, LEFT);
 	end
 	if ( self.mapArray[x][y-1].passable == true and 
+		 self.objectArray[x][y-1] == nil and
 	     (y-1) > self.minY ) then
 		table.insert(movesArray, UP);
 	end
 	if ( self.mapArray[x+1][y].passable == true and 
+		 self.objectArray[x+1][y] == nil and
 	     (x+1) < self.maxX ) then
 		table.insert(movesArray, RIGHT);
 	end
@@ -181,11 +224,13 @@ function EnemyMovement:getPatrolHorzNextMove(x, y)
 	local nextMove = "INVALID";
 
 	-- check all valid moves
-	if ( self.mapArray[x-1][y].passable == true and 
+	if ( self.mapArray[x-1][y].passable == true and
+		 self.objectArray[x-1][y] == nil and  
 	     (x-1) > self.minX ) then
 		moveLeft = true;
 	end
 	if ( self.mapArray[x+1][y].passable == true and 
+		 self.objectArray[x+1][y] == nil and
 	     (x+1) < self.maxX ) then
 		moveRight = true;
 	end
@@ -231,11 +276,13 @@ function EnemyMovement:getPatrolVertNextMove(x, y)
 	local nextMove = "INVALID";
 
 	-- check all valid moves for enemy
-	if ( self.mapArray[x][y-1].passable == true and 
+	if ( self.mapArray[x][y-1].passable == true and
+		 self.objectArray[x][y-1] == nil and 
 	     (y-1) > self.minY ) then
 		moveUp = true;
 	end
 	if ( self.mapArray[x][y+1].passable == true and 
+		 self.objectArray[x][y+1] == nil and
 	     (y+1) < self.maxY ) then
 		moveDown = true;
 	end
@@ -274,7 +321,29 @@ end
 --Returns:
 --  
 ------------------------
-function EnemyMovement:getNextMove(x, y)
+function EnemyMovement:getNextMove(x, y, playerX, playerY)
+	local foundPlayer = false;
+
+	-- first look at neighboring tiles for player
+	foundPlayer = self:playerLocalSearch(x, y, playerX, playerY);
+	if foundPlayer == true then
+		return "ATTACK", x, y; -- stay in current tile and attack player
+	end
+
+	if self.type ~= "STAND" then
+		-- moving enemies can look at distant tiles for player
+		foundPlayer, newX, newY = self:playerDistantSearch(x, y, playerX, playerY);
+		if foundPlayer == true then
+			print("[EnemyMovement:getNextMove] going into SEEK mode");
+			self:setType("SEEK");
+			return true, newX, newY;
+		elseif self.type == "SEEK" then
+			-- somehow lost player during SEEK mode so return to RANDOM mode
+			print("[EnemyMovement:getNextMove] returning to RANDOM mode");
+			self:setType("RANDOM");
+		end
+	end
+
 	if self.type == "RANDOM" then
 		return self:getRandomNextMove(x, y);
 	elseif self.type == "PATROL_HORZ" then

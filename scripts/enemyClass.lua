@@ -18,7 +18,7 @@ local MAX_Y_POS = 8;
 
 -- HP = hit points
 -- ATK = attack points
-local EnemyClass = {tag="enemy", movePattern="STAND", HP=10, ATK=3, 
+local EnemyClass = {tag="enemy", moved=false, mapArray={}, movePattern="STAND", HP=10, ATK=3, 
 	passable=true, pushable=false};
 
 
@@ -39,39 +39,15 @@ end
 --Returns:
 --  
 ------------------------
-function EnemyClass:init (typeArg, frameNumArg, movePatternArg)
-	self.type = typeArg;
+function EnemyClass:init (frameNumArg, movePatternArg, mapArrayArg, mapX, mapY, tileScale, objArray)
 	self.frameNum = frameNumArg;
 	self.movePattern = movePatternArg;
 
-	-- populate enemy attributes
-	local enemyAttrs = nil;
-	if (typeArg == "demon") then
-		enemyAttrs = EnemyTable.demon;
-	elseif (typeArg == "undead") then
-		enemyAttrs = EnemyTable.undead;
-	elseif (typeArg == "pest") then
-		enemyAttrs = EnemyTable.pest;
-	else
-		print("[EnemyClass:init] Received unexpected enemy type!");
-		return;
-	end
-
-	self.sheet = enemyAttrs.sheet;
-end
-
-------------------------
---Function:    setMovePattern
---Description: 
---  Set the movement pattern for the enemy
---
---Arguments:
---
---Returns:
---  
-------------------------
-function EnemyClass:setMovePattern (movePatternArg)
-	self.movePattern = movePatternArg;
+	self.mapArray = mapArrayArg;
+	self.mapX = mapX;
+	self.mapY = mapY;
+	self.tileScale = tileScale;
+	self.objectArray = objArray;
 end
 
 ------------------------
@@ -84,25 +60,17 @@ end
 --Returns:
 --  
 ------------------------
-function EnemyClass:spawn(mapArray, mapX, mapY, tileScale)
-	self.mapArray = mapArray;
-	self.mapX = mapX;
-	self.mapY = mapY;
-	
+function EnemyClass:spawn()
 	-- create enemy image on given tile location 
 	self.shape = display.newImage( self.sheet, self.frameNum );
-	self.shape.x = mapArray[mapX][mapY].x;
-	self.shape.y = mapArray[mapX][mapY].y;
-	self.shape:scale(tileScale,tileScale);
+	self.shape.x = self.mapArray[self.mapX][self.mapY].x;
+	self.shape.y = self.mapArray[self.mapX][self.mapY].y;
+	self.shape:scale(self.tileScale,self.tileScale);
 	self.shape:toFront( );
-
-	-- set object x,y coordinates for tile placement
-	self.x = mapArray[mapX][mapY].x;
-	self.y = mapArray[mapX][mapY].y;
 
 	-- initialize movement manager
 	self.moveMgr = EnemyMovement:new( );
-	self.moveMgr:init( self.movePattern, mapArray, mapX, mapY );
+	self.moveMgr:init( self.movePattern, self.mapArray, self.mapX, self.mapY, self.objectArray );
 end
 
 ------------------------
@@ -121,68 +89,11 @@ function EnemyClass:remove ()
 		-- remove image
 		self.shape:removeSelf();
 		self.shape = nil;	
-
-		-- clear enemy attributes from tile
-		self.tag = "";
-		self.passable = true;
 	end
+	self.objectArray[self.mapX][self.mapY] = nil;
 end
 
-------------------------
---Function:    playerLocalSearch
---Description: 
---  Searches the neighboring tiles for the player
---
---Arguments:
---
---Returns:
---  
-------------------------
-function EnemyClass:playerLocalSearch()
-	--print("[EnemyClass:playerLocalSearch] entered");
 
-	if ( self.mapArray[self.mapX][self.mapY+1].tag == "player" ) then
-		return true, self.mapX, (self.mapY+1);
-	elseif ( self.mapArray[self.mapX-1][self.mapY].tag == "player" ) then
-		return true, (self.mapX-1), self.mapY;
-	elseif ( self.mapArray[self.mapX][self.mapY-1].tag == "player" ) then
-		return true, self.mapX, (self.mapY-1);
-	elseif ( self.mapArray[self.mapX+1][self.mapY].tag == "player" ) then
-		return true, (self.mapX+1), self.mapY;
-	end
-
-	return false, 0, 0;
-end
-
-------------------------
---Function:    playerDistantSearch
---Description: 
---  Searches the distant tiles for the player
---
---Arguments:
---
---Returns:
---  
-------------------------
-function EnemyClass:playerDistantSearch()
-	--print("[EnemyClass:playerDistantSearch] entered");
-
-	if ( self.mapY+2 < MAX_Y_POS and 
-		 self.mapArray[self.mapX][self.mapY+2].tag == "player" ) then
-		return true, self.mapX, (self.mapY+2);
-	elseif ( self.mapX-2 > MIN_X_POS and
-			 self.mapArray[self.mapX-2][self.mapY].tag == "player" ) then
-		return true, (self.mapX-2), self.mapY;
-	elseif ( self.mapY-2 > MIN_Y_POS and
-		     self.mapArray[self.mapX][self.mapY-2].tag == "player" ) then
-		return true, self.mapX, (self.mapY-2);
-	elseif ( self.mapX+2 < MAX_X_POS and 
-			 self.mapArray[self.mapX+2][self.mapY].tag == "player" ) then
-		return true, (self.mapX+2), self.mapY;
-	end
-
-	return false, 0, 0;
-end
 
 ------------------------
 --Function:    move
@@ -194,48 +105,36 @@ end
 --Returns:
 --  
 ------------------------
-function EnemyClass:move()
-	--print("[EnemyClass:move] entered for " .. self.type);
+function EnemyClass:move(playerX, playerY)
+	print("[EnemyClass:move] entered for " .. self.type .. " with player pos " .. playerX .. "," .. playerY);
 
-	-- look around for player in nearby tile
-	local foundPlayer = false;
-
-	-- first look at neighboring tiles
-	foundPlayer, targetX, targetY = self:playerLocalSearch();
-	if foundPlayer == true then
-		print("[EnemyClass:move] Attacking player at position: " .. targetX .. "," .. targetY);
-		-- Attack target
-		--self:Attack(targetX, targetY);
-		return;
-	else
-		-- look at distant tiles for the player
-		foundPlayer, targetX, targetY = self:playerDistantSearch();
-		if foundPlayer == true then
-			--print("[EnemyClass:move] Discovered target at distant position: " .. targetX .. "," .. targetY);
-		end
-	end
-
+	local validMove = "FALSE";
+	local newX, newY = 0, 0;
 
 	-- get next valid move for enemy
-	validMove, newX, newY = self.moveMgr:getNextMove( self.mapX, self.mapY );
+	validMove, newX, newY = self.moveMgr:getNextMove( self.mapX, self.mapY, playerX, playerY );
 
-	if false == validMove then
+	if "ATTACK" == validMove and self.objectArray[playerX][playerY] ~= nil then
+		print("Enemy is attacking player with ATK " .. self.ATK .. "!");
+		-- perform attack
+		player = self.objectArray[playerX][playerY];
+		player:reduceHP(self.ATK);
+		return validMove, newX, newY;
+	elseif "FALSE" == validMove then
 		print("[EnemyClass:move] Cannot move from current position for " .. self.type .. "!");
-		return;
+		return "FALSE", 0, 0;
 	elseif newX == self.mapX and newY == self.mapY then
+		-- enemy has not moved from current position
 		print("[EnemyClass:move] Standing in current position for " .. self.type);
-		return;
+		return "FALSE", 0, 0;
 	end
-
-	-- Reset current tile attributes before moving enemy to next tile. This will allow 
-	-- the enemy and other dynamic entities to enter the tile after the enemy moves.
-	self.mapArray[self.mapX][self.mapY].tag = "";
 	
-	-- move enemy to new tile location 
+	-- move enemy image to new tile location 
 	print("[EnemyClass:move] Moving from " .. self.mapX .. "," .. self.mapY .. " to " .. newX .. "," .. newY .. " for " .. self.type);
 	self.mapX, self.mapY = newX, newY;
 	self.shape.x = mapArray[self.mapX][self.mapY].x;
 	self.shape.y = mapArray[self.mapX][self.mapY].y;
+	return "TRUE", newX, newY;
 end
 
 ------------------------
@@ -248,8 +147,8 @@ end
 --Returns:
 --  
 ------------------------
-function EnemyClass:Attack(targetX, targetY)
-	print("[EnemyClass:Attack] entered for " .. self.type);
+function EnemyClass:attack(targetX, targetY)
+	print("[EnemyClass:attack] entered for " .. self.type);
 	self.mapArray[targetX][targetY]:hit(self.ATK);
 end
 
