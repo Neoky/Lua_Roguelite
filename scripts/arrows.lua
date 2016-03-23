@@ -97,6 +97,8 @@ function Arrows:new(o)
 				--TODO:Call player functions to handle combat/picking up items
 
 				o.map:updateInfoScreen()
+			else
+				o.player:move(o.player.xPos, o.player.yPos)
 			end
 		end
 	end
