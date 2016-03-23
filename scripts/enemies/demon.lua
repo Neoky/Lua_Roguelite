@@ -14,35 +14,6 @@ local EnemyClass = require("scripts.enemyClass");
 Demon = EnemyClass:new( {type="demon", movePattern="STAND", 
 	sheet=EnemyTable.demon.sheet, HP=20, ATK=5} );
 
-------------------------
---Function:    init
---Description: 
---  Initializes the class ATKributes
---
---Arguments:
---
---Returns:
---  
-------------------------
-function Demon:init (frameNumArg)
-	self.frameNum = frameNumArg;
-end
-
-------------------------
---Function:    init
---Description: 
---  Initializes the class ATKributes
---
---Arguments:
---
---Returns:
---  
-------------------------
-function Demon:init (frameNumArg, movePatternArg)
-	self.frameNum = frameNumArg;
-	self.movePattern = movePatternArg;
-end
-
 
 
 ----- end Demon Class declaration -----

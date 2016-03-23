@@ -14,35 +14,6 @@ local EnemyClass = require("scripts.enemyClass");
 Pest = EnemyClass:new( {type="pest", movePattern="RANDOM", 
 	sheet=EnemyTable.pest.sheet, HP=5, ATK=1} );
 
-------------------------
---Function:    init
---Description: 
---  Initializes the class ATKributes
---
---Arguments:
---
---Returns:
---  
-------------------------
-function Pest:init (frameNumArg)
-	self.frameNum = frameNumArg;
-end
-
-------------------------
---Function:    init
---Description: 
---  Initializes the class ATKributes
---
---Arguments:
---
---Returns:
---  
-------------------------
-function Pest:init (frameNumArg, movePatternArg)
-	self.frameNum = frameNumArg;
-	self.movePattern = movePatternArg;
-end
-
 
 
 ----- end Pest Class declaration -----
