@@ -14,7 +14,7 @@ local DemonClass = require("scripts.enemies.demon");
 local UndeadClass = require("scripts.enemies.undead");
 local PestClass = require("scripts.enemies.pest");
 
-local File = require('scripts.saveGame')
+--local File = require('scripts.saveGame')
 
 local Map = {player={}, arrows={}, upArrow={},rightArrow={},downArrow={},leftArrow={},mapArray={}, objectArray={}}
 
@@ -23,12 +23,12 @@ local Map = {player={}, arrows={}, upArrow={},rightArrow={},downArrow={},leftArr
 local xx = display.contentWidth
 local yy = display.contentHeight
 
---16:9 aspect ratio is the default screen size (Maybe change this?)
-local Nboxes = 80/5 - 3 --Subtract 3 for Info screen on right side
-local Mboxes = 45/5
+--16:9 aspect ratio is the default screen size
+local roomWidth = 80/5 - 3 --Width = 13//Subtract 3 for Info screen on right side
+local roomHeight = 45/5 --Height = 9
 
-local sizeX = ( display.actualContentWidth  / Nboxes)
-local sizeY = ( display.actualContentHeight / Mboxes)
+local sizeX = ( display.actualContentWidth  / roomWidth)
+local sizeY = ( display.actualContentHeight / roomHeight)
 
 --Set up Information View
 local hpText = nil
@@ -63,17 +63,7 @@ local wOptions =
 	}
 };
 
-local wallSheet = graphics.newImageSheet( "images/Objects/Wall.png", wOptions )
-
---Set up player character
-local pOptions =
-{
-	frames = {
-		{ x =  16,  y =  48,  width = 16, height = 16}, -- Knight Dude
-	}
-};
-
-local playerSheet = graphics.newImageSheet( "images/Characters/Player0.png", pOptions )
+local grayWallSheet = graphics.newImageSheet( "images/Objects/Wall.png", wOptions )
 
 --[[
 --Set up movement arrows (and other icons)
@@ -93,10 +83,9 @@ local iconSheet = graphics.newImageSheet( "images/Commissions/Icons.png", iOptio
 local sheetList = 
 {
 		["tile"]   = tileSheet,
-		["wall"]   = wallSheet, 
+		["grayWall"]   = grayWallSheet, 
 		["door"]   = ItemsTable.door.sheet,
 		["decor"]  = ItemsTable.decor.sheet,
-		["player"] = playerSheet,
 		["trap"]   = ItemsTable.trap.sheet,
 		["armor"]  = ItemsTable.armor.sheet,
 		["boot"]  = ItemsTable.boot.sheet,
@@ -121,6 +110,8 @@ local downArrow  = nil
 local leftArrow  = nil
 local rightArrow = nil
 
+local defaultWalls = nil
+local defaultTile = nil
 
 function Map:new(o)
 	o = o or {}
@@ -146,27 +137,28 @@ end
 --Returns:
 --  A map array of the tiles that make up the created room
 ------------------------ 
-function Map:makeRoom(topDoor, leftDoor, rightDoor, bottomDoor)
+--[[function Map:makeRoom(topDoor, leftDoor, rightDoor, bottomDoor)
 	
 	mapArray = {}
 	local doorSheet = sheetList["door"];
+	local wallSheet = sheetList["grayWall"]
 
-	for i=1, Nboxes do
+	for i=1, roomWidth do
 
 		mapArray[i] = {}
 
-	    for j=1, Mboxes do
+	    for j=1, roomHeight do
 	        --Top row
 	        if j == 1 then
 	        	--Top Left Corner
 	        	if i == 1 then 
 	        		tile = display.newImage (wallSheet, 1)
 	        	--Top Right Corner
-	        	elseif i == Nboxes then
+	        	elseif i == roomWidth then
 	        		tile = display.newImage (wallSheet, 3)
 	       		else
 		        	--Check for door
-		        	if(topDoor == true) and (i == math.floor(Nboxes/2)) then
+		        	if(topDoor == true) and (i == math.ceil(roomWidth/2)) then
 		        		tile = display.newImage (doorSheet, doorFrame)
 		        		tile.passable = true 
 		        	else
@@ -177,11 +169,11 @@ function Map:makeRoom(topDoor, leftDoor, rightDoor, bottomDoor)
 	        --Left side
 	        elseif i == 1 then
 	        	--Bottom left corner
-	        	if j == Mboxes then
+	        	if j == roomHeight then
 	        		tile = display.newImage (wallSheet, 5)
 	        	else
 		        	--Check for door
-		        	if(leftDoor == true) and (j == math.floor(Mboxes/2)) then
+		        	if(leftDoor == true) and (j == math.ceil(roomHeight/2)) then
 		        		tile = display.newImage (doorSheet, doorFrame)
 		        		tile.passable = true 
 		        	else
@@ -190,13 +182,13 @@ function Map:makeRoom(topDoor, leftDoor, rightDoor, bottomDoor)
 		        end
 
 	       --Right side
-	        elseif i == Nboxes  then
+	        elseif i == roomWidth  then
 	        	--Bottom right corner
-	        	if j == Mboxes then
+	        	if j == roomHeight then
 	        		tile = display.newImage (wallSheet, 6)
 	        	else
 		        	--Check for door
-		        	if(rightDoor == true) and (j == math.floor(Mboxes/2)) then
+		        	if(rightDoor == true) and (j == math.ceil(roomHeight/2)) then
 		        		tile = display.newImage (doorSheet, doorFrame)
 		        		tile.passable = true 
 		        	else
@@ -205,9 +197,9 @@ function Map:makeRoom(topDoor, leftDoor, rightDoor, bottomDoor)
 	       		end
 
 	       	--Bottom Row
-	        elseif j == Mboxes then
+	        elseif j == roomHeight then
 		        --Check for door
-		        if(bottomDoor == true) and (i == math.floor(Nboxes/2)) then
+		        if(bottomDoor == true) and (i == math.ceil(roomWidth/2)) then
 		        	tile = display.newImage (doorSheet, doorFrame)
 		        	tile.passable = true 
 		        else
@@ -233,13 +225,98 @@ function Map:makeRoom(topDoor, leftDoor, rightDoor, bottomDoor)
 			mapArray[i][j] = tile
 	    end
 	end
-	self.mapArray=mapArray
+
+	self.mapArray = mapArray
 	
 	--Create empty objectArray
 	objectArray = {}
-	for i=1, Nboxes do
+	for i=1, roomWidth do
 		objectArray[i] = {}
-	    for j=1, Mboxes do
+	    for j=1, roomHeight do
+	    	objectArray[i][j] = nil
+	    end
+	end
+
+	self.objectArray = objectArray
+
+	return mapArray
+end]]
+
+function Map:makeRoom(tileNum, walls)
+	
+	mapArray = {}
+
+	self.defaultTile = tileNum
+	self.defaultWalls = sheetList[walls] 
+	wallSheet = sheetList[walls]
+
+	for i=1, roomWidth do
+
+		mapArray[i] = {}
+
+	    for j=1, roomHeight do
+	        --Top row
+	        if j == 1 then
+	        	--Top Left Corner
+	        	if i == 1 then 
+	        		tile = display.newImage (wallSheet, 1)
+	        	--Top Right Corner
+	        	elseif i == roomWidth then
+	        		tile = display.newImage (wallSheet, 3)
+	       		else
+		        	tile = display.newImage (wallSheet, 2)
+	       		end
+
+	        --Left side
+	        elseif i == 1 then
+	        	--Bottom left corner
+	        	if j == roomHeight then
+	        		tile = display.newImage (wallSheet, 5)
+	        	else
+		        	tile = display.newImage (wallSheet, 4)
+		        end
+
+	       --Right side
+	        elseif i == roomWidth  then
+	        	--Bottom right corner
+	        	if j == roomHeight then
+	        		tile = display.newImage (wallSheet, 6)
+	        	else
+		        	tile = display.newImage (wallSheet, 4)
+	       		end
+
+	       	--Bottom Row
+	        elseif j == roomHeight then
+
+		        tile = display.newImage (wallSheet, 2)
+
+	       	--Normal tiles
+	        else
+	        	tile = display.newImage (tileSheet, tileNum)
+	        	tile.passable = true  
+	        end
+
+	        -- Change all the above wall tiles to non-passable
+	        if tile.passable == nil then
+	        	tile.passable = false
+	        end
+
+	        tile:scale (tileScale, tileScale)
+
+	        tile.x = tileSize/2 + tileSize*i - tileSize
+			tile.y = tileSize/2 + tileSize*j - tileSize
+
+			mapArray[i][j] = tile
+	    end
+	end
+
+	self.mapArray = mapArray
+	
+	--Create empty objectArray
+	objectArray = {}
+	for i=1, roomWidth do
+		objectArray[i] = {}
+	    for j=1, roomHeight do
 	    	objectArray[i][j] = nil
 	    end
 	end
@@ -249,8 +326,10 @@ function Map:makeRoom(topDoor, leftDoor, rightDoor, bottomDoor)
 	return mapArray
 end
 
+
+
 function Map:getObjectArray()
-	return objectArray
+	return self.objectArray
 end
 
 ------------------------
@@ -277,7 +356,7 @@ function Map:swapTile(tileSheet, frameNum, xVal, yVal, passable)
 	newTile.passable = passable
 
 	mapArray[xVal][yVal]:removeSelf()
-	mapArray[xVal][xVal] = nil
+	mapArray[xVal][yVal] = nil
 	mapArray[xVal][yVal] = newTile
 	mapArray[xVal][yVal]:scale(tileScale, tileScale)
 
@@ -333,6 +412,24 @@ function Map:placeObject(objectType, tileSheet, frameNum, xVal, yVal, passable, 
 
 		return newObject;
 
+	elseif(objectType == "door") then
+		--Need to remove wall tile and replace it with a tile to put the door on.
+		Map:swapTile( tileSheet, self.defaultTile, xVal, yVal, true)
+
+		newObject = display.newImage( sheetList[tileSheet], frameNum) 
+		newObject.x = mapArray[xVal][yVal].x
+		newObject.y = mapArray[xVal][yVal].y
+
+		newObject.passable = passable
+		newObject.pushable = pushable
+
+		newObject:scale(tileScale,tileScale)
+
+		newObject:toFront( )
+
+		-- set object tag to tile
+		newObject.tag = tileSheet;
+
 	elseif(objectType == "object") then
 		--TODO:Create Object class object here instead of this
 		-- This is currently a catch-all for all objects we haven't classified yet (Pushable stuff, spike pits, immovable scenery, etc.)
@@ -376,7 +473,7 @@ function Map:buildMap(creatorList)
 		x = creatorList[i][3]
 		y = creatorList[i][4]
 
-		mapArray[x][y] = Map:swapTile(  
+		self.mapArray[x][y] = Map:swapTile(  
 			creatorList[i][1],
 			creatorList[i][2],
 			x,
@@ -405,7 +502,7 @@ function Map:fillMap(objectList)
 		x = objectList[i][4]
 		y = objectList[i][5]
 
-		objectArray[x][y] = Map:placeObject(
+		self.objectArray[x][y] = Map:placeObject(
 			objectList[i][1],  
 			objectList[i][2],
 			objectList[i][3],
@@ -415,6 +512,15 @@ function Map:fillMap(objectList)
 
 	return objectArray
 	
+end
+
+function Map:generateMap(defaultTile, defaultWall, creatorList, objectList)
+
+	Map:makeRoom(defaultTile, defaultWall)
+	Map:buildMap(creatorList)
+	Map:fillMap(objectList)
+
+	return self.mapArray
 end
 
 ------------------------
@@ -501,7 +607,7 @@ function Map:updateInfoScreen()
 	gKeyText.text = "Green: " .. self.player.gKey
 	bKeyText.text = "Blue: " .. self.player.bKey
 	
-	File.saveTable(self, "myTable.json", system.DocumentsDirectory)
+	--File.saveTable(self, "myTable.json", system.DocumentsDirectory)
 end
 
 ------------------------
