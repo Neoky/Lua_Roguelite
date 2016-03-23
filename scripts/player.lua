@@ -28,22 +28,25 @@ local spriteSeqData = {
 }
 
 function Player:new(o)
+	t = self:load()
+	o = t or o or {}
 	setmetatable(o, self);
 	self.__index = self;
-	--o:save()
+	o:save()
 	return o;
 end
 
 function Player:spawn()
+	self:load()
 	self.body = display.newSprite(spriteSheet, spriteSeqData);
 	self.body:setSequence("warrior")
 	self.body.pp = self;
 	self.body.tag = "player";
-	self.body.x = xPos;
-	self.body.y = yPos;
+	if self.map.mapArray[self.xPos][self.yPos] ~= nil then
+		self.body.x = self.map.mapArray[self.xPos][self.yPos].x
+		self.body.y = self.map.mapArray[self.xPos][self.yPos].y
+	end
 	self.hpCur = hpCur;
-
-	self:load()
 
 	return self.body
 end
