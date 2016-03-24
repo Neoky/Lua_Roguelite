@@ -19,7 +19,7 @@ local sheetList =
 };
 
 
------ Bass Class declaration -----
+----- Base Class declaration -----
 
 local ItemClass = {tag="item", passable=true, pushable=false};
 
@@ -126,7 +126,7 @@ end
 
 
 
------ end Bass Class declaration -----
+----- end Base Class declaration -----
 
 
 
