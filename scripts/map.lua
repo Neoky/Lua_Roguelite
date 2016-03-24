@@ -19,7 +19,7 @@ local PestClass = require("scripts.enemies.pest");
 
 --local File = require('scripts.saveGame')
 
-local Map = {player={}, arrows={}, upArrow={},rightArrow={},downArrow={},leftArrow={},mapArray={}, objectArray={}}
+local Map = {mapGroup=display.newGroup(), player={}, arrows={}, upArrow={},rightArrow={},downArrow={},leftArrow={},mapArray={}, objectArray={}}
 
 --local player;
 
@@ -205,6 +205,7 @@ function Map:makeRoom(tileNum, walls)
 	        tile.x = tileSize/2 + tileSize*i - tileSize
 			tile.y = tileSize/2 + tileSize*j - tileSize
 
+			self.mapGroup:insert(tile)
 			mapArray[i][j] = tile
 	    end
 	end
@@ -302,6 +303,7 @@ function Map:placeObject(objectType, tileSheet, frameNum, xVal, yVal, passable, 
 			-- create image of enemy on tile
 			newObject:spawn();
 		end
+		self.mapGroup:insert(newObject.shape)
 
 	elseif(objectType == "item") then
 
@@ -313,6 +315,7 @@ function Map:placeObject(objectType, tileSheet, frameNum, xVal, yVal, passable, 
 			-- create image of item on tile
 			newObject:spawn();
 		end
+		self.mapGroup:insert(newObject.shape)
 
 	elseif(objectType == "object") then
 		--TODO:Create Object class object here instead of this
@@ -331,11 +334,13 @@ function Map:placeObject(objectType, tileSheet, frameNum, xVal, yVal, passable, 
 
 		-- set object tag to tile
 		newObject.tag = tileSheet;
+		self.mapGroup:insert(newObject)
 
 	else
 		print("Could not find matching type for object at " .. xVal .. "," .. yVal)
 	end
 	
+	--self.mapGroup:insert(tile)
 	return newObject
 end
 
@@ -346,6 +351,7 @@ function Map:placeDoor(frameNum, xVal, yVal, toScene, toX, toY, color)
 	local door = Door:new()
 
 	door:spawn(frameNum, xVal, yVal, mapArray, toScene, toX, toY, color, tileScale)
+	self.mapGroup:insert(door.shape)
 
 	return door
 end

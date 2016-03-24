@@ -10,7 +10,7 @@ function scene:create()
 	local sceneGroup = self.view
 	--Examples (these can be used to create each separate level)--
 
-	map1 = Map:new()
+	map1 = Map:new({scene=self, scenepoop = sceneGroup})
 
 	--file = File.loadTable("myTable.json", system.DocumentsDirectory)
 	
@@ -72,6 +72,7 @@ function scene:create()
 	--map1:fillMap(objectList)
 
 	map1:generateMap(1, "grayWall", creatorList, objectList)
+	sceneGroup:insert(map1.mapGroup)
 
 	--]]--
 end
@@ -90,26 +91,19 @@ function scene:show( event )
 		if(params ~= nil) then
 			player = map1:placePlayer("player", 1, params.startX, params.startY)
 		else
-			player = map1:placePlayer("player", 1, 6, 6)
+			player = map1:placePlayer("player", 1, 2, 5)
 		end
 
 
+    local previousScene = composer.getSceneName( "previous" )
+    if(previousScene~=nil) then
+        composer.removeScene(previousScene)
+    end
 
 	elseif ( phase == "did" ) then
 		-- Called when the scene is now on screen
 		-- Insert code here to make the scene come alive
 		-- Example: start timers, begin animation, play audio, etc.
-		--[[
-		local function movePlayer(event)
-			if event.phase == "began" then
-				map1.player:move(event.target.xVal,event.target.yVal)
-			end
-		end
-		map1.leftArrow:addEventListener("touch", movePlayer)
-		map1.upArrow:addEventListener("touch", movePlayer)
-		map1.rightArrow:addEventListener("touch", movePlayer)
-		map1.downArrow:addEventListener("touch", movePlayer)
-		]]--
 	end
 end
 
@@ -124,6 +118,7 @@ function scene:hide( event )
 		-- Called when the scene is on screen (but is about to go off screen)
 		-- Insert code here to "pause" the scene
 		-- Example: stop timers, stop animation, stop audio, etc.
+		--map1.mapGroup:removeSelf()
 	elseif ( phase == "did" ) then
 		-- Called immediately after scene goes off screen
 	end
@@ -138,6 +133,7 @@ function scene:destroy( event )
 	-- Called prior to the removal of scene's view
 	-- Insert code here to clean up the scene
 	-- Example: remove display objects, save state, etc.
+	sceneGroup:removeSelf();
 end
 
 scene:addEventListener( "create", scene );

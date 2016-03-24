@@ -10,7 +10,7 @@ function scene:create()
 	local sceneGroup = self.view
 	--Examples (these can be used to create each separate level)--
 
-	map = Map:new()
+	map = Map:new({scene=self, scenepoop = sceneGroup})
 	--file = File.loadTable("myTable.json", system.DocumentsDirectory)
 	
 	--local loadedSettings = loadsave.loadTable( "settings.json" )
@@ -55,6 +55,9 @@ function scene:create()
 	{
 		--type, description/sheet, frameNum, x, y, passable, pushable
 		[1] = {"object","decor", 2, 3, 5, false, true},
+		[2] = {"door", "door", 1, 13, 5, true, false, "scene01", 6,6, "green"},
+		--[6] = {"door", "door", 1, 1, 5, false, false, "scene02", 12, 5, "green"}, 
+		--[2] = {"door", "door", 1, 13, 5, true, false},
 		--[[[2] = {"object","trap", 1, 10, 6, true, false}, 
 		[3] = {"item","armor", 4, 11, 3, true, false}, 
 		[4] = {"item","potion", 7, 3, 7, true, false},
@@ -69,6 +72,7 @@ function scene:create()
 	--map1:fillMap(objectList)
 
 	map:generateMap(1, "grayWall", creatorList, objectList)
+	sceneGroup:insert(map.mapGroup)
 
 	--]]--
 
@@ -87,10 +91,14 @@ function scene:show( event )
 	if ( phase == "will" ) then
 		-- Called when the scene is still off screen (but is about to come on screen)
 		if(params ~= nil) then
-			player = map:placePlayer("player", 1, params.startX, params.startY)
+			--player = map:placePlayer("player", 1, params.startX, params.startY)
 		else
-			player = map:placePlayer("player", 1, 5, 4)
+			--player = map:placePlayer("player", 1, 5, 4)
 		end
+    local previousScene = composer.getSceneName( "previous" )
+    if(previousScene~=nil) then
+        composer.removeScene(previousScene)
+    end
 
 	elseif ( phase == "did" ) then
 		-- Called when the scene is now on screen
@@ -135,6 +143,7 @@ function scene:destroy( event )
 	-- Called prior to the removal of scene's view
 	-- Insert code here to clean up the scene
 	-- Example: remove display objects, save state, etc.
+	sceneGroup:removeSelf();
 end
 
 scene:addEventListener( "create", scene );
