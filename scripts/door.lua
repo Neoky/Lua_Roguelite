@@ -28,6 +28,7 @@ end
 --  
 ------------------------
 function Door:spawn(frameNum, mapX, mapY, mapArray, toScene, toX, toY, color, tileScale)
+	self.tag = "door"
 
 	self.mapArray = mapArray
 	self.mapX = mapX
@@ -104,6 +105,8 @@ end
 function Door:removeLock()
 	self.locked = false
 	self.passable = true
+
+	self.lock:removeSelf()
 end
 
 
