@@ -19,9 +19,9 @@ local sheetList =
 };
 
 
------ Bass Class declaration -----
+----- Base Class declaration -----
 
-local ItemClass = {tag="item", passable=true, pushable=false};
+local ItemClass = {tag="item", power=0, passable=true, pushable=false};
 
 
 function ItemClass:new (o) --constructor
@@ -29,6 +29,32 @@ function ItemClass:new (o) --constructor
 	setmetatable(o, self);
 	self.__index = self;
 	return o;
+end
+
+------------------------
+--Function:    init
+--Description: 
+--  Initializes the class attributes
+--
+--Arguments:
+--
+--Returns:
+--  
+------------------------
+function ItemClass:init(typeArg, fNumArg, mapArray, objArray, mapX, mapY, tileScale)
+	self.tag = typeArg;
+	self.frameNum = fNumArg;
+	self.mapArray = mapArray;
+	self.objectArray = objArray;
+	self.mapX = mapX;
+	self.mapY = mapY;
+	self.tileScale = tileScale;
+
+	if self.tag == "potion" then self.power = 10;
+	elseif self.tag == "armor" then self.power = 10;
+	elseif self.tag == "weapon" then self.power = 10;
+	elseif self.tag == "trap" then self.power = 10;
+	end
 end
 
 ------------------------
@@ -41,31 +67,17 @@ end
 --Returns:
 --  
 ------------------------
-function ItemClass:spawn(typeArg, fNumArg, mapArray, mapX, mapY, tileScale)
-	self.type = typeArg;
-	self.sheet = sheetList[typeArg];
-
-	self.mapArray = mapArray;
-	self.mapX = mapX;
-	self.mapY = mapY;
-	
-	-- create enemy image on given tile location 
-	self.shape = display.newImage( self.sheet, fNumArg );
-	self.shape.x = mapArray[mapX][mapY].x;
-	self.shape.y = mapArray[mapX][mapY].y;
-	self.shape:scale(tileScale,tileScale);
+function ItemClass:spawn()
+	-- create item image on given tile location 
+	self.shape = display.newImage( sheetList[self.tag], self.frameNum );
+	self.shape.x = self.mapArray[self.mapX][self.mapY].x;
+	self.shape.y = self.mapArray[self.mapX][self.mapY].y;
+	self.shape:scale(self.tileScale,self.tileScale);
 	self.shape:toFront( );
-
-	-- initialize properties based on item type
-	self:setItemProperties();
-
-	-- set object x,y coordinates for tile placement
-	--self.x = mapArray[mapX][mapY].x;
-	--self.y = mapArray[mapX][mapY].y;
 end
 
 ------------------------
---Function:    
+--Function:    remove
 --Description: 
 --  
 --
@@ -74,59 +86,27 @@ end
 --Returns:
 --  
 ------------------------
-function ItemClass:setItemProperties()
-	self.HP = 0;
-	self.ATK = 0;
-	self.key = "";
+function ItemClass:remove()
+	print("[ItemClass:remove] entered for " .. self.tag);
 
-	if self.type == "potion" then self.health = 10;
-	elseif self.type == "armor" then self.HP = 10;
-	elseif self.type == "weapon" then self.ATK = 10;
+	if self.tag == "trap" then
+		return;  -- do not remove traps until player leaves room
 	end
-end
-
-------------------------
---Function:    
---Description: 
---  
---
---Arguments:
---
---Returns:
---  
-------------------------
-function ItemClass:pickUp()
-	return {self.type, self.health, self.HP, self.ATK};
-end
-
-------------------------
---Function:    
---Description: 
---  
---
---Arguments:
---
---Returns:
---  
-------------------------
-function ItemClass:remove(damage)
-	print("[ItemClass:remove] entered for " .. self.type);
 
 	if self.shape ~= nil then
-		-- remove image
+		-- remove image from tile
 		self.shape:removeSelf();
 		self.shape = nil;	
-
-		-- clear item attributes from tile
-		self.tag = "";
-		self.passable = true;
 	end
+	-- remove object from array
+	self.objectArray[self.mapX][self.mapY] = nil;
 end
 
 
 
 
------ end Bass Class declaration -----
+----- end Base Class declaration -----
+
 
 
 

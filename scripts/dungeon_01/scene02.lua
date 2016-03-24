@@ -11,7 +11,6 @@ function scene:create()
 	--Examples (these can be used to create each separate level)--
 
 	map1 = Map:new()
-
 	--file = File.loadTable("myTable.json", system.DocumentsDirectory)
 	
 	--local loadedSettings = loadsave.loadTable( "settings.json" )
@@ -42,10 +41,10 @@ function scene:create()
 	--List to swap out tile
 	--
 	creatorList = 
-	{
+	{--[[
 		--type, frameNum, x, y, passable
 		[1] = {"tile", 2, 3, 4, true},
-		[2] = {"tile", 2, 5, 5, true},
+		[2] = {"tile", 2, 5, 5, true},]]
 	}
 
 	--Swap out any of the default tiles with custom ones
@@ -56,15 +55,14 @@ function scene:create()
 	{
 		--type, description/sheet, frameNum, x, y, passable, pushable
 		[1] = {"object","decor", 2, 3, 5, false, true},
-		[2] = {"object","trap", 1, 10, 6, true, false}, 
+		--[[[2] = {"object","trap", 1, 10, 6, true, false}, 
 		[3] = {"item","armor", 4, 11, 3, true, false}, 
 		[4] = {"item","potion", 7, 3, 7, true, false},
 		[5] = {"enemy","undead", 1, 8, 6, false, false},
-		[6] = {"door", "door", 1, 1, 5, false, false, "scene02", 13, 5, "green"},
+		[6] = {"door", "door", 1, 1, 5, true, false},
 		[7] = {"door", "door", 1, 13, 5, true, false},
 		[8] = {"door", "door", 1, 7, 1, true, false},
-		[9] = {"door", "door", 1, 7, 9, true, false},
-		--[6] = {"enemy","demon", 1, 1, 4, false, false},
+		[9] = {"door", "door", 1, 7, 9, true, false},]]--
 	}
 
 	--Fill the map will objects on the tiles
@@ -74,6 +72,9 @@ function scene:create()
 
 	player = map1:placePlayer("player", 1, 6, 6)
 	--]]--
+
+	  	--local sceneGroup = self.view
+	  	--sceneGroup:insert(map1)
 end
 
 

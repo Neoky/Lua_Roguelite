@@ -82,6 +82,7 @@ local ItemOptionsTable = {
 				{ x =  0, y =  16,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, --metal door	
 				{ x = 16, y =  16,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, --metal locked door	
 				{ x =  0, y =  80,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, --open path
+				{ x = 32, y =  64,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, --door lock ONLY				
 			}
 		},
 	}, -- door
