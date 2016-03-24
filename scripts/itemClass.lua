@@ -54,6 +54,7 @@ function ItemClass:init(typeArg, fNumArg, mapArray, objArray, mapX, mapY, tileSc
 	elseif self.tag == "armor" then self.power = 10;
 	elseif self.tag == "weapon" then self.power = 10;
 	elseif self.tag == "trap" then self.power = 10;
+	elseif self.tag == "decor" then self.pushable = true;
 	end
 end
 
@@ -74,6 +75,56 @@ function ItemClass:spawn()
 	self.shape.y = self.mapArray[self.mapX][self.mapY].y;
 	self.shape:scale(self.tileScale,self.tileScale);
 	self.shape:toFront( );
+end
+
+------------------------
+--Function:    move
+--Description: 
+--  
+--
+--Arguments:
+--
+--Returns:
+--  
+------------------------
+function ItemClass:move(pX, pY)
+	currX, currY = self.mapX, self.mapY;
+	newX, newY = currX, currY;
+
+	if self.pushable == false then
+		print("Item is not pushable!");
+		return false;
+	end
+
+	if pX == (currX-1) then
+		newX = newX + 1;
+	elseif pX == (currX+1) then
+		newX = newX - 1;
+	elseif pY == (currY-1) then
+		newY = newY + 1;
+	elseif pY == (currY+1) then
+		newY = newY - 1;
+	else 
+		print("INVALID move");
+		return false;
+	end
+
+	-- verify new location is empty
+	if self.objectArray[newX][newY] then 
+		print("Item cannot be moved to new location");
+		return false;
+	end
+
+	-- move image
+	self.mapX, self.mapY = newX, newY;
+	self.shape.x = self.mapArray[self.mapX][self.mapY].x;
+	self.shape.y = self.mapArray[self.mapX][self.mapY].y;
+
+	-- move item in objectArray
+	self.objectArray[newX][newY] = objectArray[currX][currY];
+	self.objectArray[currX][currY] = nil;	
+
+	return true;
 end
 
 ------------------------
