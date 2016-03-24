@@ -317,9 +317,12 @@ function Map:placeObject(objectType, tileSheet, frameNum, xVal, yVal, passable, 
 
 		-- create item class object
 		newObject = ItemClass:new();
-		newObject:spawn(tileSheet, frameNum, mapArray, xVal, yVal, tileScale);
+		newObject:init(tileSheet, frameNum, mapArray, objectArray, xVal, yVal, tileScale);
 
-		return newObject;
+		if ( newObject ~= nil ) then
+			-- create image of item on tile
+			newObject:spawn();
+		end
 
 	elseif(objectType == "object") then
 		--TODO:Create Object class object here instead of this
@@ -542,18 +545,16 @@ end
 ------------------------
 function Map:placePlayer(tileSheet, frameNum, xVal, yVal)
 	--TODO: Need to pass player data to this function when placing between scene transitions
-	self.player = Player:new({hpCur=100, hpMax=100, attack=2, keys=0, rKey=0, gKey=0, bKey=0, xPos=xVal, yPos=yVal, map=self, tileSheet=tileSheet})
+	self.player = Player:new({xPos=xVal, yPos=yVal, map=self, tileSheet=tileSheet})
 	self.player:spawn()
-	self.player:move(xVal, yVal)
+	--self.player:move(xVal, yVal)
 	self.player.body:scale(tileScale,tileScale)
 	self.player.body:toFront()
 
 	--player = self.player;
 	--self:setArrows(xVal, yVal)
 
-	print(self.arrows)
 	local arrows = Arrows:new({player=self.player, map=self})
-	print(self.arrows)
 	arrows:setArrows(xVal, yVal)
 
 	objectArray[xVal][yVal] = self.player

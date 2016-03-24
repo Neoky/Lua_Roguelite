@@ -12,7 +12,7 @@ local tileScale = 5
 local tileSize  = 16 * tileScale
 
 
-Arrows = {upArrow={}, downArrow={}, leftArrow={}, rightArrow={}, player={}, map={}};
+Arrows = {upArrow={}, downArrow={}, leftArrow={}, rightArrow={}, player={}, map={}, lostObj=nil};
 local upArrow, downArrow, leftArrow, rightArrow;
 
 function Arrows:new(o)
@@ -40,21 +40,29 @@ function Arrows:new(o)
 			end
 			return true
 		elseif objectList[x][y] and objectList[x][y].tag == "trap" then
+			print("TRAP DETECTED")
 			local trap = objectList[x][y]
-			--player.hpCur = player.hpCur - trap.attack;
+			player.hpCur = player.hpCur - trap.power;
+			self.lostObj = trap; -- save trap object
 		elseif objectList[x][y] and objectList[x][y].tag == "key" then
 			local key = objectList[x][y]
 			--player.keys = player.keys + key.power;
 		elseif objectList[x][y] and objectList[x][y].tag == "weapon" then
+			print("WEAPON DETECTED")
 			local weapon = objectList[x][y]
-			--player.weapon = player.attack + weapon.power;
+			player.attack = player.attack + weapon.power;
+			weapon:remove();
 		elseif objectList[x][y] and objectList[x][y].tag == "armor" then
+			print("ARMOR DETECTED")
 			local armor = objectList[x][y]
-			--player.hpMax = player.hpMax + armor.power;
-			--player:restoreHP(armor.power)
+			player.hpMax = player.hpMax + armor.power;
+			player:restoreHP(armor.power)
+			armor:remove();
 		elseif objectList[x][y] and objectList[x][y].tag == "potion" then
+			print("POTION DETECTED")
 			local potion = objectList[x][y]
-			--player:restoreHP(armor.power)
+			player:restoreHP(potion.power)
+			potion:remove();
 		elseif objectList[x][y] and objectList[x][y].tag == "pushable" then
 			local pushable = objectList[x][y]
 			--plX, plY = player.xPos, player.yPos
@@ -89,19 +97,20 @@ function Arrows:new(o)
 			if interaction == false then
 				oldX, oldY = o.player:move(event.target.xVal,event.target.yVal)
 				
-				objectArray[event.target.xVal][event.target.yVal] = o.player
-				if objectArray[oldX][oldY] == o.player then
-					objectArray[oldX][oldY] = nil
+				if self.lostObj ~= nil and self.lostObj.mapX == oldX and self.lostObj.mapY == oldY then
+					-- place deleted object back into array
+					objectArray[oldX][oldY] = self.lostObj
+					self.lostObj = nil;
 				end
 
 				o:setArrows(event.target.xVal, event.target.yVal)
 
 				--TODO:Call player functions to handle combat/picking up items
 
-				o.map:updateInfoScreen()
 			else
 				o.player:move(o.player.xPos, o.player.yPos)
 			end
+			o.map:updateInfoScreen()
 		end
 	end
 

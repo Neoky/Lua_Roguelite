@@ -86,10 +86,11 @@ end
 function EnemyClass:remove ()
 	--print("[EnemyClass:remove] entered for " .. self.type);
 	if self.shape ~= nil then
-		-- remove image
+		-- remove image from tile
 		self.shape:removeSelf();
 		self.shape = nil;	
 	end
+	-- remove object from array
 	self.objectArray[self.mapX][self.mapY] = nil;
 end
 
@@ -125,7 +126,7 @@ function EnemyClass:move(playerX, playerY)
 		return "FALSE", 0, 0;
 	elseif newX == self.mapX and newY == self.mapY then
 		-- enemy has not moved from current position
-		print("[EnemyClass:move] Standing in current position for " .. self.type);
+		--print("[EnemyClass:move] Standing in current position for " .. self.type);
 		return "FALSE", 0, 0;
 	end
 	
