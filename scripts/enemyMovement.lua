@@ -106,7 +106,6 @@ end
 ------------------------
 function EnemyMovement:playerLocalSearch(enemyX, enemyY, playerX, playerY)
 	--print("[EnemyMovement:playerLocalSearch] entered");
-
 	if playerX == enemyX and playerY == (enemyY+1) then
 		return true;
 	elseif playerX == (enemyX-1) and playerY == enemyY then
@@ -352,7 +351,7 @@ function EnemyMovement:getNextMove(x, y, playerX, playerY)
 		return self:getPatrolVertNextMove(x, y);
 	end
 
-	return true, x, y;  -- no movement
+	return "TRUE", x, y;  -- no movement
 end
 
 
