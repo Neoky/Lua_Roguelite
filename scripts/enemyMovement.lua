@@ -106,6 +106,7 @@ end
 ------------------------
 function EnemyMovement:playerLocalSearch(enemyX, enemyY, playerX, playerY)
 	--print("[EnemyMovement:playerLocalSearch] entered");
+
 	if playerX == enemyX and playerY == (enemyY+1) then
 		return true;
 	elseif playerX == (enemyX-1) and playerY == enemyY then
@@ -131,18 +132,29 @@ end
 ------------------------
 function EnemyMovement:playerDistantSearch(enemyX, enemyY, playerX, playerY)
 	--print("[EnemyMovement:playerDistantSearch] entered");
+	newX, newY = 0, 0;
 
 	if playerX == enemyX and playerY == (enemyY+2) then
-		return self.mapArray[enemyX][enemyY+1].passable, enemyX, (enemyY+1);
+		newX, newY = enemyX, (enemyY+1);
 	elseif playerX == (enemyX-2) and playerY == enemyY then
-		return self.mapArray[enemyX-1][enemyY].passable, (enemyX-1), enemyY;
+		newX, newY = (enemyX-1), enemyY;
 	elseif playerX == enemyX and playerY == (enemyY-2) then
-		return self.mapArray[enemyX][enemyY-1].passable, enemyX, (enemyY-1);
+		newX, newY = enemyX, (enemyY-1);
 	elseif playerX == (enemyX+2) and playerY == enemyY then
-		return self.mapArray[enemyX+1][enemyY].passable, (enemyX+1), enemyY;
+		newX, newY = (enemyX+1), enemyY;
+	else return false;
 	end
 
-	return false;
+
+	if self.mapArray[newX][newY].passable == false then
+		print("Cannot move to player because tile is not passable");
+		return false; -- tile is not passable by enemy
+	elseif self.objectArray[newX][newY] ~= nil then
+		print("Cannot move to player because object is in way");
+		return false; -- something is already on the tile btw the player and enemy
+	end
+
+	return true;
 end
 
 ------------------------
