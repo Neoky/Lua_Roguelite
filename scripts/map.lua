@@ -510,7 +510,9 @@ function Map:fillMap(objectList)
 			objectList[i][2],
 			objectList[i][3],
 			objectList[i][4],
-			objectList[i][5])
+			objectList[i][5],
+			objectList[i][6],
+			objectList[i][7])
 	end
 
 	return objectArray
@@ -664,7 +666,7 @@ function Map:enemyTurn()
 					if "TRUE" == result then
 						-- update enemy location in object array if enemy moved
 						objectArray[newX][newY] = objectArray[i][j];
-						objectArray[i][j] = nil;						
+						objectArray[i][j] = nil;				
 					end
 				end
 			end
