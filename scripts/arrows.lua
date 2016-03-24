@@ -8,6 +8,13 @@ local iOptions =
 	}
 };
 local iconSheet = graphics.newImageSheet( "images/Commissions/Icons.png", iOptions );
+local wOptions =
+{
+	frames = {
+		{ x = 32,  y =  16,  width = 15, height = 16}, -- Long sword
+	}
+};
+local weaponSheet = graphics.newImageSheet( "images/Items/LongWep.png", wOptions );
 local tileScale = 5
 local tileSize  = 16 * tileScale
 
@@ -19,6 +26,18 @@ function Arrows:new(o)
 	o = o or {}
 	setmetatable(o, self)
 	self.__index = self
+
+	function battleAnimation(e)
+		-- script to play a sword swing at enemies
+		e.target.alpha=0
+		local sword = display.newImage( weaponSheet, 1)
+		sword.x = (o.player.body.x + e.target.x)/2
+		sword.y = (o.player.body.y + e.target.y)/2
+		sword.rotation = e.target.rotation-90
+		sword:scale(tileScale,tileScale)
+		local removeSword = function() e.target.alpha=0.50 return sword:removeSelf() end
+		transition.to(sword, {rotation=e.target.rotation, time=500, onComplete=removeSword})
+	end
 
 	------------------------
 	--Function:    interactionCheck
@@ -32,12 +51,8 @@ function Arrows:new(o)
 		if objectList[x][y] and objectList[x][y].tag == "enemy" then
 			print("ENEMY DETECTED")
 			local enemy = objectArray[x][y]
-			enemy.HP = enemy.HP - player.attack
-			print(enemy.HP)
-			if enemy.HP <= 0 then
-				-- Kill Enemy
-				enemy:remove()
-			end
+			enemy:hit(player.attack)
+			battleAnimation(e)
 			return true
 		elseif objectList[x][y] and objectList[x][y].tag == "trap" then
 			print("TRAP DETECTED")
