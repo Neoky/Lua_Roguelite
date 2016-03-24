@@ -54,8 +54,8 @@ function scene:create()
 	objectList = 
 	{
 		--type, description/sheet, frameNum, x, y, passable, pushable
-		[1] = {"object","decor", 2, 3, 5, false, true},
-		[2] = {"object","trap", 1, 10, 6, true, false}, 
+		[1] = {"item","decor", 2, 3, 5, false, true},
+		[2] = {"item","trap", 1, 10, 6, true, false}, 
 		[3] = {"item","armor", 4, 11, 3, true, false}, 
 		[4] = {"item","potion", 7, 3, 7, true, false},
 		[5] = {"enemy","undead", 1, 8, 6, false, false},
@@ -63,6 +63,7 @@ function scene:create()
 		[7] = {"door", "door", 1, 13, 5, true, false},
 		[8] = {"door", "door", 1, 7, 1, true, false},
 		[9] = {"door", "door", 1, 7, 9, true, false},
+		[10] = {"item", "weapon", 1, 9, 3, true, false},
 		--[6] = {"enemy","demon", 1, 1, 4, false, false},
 	}
 
