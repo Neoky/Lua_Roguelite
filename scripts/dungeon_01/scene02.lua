@@ -4,13 +4,13 @@ local scene = composer.newScene()
 local Map = require("scripts.map")
 --local File = require("scripts.saveGame")
 --local Items, Player, Enemy, enemyClass, Map = require('scripts.standardAssets')
-local map1
+local map
 
 function scene:create()
 	local sceneGroup = self.view
 	--Examples (these can be used to create each separate level)--
 
-	map1 = Map:new()
+	map = Map:new()
 	--file = File.loadTable("myTable.json", system.DocumentsDirectory)
 	
 	--local loadedSettings = loadsave.loadTable( "settings.json" )
@@ -68,9 +68,8 @@ function scene:create()
 	--Fill the map will objects on the tiles
 	--map1:fillMap(objectList)
 
-	map1:generateMap(1, "grayWall", creatorList, objectList)
+	map:generateMap(1, "grayWall", creatorList, objectList)
 
-	player = map1:placePlayer("player", 1, 6, 6)
 	--]]--
 
 	  	--local sceneGroup = self.view
@@ -83,9 +82,16 @@ function scene:show( event )
 
 	local sceneGroup = self.view
 	local phase = event.phase
+	local params = event.params
 
 	if ( phase == "will" ) then
 		-- Called when the scene is still off screen (but is about to come on screen)
+		if(params ~= nil) then
+			player = map:placePlayer("player", 1, params.startX, params.startY)
+		else
+			player = map:placePlayer("player", 1, 5, 4)
+		end
+
 	elseif ( phase == "did" ) then
 		-- Called when the scene is now on screen
 		-- Insert code here to make the scene come alive

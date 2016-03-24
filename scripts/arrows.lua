@@ -48,6 +48,7 @@ function Arrows:new(o)
 		local mapArray = o.map.mapArray;
 		local objectList = o.map.objectArray;
 		local player = o.player
+
 		if objectList[x][y] and objectList[x][y].tag == "enemy" then
 			print("ENEMY DETECTED")
 			local enemy = objectArray[x][y]
@@ -85,6 +86,10 @@ function Arrows:new(o)
 			if itemMoved == true then return false;
 			else return true;
 			end
+		elseif objectList[x][y] and objectList[x][y].tag == "door" then
+			print("DOOR DETECTED")
+			o.map:transition(x, y)
+			return true
 		end
 		return false
 	end

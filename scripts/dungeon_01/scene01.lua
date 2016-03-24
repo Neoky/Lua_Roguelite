@@ -60,8 +60,8 @@ function scene:create()
 		[3] = {"item","armor", 4, 11, 3, true, false}, 
 		[4] = {"item","potion", 7, 3, 7, true, false},
 		[5] = {"enemy","undead", 1, 8, 6, false, false},
-		[6] = {"door", "door", 1, 1, 5, false, false, "scene02", 13, 5, "green"},
-		[7] = {"door", "door", 1, 13, 5, true, false},
+		[6] = {"door", "door", 1, 1, 5, false, false, "scene02", 12, 5, "green"}, --Extra Door Args are: toScene, toX, toY, lock color
+		[7] = {"door", "door", 1, 13, 5, true, false, "scene02", 2, 5},
 		[8] = {"door", "door", 1, 7, 1, true, false},
 		[9] = {"door", "door", 1, 7, 9, true, false},
 		[10] = {"item", "weapon", 1, 9, 3, true, false},
@@ -73,7 +73,6 @@ function scene:create()
 
 	map1:generateMap(1, "grayWall", creatorList, objectList)
 
-	player = map1:placePlayer("player", 1, 6, 6)
 	--]]--
 end
 
@@ -84,8 +83,18 @@ function scene:show( event )
 	local sceneGroup = self.view
 	local phase = event.phase
 
+  	local params = event.params
+
 	if ( phase == "will" ) then
 		-- Called when the scene is still off screen (but is about to come on screen)
+		if(params ~= nil) then
+			player = map1:placePlayer("player", 1, params.startX, params.startY)
+		else
+			player = map1:placePlayer("player", 1, 6, 6)
+		end
+
+
+
 	elseif ( phase == "did" ) then
 		-- Called when the scene is now on screen
 		-- Insert code here to make the scene come alive

@@ -130,16 +130,6 @@ function Map:new(o, scene)
 	return o
 end
 
-function Map:transition()
-	local Options = 
-		{ effect = "fade",
-		  time = 500,
-		}
-
-	composer.gotoScene( 'scripts.dungeon_01.scene02', Options);
-
-end
-
 ------------------------
 --Function:    makeRoom
 --Description: 
@@ -350,7 +340,6 @@ function Map:placeObject(objectType, tileSheet, frameNum, xVal, yVal, passable, 
 end
 
 function Map:placeDoor(frameNum, xVal, yVal, toScene, toX, toY, color)
-print("PLACING DOOR")
 	--Need to remove wall tile and replace it with a tile to put the door on.
 	Map:swapTile( "tile", self.defaultTile, xVal, yVal, true)
 	
@@ -358,7 +347,7 @@ print("PLACING DOOR")
 
 	door:spawn(frameNum, xVal, yVal, mapArray, toScene, toX, toY, color, tileScale)
 
-	return doorObject
+	return door
 end
 
 
@@ -417,6 +406,7 @@ function Map:fillMap(objectList)
 				objectList[i][9],
 				objectList[i][10],
 				objectList[i][11])
+
 		else
 			self.objectArray[x][y] = Map:placeObject(
 				objectList[i][1],  
@@ -563,6 +553,20 @@ function Map:placePlayer(tileSheet, frameNum, xVal, yVal)
 
 	return self.player;
 end
+
+function Map:transition(x, y)
+	local Options = 
+		{ effect = "fade",
+		  time = 500,
+		  params = {startX = objectArray[x][y].toX, startY = objectArray[x][y].toY}
+		}
+
+	scene = 'scripts.dungeon_01.' .. objectArray[x][y].toScene
+
+	composer.gotoScene( scene, Options);
+
+end
+
 
 function Map:enemyTurn()
 	-- Logic and function calls for enemy movement goes here.
