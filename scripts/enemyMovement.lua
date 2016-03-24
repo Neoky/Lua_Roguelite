@@ -154,7 +154,7 @@ function EnemyMovement:playerDistantSearch(enemyX, enemyY, playerX, playerY)
 		return false; -- something is already on the tile btw the player and enemy
 	end
 
-	return true;
+	return true, newX, newY;
 end
 
 ------------------------
