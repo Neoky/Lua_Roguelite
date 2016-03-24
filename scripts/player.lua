@@ -77,6 +77,12 @@ function Player:move(xPos, yPos)
 		xVal, yVal = self.xPos, self.yPos;
 		mapArray = self.map.mapArray
 
+		-- update position in objectArray if player moved to another tile
+		if self.xPos ~= previousX or self.yPos ~= previousY then
+			self.map.objectArray[xPos][yPos] = self;
+			self.map.objectArray[previousX][previousY] = nil;
+		end
+
 		self.map:enemyTurn()
 	end
 
