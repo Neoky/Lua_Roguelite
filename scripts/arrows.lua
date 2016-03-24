@@ -63,23 +63,13 @@ function Arrows:new(o)
 			local potion = objectList[x][y]
 			player:restoreHP(potion.power)
 			potion:remove();
-		elseif objectList[x][y] and objectList[x][y].tag == "pushable" then
+		elseif objectList[x][y] and objectList[x][y].pushable == true then
+			print("PUSHABLE DETECTED")
 			local pushable = objectList[x][y]
-			--plX, plY = player.xPos, player.yPos
-			--puX, puY = pushable.xPos, pushable.yPos
-			plX, plY = player.x, player.y
-			puX, puY = pushable.x, pushable.y
-			iX = plX-puX
-			iY = plY-puY
-			--arX, arY = e.x, e.y
-			jX = iX - e.x
-			jY = iY - e.y
-			--[[if pushable.move() == false then
-				return false
-			else
-				return true;
-			end]]--
-			return true
+			itemMoved = pushable:move(player.xPos, player.yPos);
+			if itemMoved == true then return false;
+			else return true;
+			end
 		end
 		return false
 	end
