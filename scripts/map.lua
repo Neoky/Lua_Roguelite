@@ -408,9 +408,12 @@ function Map:placeObject(objectType, tileSheet, frameNum, xVal, yVal, passable, 
 
 		-- create item class object
 		newObject = ItemClass:new();
-		newObject:spawn(tileSheet, frameNum, mapArray, xVal, yVal, tileScale);
+		newObject:init(tileSheet, frameNum, mapArray, objectArray, xVal, yVal, tileScale);
 
-		return newObject;
+		if ( newObject ~= nil ) then
+			-- create image of item on tile
+			newObject:spawn();
+		end
 
 	elseif(objectType == "door") then
 		--Need to remove wall tile and replace it with a tile to put the door on.
