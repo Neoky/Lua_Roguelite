@@ -59,7 +59,7 @@ function Arrows:new(o)
 			print("TRAP DETECTED")
 			local trap = objectList[x][y]
 			player.hpCur = player.hpCur - trap.power;
-			self.lostObj = trap; -- save trap object
+			self.lostObj = trap; -- save trap object before player steps onto it
 		elseif objectList[x][y] and objectList[x][y].tag == "key" then
 			local key = objectList[x][y]
 			player.keys = player.keys + 1;
@@ -130,6 +130,13 @@ function Arrows:new(o)
 				
 				if self.lostObj ~= nil and self.lostObj.mapX == oldX and self.lostObj.mapY == oldY then
 					-- place deleted object back into array
+					if objectArray[oldX][oldY] ~= nil and objectArray[oldX][oldY].tag == "enemy" and 
+						self.lostObj.tag == "trap" then
+						-- enemy fell into trap so remove enemy before adding trap back
+						print("Enemy has fallen into trap!")
+						local enemy = objectArray[oldX][oldY];
+						enemy:remove();
+					end
 					objectArray[oldX][oldY] = self.lostObj
 					self.lostObj = nil;
 				end
