@@ -18,10 +18,16 @@ local sheetList =
 	["weapon"]  = ItemsTable.weapon.sheet,
 };
 
+-- Room boundaries
+local MIN_X_POS = 1;
+local MAX_X_POS = 13;
+local MIN_Y_POS = 1;
+local MAX_Y_POS = 9;
+
 
 ----- Base Class declaration -----
 
-local ItemClass = {tag="item", power=0, passable=true, pushable=false};
+local ItemClass = {tag="item", power=0, passable=true, pushable=false, color=""};
 
 
 function ItemClass:new (o) --constructor
@@ -55,6 +61,8 @@ function ItemClass:init(typeArg, fNumArg, mapArray, objArray, mapX, mapY, tileSc
 	elseif self.tag == "weapon" then self.power = 10;
 	elseif self.tag == "trap" then self.power = 10;
 	elseif self.tag == "decor" then self.pushable = true;
+	elseif self.tag == "key" then
+		self.color = "green";
 	end
 end
 
@@ -75,6 +83,14 @@ function ItemClass:spawn()
 	self.shape.y = self.mapArray[self.mapX][self.mapY].y;
 	self.shape:scale(self.tileScale,self.tileScale);
 	self.shape:toFront( );
+
+	-- for keys set the color to match the lock
+	if self.tag == "key" then
+		if self.color == "red" then self.shape:setFillColor(1,0,0,0.8);
+		elseif self.color == "green" then self.shape:setFillColor(0,1,0,0.8);
+		elseif self.color == "blue" then self.shape:setFillColor(0,0,1,0.8); 
+		end
+	end
 end
 
 ------------------------
@@ -92,7 +108,7 @@ function ItemClass:move(pX, pY)
 	newX, newY = currX, currY;
 
 	if self.pushable == false then
-		print("Item is not pushable!");
+		print("Error: Item is not pushable!");
 		return false;
 	end
 
@@ -105,13 +121,22 @@ function ItemClass:move(pX, pY)
 	elseif pY == (currY+1) then
 		newY = newY - 1;
 	else 
-		print("INVALID move");
+		print("Error: Invalid move for item");
+		return false;
+	end
+
+	-- verify new location is within room boundaries
+	if newX <= MIN_X_POS or newX >= MAX_X_POS then
+		print("Error: cannot move item outside of room");
+		return false;
+	elseif newY <= MIN_Y_POS or newY >= MAX_Y_POS then
+		print("Error: cannot move item outside of room");
 		return false;
 	end
 
 	-- verify new location is empty
 	if self.objectArray[newX][newY] then 
-		print("Item cannot be moved to new location");
+		print("Error: An object is in the item's way");
 		return false;
 	end
 
