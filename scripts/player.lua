@@ -72,6 +72,24 @@ function Player:restoreHP(d)
 	end
 end
 
+function Player:haveKey(doorColor)
+	-- return false if player has no keys
+	if self.keys == 0 then return false; 
+	end
+
+	-- verify if player has key that matches door color
+	if doorColor == "red" and self.rKey > 0 then
+		return true;
+	elseif doorColor == "green" and self.gKey > 0 then
+		return true;
+	elseif doorColor == "blue" and self.bKey > 0 then
+		return true;
+	end
+
+	-- player does not have key to locked door
+	return false;  
+end
+
 function Player:move(xPos, yPos)
 	if self.map.mapArray then
 		--Save this to update the current map's objectArray
