@@ -62,7 +62,18 @@ function Arrows:new(o)
 			self.lostObj = trap; -- save trap object
 		elseif objectList[x][y] and objectList[x][y].tag == "key" then
 			local key = objectList[x][y]
-			--player.keys = player.keys + key.power;
+			player.keys = player.keys + 1;
+			if key.id == "red" then 
+				print("RED KEY DETECTED");
+				player.rKey = player.rKey + 1;
+			elseif key.id == "green" then 
+				print("GREEN KEY DETECTED");
+				player.gKey = player.gKey + 1;
+			elseif key.id == "blue" then 
+				print("BLUE KEY DETECTED");
+				player.bKey = player.bKey + 1;
+			end
+			key:remove();
 		elseif objectList[x][y] and objectList[x][y].tag == "weapon" then
 			print("WEAPON DETECTED")
 			local weapon = objectList[x][y]
@@ -88,8 +99,18 @@ function Arrows:new(o)
 			end
 		elseif objectList[x][y] and objectList[x][y].tag == "door" then
 			print("DOOR DETECTED")
-			o.map:transition(x, y)
-			return true
+			local door = objectList[x][y]
+			if door.locked == false then
+				o.map:transition(x, y)
+			elseif player:haveKey(door.color) == true then
+				-- player has key to locked door
+				print("DOOR UNLOCKED")
+				o.map:transition(x, y)
+			else
+				-- player does not have correct key to locked door
+				print("DOOR IS LOCKED")
+			end
+			return true;
 		end
 		return false
 	end
