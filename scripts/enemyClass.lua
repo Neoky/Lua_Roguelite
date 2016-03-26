@@ -107,7 +107,7 @@ end
 --  
 ------------------------
 function EnemyClass:move(playerX, playerY)
-	print("[EnemyClass:move] entered for " .. self.type .. " with player pos " .. playerX .. "," .. playerY);
+	--print("[EnemyClass:move] entered for " .. self.type .. " with player pos " .. playerX .. "," .. playerY);
 
 	local validMove = "FALSE";
 	local newX, newY = 0, 0;
@@ -131,7 +131,7 @@ function EnemyClass:move(playerX, playerY)
 	end
 	
 	-- move enemy image to new tile location 
-	print("[EnemyClass:move] Moving from " .. self.mapX .. "," .. self.mapY .. " to " .. newX .. "," .. newY .. " for " .. self.type);
+	print("[EnemyClass:move] Moving " .. self.type .. " from " .. self.mapX .. "," .. self.mapY .. " to " .. newX .. "," .. newY);
 	self.mapX, self.mapY = newX, newY;
 	self.shape.x = mapArray[self.mapX][self.mapY].x;
 	self.shape.y = mapArray[self.mapX][self.mapY].y;
