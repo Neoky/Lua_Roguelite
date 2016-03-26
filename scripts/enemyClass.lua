@@ -31,7 +31,7 @@ end
 ------------------------
 --Function:    init
 --Description: 
---  Initializes the class attributes
+--  Initializes the class attributes.
 --
 --Arguments:
 --
@@ -52,7 +52,7 @@ end
 ------------------------
 --Function:    spawn
 --Description: 
---  Creates image of enemy on tile
+--  Creates image of enemy on tile and initializes movement.
 --
 --Arguments:
 --
@@ -75,7 +75,8 @@ end
 ------------------------
 --Function:    remove
 --Description: 
---  Removes the image of the enemy
+--  Removes the image of the enemy and removes enemy object from object 
+--  array.
 --
 --Arguments:
 --
@@ -98,64 +99,59 @@ end
 ------------------------
 --Function:    move
 --Description: 
---  Moves the enemy to another tile based on its movement type
+--  Performs the next move for the enemy.
 --
 --Arguments:
---
+--  Player coordinates
 --Returns:
 --  
 ------------------------
 function EnemyClass:move(playerX, playerY)
 	--print("[EnemyClass:move] entered for " .. self.type .. " with player pos " .. playerX .. "," .. playerY);
 
-	local validMove = "FALSE";
+	local nextMove = "FALSE";
 	local newX, newY = 0, 0;
 
-	-- get next valid move for enemy
-	validMove, newX, newY = self.moveMgr:getNextMove( self.mapX, self.mapY, playerX, playerY );
+	if self.moved == true then 
+		return;  -- enemy has already moved during current turn
+	end
 
-	if "ATTACK" == validMove and self.objectArray[playerX][playerY] ~= nil then
+	-- get next move for enemy
+	nextMove, newX, newY = self.moveMgr:getNextMove( self.mapX, self.mapY, playerX, playerY );
+
+	-- set flag so enemy is only moved once per turn
+	self.moved = true;  
+
+	if "ATTACK" == nextMove and self.objectArray[playerX][playerY] ~= nil then
 		print("Enemy is attacking player with ATK " .. self.ATK .. "!");
 		-- perform attack
 		player = self.objectArray[playerX][playerY];
 		player:reduceHP(self.ATK);
-		return validMove, newX, newY;
-	elseif "FALSE" == validMove then
-		print("[EnemyClass:move] Cannot move from current position for " .. self.type .. "!");
-		return "FALSE", 0, 0;
+		return;
+	elseif "FALSE" == nextMove then
+		print("Error: Enemy cannot move from current position for " .. self.type .. "!");
+		return;
 	elseif newX == self.mapX and newY == self.mapY then
-		-- enemy has not moved from current position
-		--print("[EnemyClass:move] Standing in current position for " .. self.type);
-		return "FALSE", 0, 0;
+		-- enemy is standing in current position
+		return;
 	end
 	
 	-- move enemy image to new tile location 
-	print("[EnemyClass:move] Moving " .. self.type .. " from " .. self.mapX .. "," .. self.mapY .. " to " .. newX .. "," .. newY);
+	oldX, oldY = self.mapX, self.mapY
+	print("[EnemyClass:move] Moving " .. self.type .. " from " .. oldX .. "," .. oldY .. " to " .. newX .. "," .. newY);
 	self.mapX, self.mapY = newX, newY;
 	self.shape.x = mapArray[self.mapX][self.mapY].x;
 	self.shape.y = mapArray[self.mapX][self.mapY].y;
-	return "TRUE", newX, newY;
-end
 
-------------------------
---Function:    Attack
---Description: 
---  Performs an Attack on a target in a nearby tile
---
---Arguments:
---
---Returns:
---  
-------------------------
-function EnemyClass:attack(targetX, targetY)
-	print("[EnemyClass:attack] entered for " .. self.type);
-	self.mapArray[targetX][targetY]:hit(self.ATK);
+	-- update enemy location in object array if enemy moved
+	self.objectArray[newX][newY] = objectArray[oldX][oldY];
+	self.objectArray[oldX][oldY] = nil;	
 end
 
 ------------------------
 --Function:    hit
 --Description: 
---  Called when the enemy has been Attacked
+--  Called when the enemy has been attacked.
 --
 --Arguments:
 --
@@ -163,7 +159,7 @@ end
 --  
 ------------------------
 function EnemyClass:hit(damage)
-	print("[EnemyClass:hit] entered for " .. self.type);
+	print("Enemy has been hit with damage " .. damage);
 
 	self.HP = self.HP - damage;
 	if self.HP <= 0 then
