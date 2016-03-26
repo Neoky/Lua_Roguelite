@@ -63,13 +63,13 @@ function Arrows:new(o)
 		elseif objectList[x][y] and objectList[x][y].tag == "key" then
 			local key = objectList[x][y]
 			player.keys = player.keys + 1;
-			if key.id == "red" then 
+			if key.color == "red" then 
 				print("RED KEY DETECTED");
 				player.rKey = player.rKey + 1;
-			elseif key.id == "green" then 
+			elseif key.color == "green" then 
 				print("GREEN KEY DETECTED");
 				player.gKey = player.gKey + 1;
-			elseif key.id == "blue" then 
+			elseif key.color == "blue" then 
 				print("BLUE KEY DETECTED");
 				player.bKey = player.bKey + 1;
 			end
