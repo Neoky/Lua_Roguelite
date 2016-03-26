@@ -576,16 +576,9 @@ function Map:enemyTurn()
 		for j=1, roomHeight-2 do
 
 			if objectArray[i][j] ~= nil then
-				-- move enemy if they have not moved yet during this turn
-				if objectArray[i][j].tag == "enemy" and objectArray[i][j].moved == false then
-					result, newX, newY = objectArray[i][j]:move(self.player.xPos, self.player.yPos);
-					objectArray[i][j].moved = true; -- set flag so enemy is not moved again during turn
-
-					if "TRUE" == result then
-						-- update enemy location in object array if enemy moved
-						objectArray[newX][newY] = objectArray[i][j];
-						objectArray[i][j] = nil;				
-					end
+				-- call move method for each enemy object
+				if objectArray[i][j].tag == "enemy" then
+					objectArray[i][j]:move(self.player.xPos, self.player.yPos); 
 				end
 			end
 
