@@ -7,7 +7,7 @@
 
 -- Room boundaries
 local MIN_X_POS = 1;
-local MAX_X_POS = 11;
+local MAX_X_POS = 12;
 local MIN_Y_POS = 1;
 local MAX_Y_POS = 8;
 
