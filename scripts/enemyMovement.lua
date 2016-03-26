@@ -341,16 +341,17 @@ function EnemyMovement:getNextMove(x, y, playerX, playerY)
 		return "ATTACK", x, y; -- stay in current tile and attack player
 	end
 
+	-- moving enemies can look at distant tiles for player
 	if self.type ~= "STAND" then
-		-- moving enemies can look at distant tiles for player
 		foundPlayer, newX, newY = self:playerDistantSearch(x, y, playerX, playerY);
 		if foundPlayer == true then
-			print("[EnemyMovement:getNextMove] going into SEEK mode");
-			self:setType("SEEK");
-			return true, newX, newY;
-		elseif self.type == "SEEK" then
-			-- somehow lost player during SEEK mode so return to RANDOM mode
-			print("[EnemyMovement:getNextMove] returning to RANDOM mode");
+			-- enemy found player so enemy will try to follow the player
+			print("Enemy spotted player so now going into FOLLOW mode");
+			self:setType("FOLLOW");
+			return true, newX, newY;  -- move closer to player
+		elseif self.type == "FOLLOW" then
+			-- enemy somehow lost player during FOLLOW mode so return to RANDOM mode
+			print("Enemy lost player so returning to RANDOM mode");
 			self:setType("RANDOM");
 		end
 	end
