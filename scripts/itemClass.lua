@@ -40,7 +40,7 @@ end
 ------------------------
 --Function:    init
 --Description: 
---  Initializes the class attributes
+--  Initializes the class attributes.
 --
 --Arguments:
 --
@@ -56,20 +56,33 @@ function ItemClass:init(typeArg, fNumArg, mapArray, objArray, mapX, mapY, tileSc
 	self.mapY = mapY;
 	self.tileScale = tileScale;
 
+	-- Populate attributes based on item type
 	if self.tag == "potion" then self.power = 10;
 	elseif self.tag == "armor" then self.power = 10;
 	elseif self.tag == "weapon" then self.power = 10;
 	elseif self.tag == "trap" then self.power = 10;
-	elseif self.tag == "decor" then self.pushable = true;
-	elseif self.tag == "key" then
+	elseif self.tag == "decor" then 
+		-- allow player to push some items in room
+		self.pushable = true;
+	elseif self.tag == "rkey" then
+		-- assign key color and rename tag to generic 'key'
+		self.color = "red";
+		self.tag = "key";
+	elseif self.tag == "gkey" then
+		-- assign key color and rename tag to generic 'key'
 		self.color = "green";
+		self.tag = "key";
+	elseif self.tag == "bkey" then
+		-- assign key color and rename tag to generic 'key'
+		self.color = "blue";
+		self.tag = "key";
 	end
 end
 
 ------------------------
 --Function:    spawn
 --Description: 
---  
+--  Displays image of the item on the tile.
 --
 --Arguments:
 --
@@ -96,22 +109,24 @@ end
 ------------------------
 --Function:    move
 --Description: 
---  
+--  Moves a pushable item based on direction of push from player.
 --
 --Arguments:
---
+--  Player coordinates
 --Returns:
---  
+--  true if the item was moved; false otherwise
 ------------------------
 function ItemClass:move(pX, pY)
 	currX, currY = self.mapX, self.mapY;
 	newX, newY = currX, currY;
 
+	-- verify item is pushable
 	if self.pushable == false then
 		print("Error: Item is not pushable!");
 		return false;
 	end
 
+	-- determine direction of push based on player's location 
 	if pX == (currX-1) then
 		newX = newX + 1;
 	elseif pX == (currX+1) then
@@ -155,7 +170,8 @@ end
 ------------------------
 --Function:    remove
 --Description: 
---  
+--  Removes the image of the item and removes item object from object 
+--  array.
 --
 --Arguments:
 --
@@ -165,9 +181,9 @@ end
 function ItemClass:remove()
 	print("[ItemClass:remove] entered for " .. self.tag);
 
-	if self.tag == "trap" then
-		return;  -- do not remove traps until player leaves room
-	end
+	--if self.tag == "trap" then
+	--	return;  -- do not remove traps until player leaves room
+	--end
 
 	if self.shape ~= nil then
 		-- remove image from tile

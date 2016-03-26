@@ -65,7 +65,7 @@ function scene:create()
 		[8] = {"door", "door", 1, 7, 1, true, false},
 		[9] = {"door", "door", 1, 7, 9, true, false},
 		[10] = {"item", "weapon", 1, 9, 3, true, false},
-		[11] = {"item", "key", 1, 12, 2, true, false},
+		[11] = {"item", "gkey", 1, 12, 2, true, false},
 		--[6] = {"enemy","demon", 1, 1, 4, false, false},
 	}
 
