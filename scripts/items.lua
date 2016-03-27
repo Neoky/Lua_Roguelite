@@ -11,6 +11,14 @@ local IMAGE_HEIGHT = 16;
 local ItemsTable = {};
 
 local ItemOptionsTable = {
+	ammo =
+	{
+		options = {
+			frames = {
+				{ x =  0, y = 80,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- black dot
+			}
+		},
+	}, -- ammo
 	armor =
 	{
 		options = {
@@ -157,10 +165,24 @@ local ItemOptionsTable = {
 			}
 		},
 	}, -- weapon
+	weaponLng=
+	{
+		options = {
+			frames = {
+				{ x = 96,  y =  0,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- trident
+				{ x = 32,  y = 16,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- long sword
+			}
+		},
+	}, -- weaponLng
 
 };  -- end ItemOptionsTable
 
 ItemsTable = {
+	ammo =
+	{
+		sheet = graphics.newImageSheet( "images/Items/Ammo.png", 
+			ItemOptionsTable.ammo.options ),
+	}, -- ammo
 	armor =
 	{
 		sheet = graphics.newImageSheet( "images/Items/Armor.png", 
@@ -221,6 +243,11 @@ ItemsTable = {
 		sheet = graphics.newImageSheet( "images/Items/MedWep.png", 
 			ItemOptionsTable.weapon.options ),
 	}, -- weapon
+	weaponLng =
+	{
+		sheet = graphics.newImageSheet( "images/Items/LongWep.png", 
+			ItemOptionsTable.weaponLng.options ),
+	}, -- weaponLng
 
 };  -- end ItemsTable
 

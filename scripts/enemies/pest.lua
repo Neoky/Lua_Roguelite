@@ -5,6 +5,8 @@
 --  This file holds ...
 ---------------
 
+local ItemsTable = require("scripts.items");
+
 local IMAGE_WIDTH = 16;
 local IMAGE_HEIGHT = 16;
 
@@ -25,7 +27,8 @@ enemySheet = graphics.newImageSheet( "images/Characters/Pest0.png",
 
 local EnemyClass = require("scripts.enemyClass");
 Pest = EnemyClass:new( {type="pest", movePattern="RANDOM", 
-	sheet=enemySheet, HP=5, ATK=1} );
+	sheet=enemySheet, wpnSheet=ItemsTable.ammo.sheet, wpnFrameNum=1,
+	HP=5, ATK=1} );
 
 
 

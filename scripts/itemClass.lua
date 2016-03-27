@@ -128,13 +128,13 @@ function ItemClass:move(pX, pY)
 
 	-- determine direction of push based on player's location 
 	if pX == (currX-1) then
-		newX = newX + 1;
+		newX = newX + 1;  -- right
 	elseif pX == (currX+1) then
-		newX = newX - 1;
+		newX = newX - 1;  -- left
 	elseif pY == (currY-1) then
-		newY = newY + 1;
+		newY = newY + 1;  -- up
 	elseif pY == (currY+1) then
-		newY = newY - 1;
+		newY = newY - 1;  -- down
 	else 
 		print("Error: Invalid move for item");
 		return false;

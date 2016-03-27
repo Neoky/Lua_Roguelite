@@ -5,6 +5,8 @@
 --  This file holds ...
 ---------------
 
+local ItemsTable = require("scripts.items");
+
 local IMAGE_WIDTH = 16;
 local IMAGE_HEIGHT = 16;
 
@@ -23,7 +25,8 @@ enemySheet = graphics.newImageSheet( "images/Characters/Demon0.png",
 
 local EnemyClass = require("scripts.enemyClass");
 Demon = EnemyClass:new( {type="demon", movePattern="STAND", 
-	sheet=enemySheet, HP=20, ATK=5} );
+	sheet=enemySheet, wpnSheet=ItemsTable.weaponLng.sheet, wpnFrameNum=1, 
+	HP=20, ATK=5} );
 
 
 

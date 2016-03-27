@@ -95,7 +95,6 @@ function EnemyClass:remove ()
 end
 
 
-
 ------------------------
 --Function:    move
 --Description: 
@@ -127,6 +126,7 @@ function EnemyClass:move(playerX, playerY)
 		-- perform attack
 		player = self.objectArray[playerX][playerY];
 		player:reduceHP(self.ATK);
+		self:battleAnimation(playerX, playerY);
 		return;
 	elseif "FALSE" == nextMove then
 		print("Error: Enemy cannot move from current position for " .. self.type .. "!");
@@ -149,6 +149,47 @@ function EnemyClass:move(playerX, playerY)
 end
 
 ------------------------
+--Function:    battleAnimation
+--Description: 
+--  Script to attack player with a weapon.
+--
+--Arguments:
+--  Player coordinates
+--Returns:
+--  
+------------------------
+function EnemyClass:battleAnimation(pX, pY)
+	-- determine direction of player to perform battle animation
+	local rotation = 0;
+	local deltaX, deltaY = 0, 0; 
+	if pX == (self.mapX-1) then
+		rotation = -135;
+		deltaX = -50;  -- left
+	elseif pX == (self.mapX+1) then
+		rotation = 45;
+		deltaX = 50;  -- right
+	elseif pY == (self.mapY-1) then
+		rotation = -45; 
+		deltaY = -50;  -- up
+	elseif pY == (self.mapY+1) then
+		rotation = 135; 
+		deltaY = 50;  -- down
+	else 
+		print("Error: invalid direction for enemy battle animation");
+		return;
+	end
+
+	local sword = display.newImage( self.wpnSheet, self.wpnFrameNum );
+	sword.x = mapArray[self.mapX][self.mapY].x;
+	sword.y = mapArray[self.mapX][self.mapY].y;
+	sword:scale(self.tileScale-1, self.tileScale-1);
+	
+	sword.rotation = sword.rotation+rotation;
+	local removeSword = function() return sword:removeSelf() end
+	transition.to(sword, {x=sword.x+deltaX, y=sword.y+deltaY, time=500, onComplete=removeSword})
+end
+
+------------------------
 --Function:    hit
 --Description: 
 --  Called when the enemy has been attacked.
@@ -167,6 +208,7 @@ function EnemyClass:hit(damage)
 		self:remove();
 	end
 end
+
 
 ----- end Bass Class declaration -----
 

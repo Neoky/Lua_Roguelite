@@ -59,7 +59,7 @@ function scene:create()
 		[2] = {"item","trap", 1, 10, 6, true, false}, 
 		[3] = {"item","armor", 4, 11, 3, true, false}, 
 		[4] = {"item","potion", 7, 3, 7, true, false},
-		[5] = {"enemy","undead", 1, 8, 6, false, false},
+		[5] = {"enemy","pest", 1, 8, 6, false, false},
 		[6] = {"door", "door", 1, 1, 5, false, false, "scene02", 12, 5, "green"}, --Extra Door Args are: toScene, toX, toY, lock color
 		[7] = {"door", "door", 1, 13, 5, true, false, "scene02", 2, 5},
 		[8] = {"door", "door", 1, 7, 1, true, false},

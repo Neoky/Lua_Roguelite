@@ -5,6 +5,8 @@
 --  This file holds ...
 ---------------
 
+local ItemsTable = require("scripts.items");
+
 local IMAGE_WIDTH = 16;
 local IMAGE_HEIGHT = 16;
 
@@ -26,7 +28,8 @@ enemySheet = graphics.newImageSheet( "images/Characters/Undead0.png",
 
 local EnemyClass = require("scripts.enemyClass");
 Undead = EnemyClass:new( {type="undead", movePattern="RANDOM", 
-	sheet=enemySheet, HP=10, ATK=3} );
+	sheet=enemySheet, wpnSheet=ItemsTable.weaponLng.sheet, wpnFrameNum=2,
+	HP=10, ATK=3} );
 
 
 
