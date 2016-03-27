@@ -24,6 +24,17 @@ enemySheet = graphics.newImageSheet( "images/Characters/Demon0.png",
 ----- Demon Class declaration -----
 
 local EnemyClass = require("scripts.enemyClass");
+
+--[[
+  Enemy variables:
+    type = specific type of enemy
+    movePattern = movement pattern to be performed by enemy
+    sheet = image sheet
+    wpnSheet = weapon image sheet
+    wpnFrameNum = frame number to use from weapon image sheet
+    HP = hit points
+    ATK = attack points
+]]--
 Demon = EnemyClass:new( {type="demon", movePattern="STAND", 
 	sheet=enemySheet, wpnSheet=ItemsTable.weaponLng.sheet, wpnFrameNum=1, 
 	HP=20, ATK=5} );

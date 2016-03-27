@@ -27,6 +27,17 @@ enemySheet = graphics.newImageSheet( "images/Characters/Undead0.png",
 ----- Undead Class declaration -----
 
 local EnemyClass = require("scripts.enemyClass");
+
+--[[
+  Enemy variables:
+    type = specific type of enemy
+    movePattern = movement pattern to be performed by enemy
+    sheet = image sheet
+    wpnSheet = weapon image sheet
+    wpnFrameNum = frame number to use from weapon image sheet
+    HP = hit points
+    ATK = attack points
+]]--
 Undead = EnemyClass:new( {type="undead", movePattern="RANDOM", 
 	sheet=enemySheet, wpnSheet=ItemsTable.weaponLng.sheet, wpnFrameNum=2,
 	HP=10, ATK=3} );

@@ -26,6 +26,17 @@ enemySheet = graphics.newImageSheet( "images/Characters/Pest0.png",
 ----- Pest Class declaration -----
 
 local EnemyClass = require("scripts.enemyClass");
+
+--[[
+  Enemy variables:
+    type = specific type of enemy
+    movePattern = movement pattern to be performed by enemy
+    sheet = image sheet
+    wpnSheet = weapon image sheet
+    wpnFrameNum = frame number to use from weapon image sheet
+    HP = hit points
+    ATK = attack points
+]]--
 Pest = EnemyClass:new( {type="pest", movePattern="RANDOM", 
 	sheet=enemySheet, wpnSheet=ItemsTable.ammo.sheet, wpnFrameNum=1,
 	HP=5, ATK=1} );
