@@ -1,3 +1,4 @@
+local ItemsTable = require("scripts.items");
 
 --Set up movement arrows (and other icons)
 
@@ -8,13 +9,7 @@ local iOptions =
 	}
 };
 local iconSheet = graphics.newImageSheet( "images/Commissions/Icons.png", iOptions );
-local wOptions =
-{
-	frames = {
-		{ x = 32,  y =  16,  width = 15, height = 16}, -- Long sword
-	}
-};
-local weaponSheet = graphics.newImageSheet( "images/Items/LongWep.png", wOptions );
+
 local tileScale = 5
 local tileSize  = 16 * tileScale
 
@@ -30,7 +25,7 @@ function Arrows:new(o)
 	function battleAnimation(e)
 		-- script to play a sword swing at enemies
 		e.target.alpha=0
-		local sword = display.newImage( weaponSheet, 1)
+		local sword = display.newImage( ItemsTable.weaponLng.sheet, 2)  -- frame 2 is long sword
 		sword.x = (o.player.body.x + e.target.x)/2
 		sword.y = (o.player.body.y + e.target.y)/2
 		sword.rotation = e.target.rotation-90
