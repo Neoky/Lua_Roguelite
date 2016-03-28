@@ -286,16 +286,18 @@ function Map:placeObject(objectType, tileSheet, frameNum, xVal, yVal, passable, 
 
 	if(objectType == "enemy") then
 
-		-- check for enemy objects
-		if ( tileSheet == "pest" ) then 
+		-- create new enemy object
+		if ( tileSheet == "pest" or tileSheet == "fly" or tileSheet == "scorpion" ) then 
 			newObject = PestClass:new();
-			newObject:init( frameNum, "RANDOM", mapArray, xVal, yVal, tileScale, objectArray );
-		elseif ( tileSheet == "undead" ) then
+			newObject:init( tileSheet, "RANDOM", mapArray, xVal, yVal, tileScale, objectArray );
+		elseif ( tileSheet == "undead" or tileSheet == "mummy" or tileSheet == "whiteSkeleton" ) then
 			newObject = UndeadClass:new();
-			newObject:init( frameNum, "RANDOM", mapArray, xVal, yVal, tileScale, objectArray );
-		elseif ( tileSheet == "demon" ) then
+			newObject:init( tileSheet, "RANDOM", mapArray, xVal, yVal, tileScale, objectArray );
+		elseif ( tileSheet == "demon" or tileSheet == "greenDragon" or tileSheet == "redDemon" ) then
 			newObject = DemonClass:new();
-			newObject:init( frameNum, "STAND", mapArray, xVal, yVal, tileScale, objectArray );
+			newObject:init( tileSheet, "STAND", mapArray, xVal, yVal, tileScale, objectArray );
+		else
+			print("Error: received unexpected enemy type: " .. tileSheet)
 		end
 		
 		if ( newObject ~= nil ) then

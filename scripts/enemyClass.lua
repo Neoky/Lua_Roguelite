@@ -38,8 +38,14 @@ end
 --Returns:
 --  
 ------------------------
-function EnemyClass:init (frameNumArg, movePatternArg, mapArrayArg, mapX, mapY, tileScale, objArray)
-	self.frameNum = frameNumArg;
+function EnemyClass:init (typeArg, movePatternArg, mapArrayArg, mapX, mapY, tileScale, objArray)
+	self.type = typeArg;
+	-- if enemy type is set to a default value then assign it to a specific enemy type
+	if self.type == "undead" then self.type = "mummy"; 
+	elseif self.type == "demon" then self.type = "greenDragon";
+	elseif self.type == "pest" then self.type = "mummy";
+	end
+
 	self.movePattern = movePatternArg;
 
 	self.mapArray = mapArrayArg;
@@ -61,7 +67,11 @@ end
 ------------------------
 function EnemyClass:spawn()
 	-- create enemy image on given tile location 
-	self.shape = display.newImage( self.sheet, self.frameNum );
+	self.shape = display.newSprite(self.spriteSheet, self.spriteSeqData);
+	self.shape:setSequence(self.type);
+	if self.movePattern ~= "STAND" then 
+		self.shape:play(); -- start animation for moving enemies ONLY
+	end
 	self.shape.x = self.mapArray[self.mapX][self.mapY].x;
 	self.shape.y = self.mapArray[self.mapX][self.mapY].y;
 	self.shape:scale(self.tileScale,self.tileScale);
@@ -86,6 +96,7 @@ end
 function EnemyClass:remove ()
 	--print("[EnemyClass:remove] entered for " .. self.type);
 	if self.shape ~= nil then
+		self.shape:pause();  -- pause animation
 		-- remove image from tile
 		self.shape:removeSelf();
 		self.shape = nil;	
