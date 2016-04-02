@@ -46,10 +46,21 @@ function Arrows:new(o)
 
 		if objectList[x][y] and objectList[x][y].tag == "enemy" then
 			print("ENEMY DETECTED")
+
 			local enemy = objectArray[x][y]
+			local originalX = enemy.xOrigin
+			local originalY = enemy.yOrigin
+
 			enemy:hit(player.attack)
+
+			--If the enemy has been defeated, mark in the enemy list that it is gone
+			if objectArray[x][y] == nil then
+				print("Enemy is defeated, removing")
+				o.map:markForRemoval("enemy", originalX, originalY)
+			end
+
 			battleAnimation(e)
-			return true
+			return true, false
 		elseif objectList[x][y] and objectList[x][y].tag == "trap" then
 			print("TRAP DETECTED")
 			local trap = objectList[x][y]
@@ -57,6 +68,9 @@ function Arrows:new(o)
 			self.lostObj = trap; -- save trap object before player steps onto it
 		elseif objectList[x][y] and objectList[x][y].tag == "key" then
 			local key = objectList[x][y]
+			local originalX = key.xOrigin
+			local originalY = key.yOrigin
+
 			player.keys = player.keys + 1;
 			if key.color == "red" then 
 				print("RED KEY DETECTED");
@@ -69,45 +83,61 @@ function Arrows:new(o)
 				player.bKey = player.bKey + 1;
 			end
 			key:remove();
+			o.map:markForRemoval("item", originalX, originalY)
 		elseif objectList[x][y] and objectList[x][y].tag == "weapon" then
 			print("WEAPON DETECTED")
 			local weapon = objectList[x][y]
+			local originalX = weapon.xOrigin
+			local originalY = weapon.yOrigin
+
 			player.attack = player.attack + weapon.power;
 			weapon:remove();
+			o.map:markForRemoval("item", originalX, originalY)			
 		elseif objectList[x][y] and objectList[x][y].tag == "armor" then
 			print("ARMOR DETECTED")
 			local armor = objectList[x][y]
+			local originalX = armor.xOrigin
+			local originalY = armor.yOrigin
+
 			player.hpMax = player.hpMax + armor.power;
 			player:restoreHP(armor.power)
 			armor:remove();
+			o.map:markForRemoval("item", originalX, originalY)			
 		elseif objectList[x][y] and objectList[x][y].tag == "potion" then
 			print("POTION DETECTED")
 			local potion = objectList[x][y]
+			local originalX = potion.xOrigin
+			local originalY = potion.yOrigin
+
 			player:restoreHP(potion.power)
 			potion:remove();
+			o.map:markForRemoval("item", originalX, originalY)			
 		elseif objectList[x][y] and objectList[x][y].pushable == true then
 			print("PUSHABLE DETECTED")
 			local pushable = objectList[x][y]
 			itemMoved = pushable:move(player.xPos, player.yPos);
 			if itemMoved == true then return false;
-			else return true;
+			else return true, false;
 			end
 		elseif objectList[x][y] and objectList[x][y].tag == "door" then
 			print("DOOR DETECTED")
 			local door = objectList[x][y]
+			local flag = false
 			if door.locked == false then
+				flag = true
 				o.map:transition(x, y)
 			elseif player:haveKey(door.color) == true then
 				-- player has key to locked door
 				print("DOOR UNLOCKED")
+				flag = true
 				o.map:transition(x, y)
 			else
 				-- player does not have correct key to locked door
 				print("DOOR IS LOCKED")
 			end
-			return true;
+			return true,flag;
 		end
-		return false
+		return false,false
 	end
 
 	------------------------
@@ -117,9 +147,11 @@ function Arrows:new(o)
 	--  Moves the player, updates the objectArray, sets new Arrows, and updates the Info screen
 	------------------------
 	function movePlayer(event)
+
 		if event.phase == "began" then
 			local interaction = false
-			interaction = interactionCheck(event, event.target.xVal,event.target.yVal)
+			local transitionFlag = false
+			interaction,transitionFlag = interactionCheck(event, event.target.xVal,event.target.yVal)
 			if interaction == false then
 				oldX, oldY = o.player:move(event.target.xVal,event.target.yVal)
 				
@@ -143,7 +175,10 @@ function Arrows:new(o)
 			else
 				o.player:move(o.player.xPos, o.player.yPos)
 			end
-			o.map:updateInfoScreen()
+
+			if transitionFlag == false then
+				o.map:updateInfoScreen()
+			end
 		end
 	end
 
@@ -266,5 +301,33 @@ function Arrows:setArrows(xVal, yVal)
 		--end
 	end
 end
+
+------------------------
+--Function:    destroy
+--Description: 
+--  Removes all arrow images. Use when tranisitoning between scenes
+------------------------
+function Arrows:destroy()
+	if upArrow ~= nil then
+		upArrow:removeSelf( )
+		upArrow = nil
+	end
+
+	if downArrow ~= nil then
+		downArrow:removeSelf( )
+		downArrow = nil
+	end
+
+	if leftArrow ~= nil then
+		leftArrow:removeSelf( )
+		leftArrow = nil
+	end
+
+	if rightArrow ~= nil then
+		rightArrow:removeSelf( )
+		rightArrow = nil
+	end
+end
+
 
 return Arrows;

@@ -27,7 +27,7 @@ local MAX_Y_POS = 9;
 
 ----- Base Class declaration -----
 
-local ItemClass = {tag="item", power=0, passable=true, pushable=false, color=""};
+local ItemClass = {tag="item", power=0, passable=true, pushable=false, color="", xOrigin = nil, yOrigin = nil};
 
 
 function ItemClass:new (o) --constructor
@@ -55,6 +55,9 @@ function ItemClass:init(typeArg, fNumArg, mapArray, objArray, mapX, mapY, tileSc
 	self.mapX = mapX;
 	self.mapY = mapY;
 	self.tileScale = tileScale;
+
+	self.xOrigin = mapX;
+	self.yOrigin = mapY;
 
 	-- Populate attributes based on item type
 	if self.tag == "potion" then self.power = 10;

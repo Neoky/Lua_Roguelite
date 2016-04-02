@@ -18,7 +18,7 @@ local MAX_Y_POS = 8;
 -- HP = hit points
 -- ATK = attack points
 local EnemyClass = {tag="enemy", moved=false, mapArray={}, movePattern="STAND", HP=10, ATK=3, 
-	passable=true, pushable=false};
+	passable=true, pushable=false, xOrigin = nil, yOrigin = nil};
 
 
 function EnemyClass:new (o) --constructor
@@ -53,6 +53,10 @@ function EnemyClass:init (typeArg, movePatternArg, mapArrayArg, mapX, mapY, tile
 	self.mapY = mapY;
 	self.tileScale = tileScale;
 	self.objectArray = objArray;
+
+	self.xOrigin = mapX;
+	self.yOrigin = mapY;
+
 end
 
 ------------------------

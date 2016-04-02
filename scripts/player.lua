@@ -148,4 +148,18 @@ function Player:load()
 	self.yPos = t.yPos
 end
 
+function Player:destroy()
+	self.body:removeSelf()
+
+	self.attack = nil
+	self.hpCur = nil
+	self.hpMax = nil
+	self.keys = nil
+	self.rKey = nil
+	self.gKey = nil
+	self.bKey = nil
+	self.xPos = nil
+	self.yPos = nil
+end
+
 return Player;
