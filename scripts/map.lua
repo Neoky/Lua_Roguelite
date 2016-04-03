@@ -324,7 +324,8 @@ function Map:placeObject(objectType, tileSheet, frameNum, xVal, yVal, passable, 
 		if ( tileSheet == "pest" or tileSheet == "fly" or tileSheet == "scorpion" ) then 
 			newObject = PestClass:new();
 			newObject:init( tileSheet, "RANDOM", mapArray, xVal, yVal, tileScale, objectArray );
-		elseif ( tileSheet == "undead" or tileSheet == "mummy" or tileSheet == "whiteSkeleton" ) then
+		elseif ( tileSheet == "undead" or tileSheet == "mummy" or tileSheet == "whiteSkeleton" or 
+				 tileSheet == "greenSkeleton" or tileSheet == "whiteGhost" or tileSheet == "dementor" ) then
 			newObject = UndeadClass:new();
 			newObject:init( tileSheet, "RANDOM", mapArray, xVal, yVal, tileScale, objectArray );
 		elseif ( tileSheet == "demon" or tileSheet == "greenDragon" or tileSheet == "redDemon" ) then
