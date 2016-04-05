@@ -38,7 +38,7 @@ end
 --Returns:
 --  
 ------------------------
-function EnemyClass:init (typeArg, movePatternArg, mapArrayArg, mapX, mapY, tileScale, objArray)
+function EnemyClass:init (typeArg, movePatternArg, mapArrayArg, mapX, mapY, tileScale, objArray, hpArg, atkArg)
 	self.type = typeArg;
 	-- if enemy type is set to a default value then assign it to a specific enemy type
 	if self.type == "undead" then self.type = "mummy"; 
@@ -56,6 +56,9 @@ function EnemyClass:init (typeArg, movePatternArg, mapArrayArg, mapX, mapY, tile
 
 	self.xOrigin = mapX;
 	self.yOrigin = mapY;
+
+	self.HP = hpArg;
+	self.ATK = atkArg;
 
 end
 
@@ -153,7 +156,7 @@ function EnemyClass:move(playerX, playerY)
 	
 	-- move enemy image to new tile location 
 	oldX, oldY = self.mapX, self.mapY
-	print("[EnemyClass:move] Moving " .. self.type .. " from " .. oldX .. "," .. oldY .. " to " .. newX .. "," .. newY);
+	--print("[EnemyClass:move] Moving " .. self.type .. " from " .. oldX .. "," .. oldY .. " to " .. newX .. "," .. newY);
 	self.mapX, self.mapY = newX, newY;
 	self.shape.x = mapArray[self.mapX][self.mapY].x;
 	self.shape.y = mapArray[self.mapX][self.mapY].y;

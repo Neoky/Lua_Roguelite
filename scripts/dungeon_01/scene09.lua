@@ -32,11 +32,15 @@ function scene:create()
 		-- Extra Door Args: toScene, toX, toY, lock color
 		-- Extra Enemy Args: HP, ATK, movement
 		-- Extra Item Args: power
-		[1] = {"door", "door",    1, 1, 5, false, false, "scene06", 12, 5, "blue"}, -- left
-		[2] = {"door", "door",    1, 13, 5, true, false, "scene02", 2, 5}, -- right
-		[3] = {"door", "door",    1, 7, 1, true, false,  "scene04", 7, 8}, -- top
-		[4] = {"door", "door",    1, 7, 9, true, false,  "scene05", 7, 2}, -- bottom
-		[5] = {"item", "weapon",  1, 11, 7, true, false, 10}, -- standard		
+		[1] = {"door", "door",   1, 7, 9, true, false,  "scene07", 7, 2}, -- bottom
+		[2] = {"door", "door",   1, 13, 5, true, false, "scene10", 2, 5}, -- right
+		[3] = {"enemy","mummy",  1, 6, 4, true, false, 30, 8, "PATROL_VERT"}, -- Enemy9.1 (tier 2)
+		[4] = {"enemy","mummy",  1, 4, 6, true, false, 30, 8, "PATROL_HORZ"}, -- Enemy9.2 (tier 2)
+		[5] = {"item", "gkey",   1, 4, 4, true, false}, -- green key
+		[6] = {"item", "decor",  2, 4, 3, true, true}, -- above key
+		[7] = {"item", "decor",  2, 5, 4, true, true}, -- right of key
+		[8] = {"item", "decor",  2, 4, 5, true, true}, -- below key
+		[9] = {"item", "decor",  2, 3, 4, true, true}, -- left of key
 	}
 end
 

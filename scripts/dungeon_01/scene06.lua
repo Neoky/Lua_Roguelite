@@ -19,9 +19,9 @@ function scene:create()
 	--List to add map elements (holes, different color tiles, etc.)
 	creatorList = 
 	{--[[
-		--type, frameNum, x, y, passable
-		[1] = {"tile", 2, 3, 4, true},
-		[2] = {"tile", 2, 5, 5, true},]]
+		-- Args: type, frameNum, x, y, passable
+		[1] = {"tile", 2, 3, 4, true}, -- dark brown
+		[2] = {"tile", 2, 5, 5, true}, -- dark brown]]--
 	}
 
 
@@ -32,11 +32,18 @@ function scene:create()
 		-- Extra Door Args: toScene, toX, toY, lock color
 		-- Extra Enemy Args: HP, ATK, movement
 		-- Extra Item Args: power
-		[1] = {"door", "door",    1, 1, 5, false, false, "scene06", 12, 5, "blue"}, -- left
-		[2] = {"door", "door",    1, 13, 5, true, false, "scene02", 2, 5}, -- right
-		[3] = {"door", "door",    1, 7, 1, true, false,  "scene04", 7, 8}, -- top
-		[4] = {"door", "door",    1, 7, 9, true, false,  "scene05", 7, 2}, -- bottom
-		[5] = {"item", "weapon",  1, 11, 7, true, false, 10}, -- standard		
+		[1] = {"door", "door",    1, 13, 5, true,  false, "scene03", 2, 5}, -- right	
+		[2] = {"enemy","demon",   1, 6, 5, true, false, 45, 12, "STAND"}, -- tier 3
+		[3] = {"item", "armor",   4, 4, 2, true, false, 20},  -- todo: add chest with legendary armor
+		[4] = {"item", "decor",   3, 7, 2, false, false},  -- bookcase
+		[5] = {"item", "decor",   4, 8, 2, false, false},  -- bookcase
+		[6] = {"item", "decor",   5, 9, 2, false, false},  -- bookcase
+		[7] = {"item", "decor",   5, 10, 2, false, false},  -- bookcase
+		[8] = {"item", "decor",   3, 11, 2, false, false},  -- bookcase
+		[9] = {"item", "decor",   4, 12, 2, false, false},  -- bookcase
+		[10] = {"item", "decor",  6, 8, 4, false, false},  -- chair
+		[11] = {"item", "decor",  7, 9, 4, false, false},  -- round table
+		[12] = {"item", "decor",  8, 10, 4, false, false},  -- chair
 	}
 end
 

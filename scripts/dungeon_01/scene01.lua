@@ -18,28 +18,22 @@ function scene:create()
 	--List to add map elements (holes, different color tiles, etc.)
 	creatorList = 
 	{
-		--type, frameNum, x, y, passable
-		[1] = {"tile", 2, 3, 4, true},
-		[2] = {"tile", 2, 5, 5, true},
+		-- Args: type, frameNum, x, y, passable
 	}
 
 
 	--List to add objects layered on top of map
 	objectList = 
 	{
-		--type, description/sheet, frameNum, x, y, passable, pushable
-		[1] = {"item","decor",    2, 3, 5, false, true},
-		[2] = {"item","trap",     1, 10, 6, true, false}, 
-		[3] = {"item","armor",    4, 11, 3, true, false}, 
-		[4] = {"item","potion",   7, 3, 7, true, false},
-		[5] = {"enemy","undead",  1, 8, 6, false, false},
-		[6] = {"door", "door",    1, 1, 5, false, false, "scene02", 12, 5, "green"}, --Extra Door Args are: toScene, toX, toY, lock color
-		[7] = {"door", "door",    1, 13, 5, true, false, "scene02", 2, 5},
-		[8] = {"door", "door",    1, 7, 1, true, false,  "scene03", 7, 8},
-		[9] = {"door", "door",    1, 7, 9, true, false,  "scene03", 7, 2,  "blue"},
-		[10] = {"item", "weapon", 1, 9, 3, true, false},
-		[11] = {"item", "gkey",   1, 12, 2, true, false},
-		[12] = {"enemy","undead", 1, 7, 7, false, false},	
+		-- Args: type, description/sheet, frameNum, x, y, passable, pushable
+		-- Extra Door Args: toScene, toX, toY, lock color
+		-- Extra Enemy Args: HP, ATK, movement
+		-- Extra Item Args: power
+		[1] = {"door",  "door",  1, 1, 5, false, false, "scene02", 12, 5}, -- left
+		[2] = {"door",  "door",  1, 13, 5, true, false, "scene07", 2, 5}, -- right
+		[3] = {"door",  "door",  1, 7, 1, true, false,  "scene12", 7, 8}, -- top	
+		[4] = {"enemy", "fly",   1, 5, 4, true, false, 20, 5, "RANDOM"}, -- Enemy1.1 (tier 1)
+		[5] = {"enemy", "fly",   1, 9, 4, true, false, 20, 5, "RANDOM"}, -- Enemy1.2 (tier 1)
 	}
 
 end
@@ -91,7 +85,7 @@ function scene:show( event )
 			newScene = {enemyList = {}, itemList = {}}
 			table.insert(map.sceneList, sceneName, newScene)
 
-			player = map:placePlayer("player", 1, 6, 6)
+			player = map:placePlayer("player", 1, 7, 8)
 		end
 
 

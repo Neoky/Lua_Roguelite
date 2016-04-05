@@ -45,16 +45,21 @@ function EnemyMovement:init(typeArg, mapArrayArg, x, y, objArrayArg)
 	self.type = typeArg;  -- movement pattern (PATROL, RANDOM, etc.)
 	self.mapArray = mapArrayArg;  -- save reference to room map
 	self.objectArray = objArrayArg;
+	coinFlip = math.random();
 
 	-- initialize attributes for patrol movements
 	if self.type == "PATROL_HORZ" then
 		self.lastMove = LEFT;
+		if coinFlip > 0.5 then self.lastMove = RIGHT;
+		end
 
 		-- set x coordinate boundaries
 		self.minX = math.max( MIN_X_POS, (x-3) );
 		self.maxX = math.min( MAX_X_POS, (x+3) );
 	elseif self.type == "PATROL_VERT" then
 		self.lastMove = UP;
+		if coinFlip > 0.5 then self.lastMove = DOWN;
+		end
 
 		-- set y coordinate boundaries
 		self.minY = math.max( MIN_Y_POS, (y-3) );

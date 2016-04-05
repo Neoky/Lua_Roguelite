@@ -25,10 +25,14 @@ function scene:create()
 	--List to add objects layered on top of map
 	objectList = 
 	{
-		--type, description/sheet, frameNum, x, y, passable, pushable
-		[1] = {"item","decor", 2,  5, 5, false, true},
-		[2] = {"door", "door",   1, 13, 5, true,  false, "scene01", 2, 5},
-		[3] = {"enemy","undead", 1, 3,  3, false, false},
+		-- Args: type, description/sheet, frameNum, x, y, passable, pushable
+		-- Extra Door Args: toScene, toX, toY, lock color
+		-- Extra Enemy Args: HP, ATK, movement
+		-- Extra Item Args: power
+		[1] = {"door", "door",  1, 1, 5, false, false, "scene03", 12, 5}, -- left
+		[2] = {"door", "door",  1, 13, 5, true,  false, "scene01", 2, 5}, -- right
+		[3] = {"enemy","whiteSkeleton",  1, 5, 5, true, false, 30, 8, "PATROL_VERT"}, -- Enemy2.1 (tier 2)
+		[4] = {"enemy","greenSkeleton",  1, 9, 5, true, false, 30, 8, "PATROL_VERT"}, -- Enemy2.2 (tier 2)
 	}
 
 end

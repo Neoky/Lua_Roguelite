@@ -47,9 +47,10 @@ end
 --Returns:
 --  
 ------------------------
-function ItemClass:init(typeArg, fNumArg, mapArray, objArray, mapX, mapY, tileScale)
+function ItemClass:init(typeArg, fNumArg, powerArg, mapArray, objArray, mapX, mapY, tileScale)
 	self.tag = typeArg;
 	self.frameNum = fNumArg;
+	self.power = powerArg;
 	self.mapArray = mapArray;
 	self.objectArray = objArray;
 	self.mapX = mapX;

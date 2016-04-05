@@ -47,6 +47,9 @@ local tOptions =
 {
 	frames = {
 		{ x =   0,   y =  0,  width = 16, height = 16}, --brown block
+		{ x =  16,   y =  0,  width = 16, height = 16}, --water
+		{ x =  96,   y =  0,  width = 16, height = 16}, --lava
+		{ x =  32,   y = 32,  width = 16, height = 16}, --dark brown block
 		{ x =  80,   y = 32,  width = 16, height = 16}, --grey block		
 	}
 }
@@ -291,6 +294,64 @@ end
 
 
 ------------------------
+--Function:    placeEnemy
+--Description: 
+--  Places an enemy object on top of a tile on the map
+--
+--Arguments:
+--  objectType - object type - Specifies what the object is that is being added
+--  tileSheet  - String      - String used to specify enemy type
+--  xVal       - integer     - x value for tile
+--  yVal       - integer     - y value for tile
+--  hp         - integer     - specifies if the tile is passable
+--  atk        - integer     - specifies if the tile is pushable
+--  movement   - String      - specifies movement pattern
+--
+--Returns:
+--  The object that has been placed
+------------------------
+function Map:placeEnemy(objectType, tileSheet, xVal, yVal, hp, atk, movement)
+	
+	local newObject = nil;
+
+	if(objectType == "enemy") then
+
+		--Add the enemy to the enemy list
+		local result = self:addToList(self.enemyList,xVal,yVal)
+		if result == false then
+			--If the enemy has already been defeated return nil so no object is created
+			return nil
+		end
+
+		-- create new enemy object
+		if ( tileSheet == "pest" or tileSheet == "fly" or tileSheet == "scorpion" ) then 
+			newObject = PestClass:new();
+			newObject:init( tileSheet, movement, mapArray, xVal, yVal, tileScale, objectArray, hp, atk );
+		elseif ( tileSheet == "undead" or tileSheet == "mummy" or tileSheet == "whiteSkeleton" or 
+				 tileSheet == "greenSkeleton" or tileSheet == "whiteGhost" or tileSheet == "dementor" ) then
+			newObject = UndeadClass:new();
+			newObject:init( tileSheet, movement, mapArray, xVal, yVal, tileScale, objectArray, hp, atk, movement );
+		elseif ( tileSheet == "demon" or tileSheet == "greenDragon" or tileSheet == "redDemon" ) then
+			newObject = DemonClass:new();
+			newObject:init( tileSheet, movement, mapArray, xVal, yVal, tileScale, objectArray, hp, atk, movement );
+		else
+			print("Error: received unexpected enemy type: " .. tileSheet)
+		end
+		
+		if ( newObject ~= nil ) then
+			-- create image of enemy on tile
+			newObject:spawn();
+		end
+
+	else
+		print("Could not find matching type for enemy object at " .. xVal .. "," .. yVal)
+	end
+	
+	return newObject
+end
+
+
+------------------------
 --Function:    placeObject
 --Description: 
 --  Places an object on top of a tile on the map
@@ -307,40 +368,11 @@ end
 --Returns:
 --  The object that has been placed
 ------------------------
-function Map:placeObject(objectType, tileSheet, frameNum, xVal, yVal, passable, pushable)
+function Map:placeObject(objectType, tileSheet, frameNum, xVal, yVal, passable, pushable, power)
 	
 	local newObject = nil;
 
-	if(objectType == "enemy") then
-
-		--Add the enemy to the enemy list
-		local result = self:addToList(self.enemyList,xVal,yVal)
-		if result == false then
-			--If the enemy has already been defeated return nil so no object is created
-			return nil
-		end
-
-		-- create new enemy object
-		if ( tileSheet == "pest" or tileSheet == "fly" or tileSheet == "scorpion" ) then 
-			newObject = PestClass:new();
-			newObject:init( tileSheet, "RANDOM", mapArray, xVal, yVal, tileScale, objectArray );
-		elseif ( tileSheet == "undead" or tileSheet == "mummy" or tileSheet == "whiteSkeleton" or 
-				 tileSheet == "greenSkeleton" or tileSheet == "whiteGhost" or tileSheet == "dementor" ) then
-			newObject = UndeadClass:new();
-			newObject:init( tileSheet, "RANDOM", mapArray, xVal, yVal, tileScale, objectArray );
-		elseif ( tileSheet == "demon" or tileSheet == "greenDragon" or tileSheet == "redDemon" ) then
-			newObject = DemonClass:new();
-			newObject:init( tileSheet, "STAND", mapArray, xVal, yVal, tileScale, objectArray );
-		else
-			print("Error: received unexpected enemy type: " .. tileSheet)
-		end
-		
-		if ( newObject ~= nil ) then
-			-- create image of enemy on tile
-			newObject:spawn();
-		end
-
-	elseif(objectType == "item") then
+	if(objectType == "item") then
 		--Only check for consumable items to add to item list
 		if (tileSheet == "potion") or 
 		   (tileSheet == "armor")  or 
@@ -359,7 +391,7 @@ function Map:placeObject(objectType, tileSheet, frameNum, xVal, yVal, passable, 
 
 		-- create item class object
 		newObject = ItemClass:new();
-		newObject:init(tileSheet, frameNum, mapArray, objectArray, xVal, yVal, tileScale);
+		newObject:init(tileSheet, frameNum, power, mapArray, objectArray, xVal, yVal, tileScale);
 
 		if ( newObject ~= nil ) then
 			-- create image of item on tile
@@ -510,6 +542,16 @@ function Map:fillMap(objectList)
 				objectList[i][10],
 				objectList[i][11])
 
+		elseif objectList[i][1] == "enemy" then
+			self.objectArray[x][y] = self:placeEnemy(
+				objectList[i][1],  
+				objectList[i][2],
+				objectList[i][4],
+				objectList[i][5],
+				objectList[i][8],								
+				objectList[i][9],
+				objectList[i][10])
+
 		else
 			self.objectArray[x][y] = self:placeObject(
 				objectList[i][1],  
@@ -518,7 +560,8 @@ function Map:fillMap(objectList)
 				objectList[i][4],
 				objectList[i][5],
 				objectList[i][6],								
-				objectList[i][7])
+				objectList[i][7],
+				objectList[i][8])
 		end
 	end
 	
