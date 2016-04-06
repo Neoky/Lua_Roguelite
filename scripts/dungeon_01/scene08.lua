@@ -59,11 +59,11 @@ function scene:create()
 		[3] = {"enemy","mummy",   1, 7, 3, true, false, 30, 8, "PATROL_HORZ"}, -- Enemy 8.1 (tier 2)
 		[4] = {"enemy","whiteSkeleton",   1, 9, 7, true, false, 20, 5, "RANDOM"}, -- Enemy 8.2 (tier 1)
 		[5] = {"enemy","whiteSkeleton",   1, 11, 6, true, false, 20, 5, "RANDOM"}, -- Enemy 8.3 (tier 1)
-		[6] = {"item", "weapon",  2, 11, 7, true, false, 10}, -- standard 
-		[7] = {"item", "decor",   13, 9, 6, false, false},  -- tombstone
-		[8] = {"item", "decor",   13, 11, 5, false, false},  -- tombstone
-		[9] = {"item", "decor",   14, 12, 8, false, false},  -- tombstone
-		[10] = {"item", "decor",   15, 9, 8, false, false},  -- tombstone
+		[6] = {"item", "weapon",  4, 11, 7, true, false, 10}, -- standard 
+		[7] = {"item", "decor",   20, 9, 6, false, false},  -- tombstone
+		[8] = {"item", "decor",   20, 11, 5, false, false},  -- tombstone
+		[9] = {"item", "decor",   21, 12, 8, false, false},  -- tombstone
+		[10] = {"item", "decor",  22, 9, 8, false, false},  -- tombstone
 	}
 end
 

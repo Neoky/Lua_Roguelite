@@ -17,9 +17,9 @@ local sheetOptions = {
 		{ x = 47.5, y = 32, width = IMAGE_WIDTH, height = IMAGE_HEIGHT }, -- scorpion 1
 		{ x = 47.5, y = 206, width = IMAGE_WIDTH, height = IMAGE_HEIGHT }, -- scorpion 2
 		{ x = 48, y = 64, width = IMAGE_WIDTH, height = IMAGE_HEIGHT }, -- ant 1
-		{ x = 48, y = 226, width = IMAGE_WIDTH, height = IMAGE_HEIGHT }, -- ant 2
+		{ x = 48, y = 238, width = IMAGE_WIDTH, height = IMAGE_HEIGHT }, -- ant 2
 		{ x = 0, y = 144, width = IMAGE_WIDTH, height = IMAGE_HEIGHT }, -- spider 1
-		{ x = 0, y = 306, width = IMAGE_WIDTH, height = IMAGE_HEIGHT }, -- spider 2
+		{ x = 0, y = 318, width = IMAGE_WIDTH, height = IMAGE_HEIGHT }, -- spider 2
 	}
 };
 

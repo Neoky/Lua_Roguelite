@@ -76,9 +76,8 @@ function EnemyClass:spawn()
 	-- create enemy image on given tile location 
 	self.shape = display.newSprite(self.spriteSheet, self.spriteSeqData);
 	self.shape:setSequence(self.type);
-	if self.movePattern ~= "STAND" then 
-		self.shape:play(); -- start animation for moving enemies ONLY
-	end
+	self.shape:play(); -- start animation
+
 	self.shape.x = self.mapArray[self.mapX][self.mapY].x;
 	self.shape.y = self.mapArray[self.mapX][self.mapY].y;
 	self.shape:scale(self.tileScale,self.tileScale);

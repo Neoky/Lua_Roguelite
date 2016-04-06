@@ -324,7 +324,8 @@ function Map:placeEnemy(objectType, tileSheet, xVal, yVal, hp, atk, movement)
 		end
 
 		-- create new enemy object
-		if ( tileSheet == "pest" or tileSheet == "fly" or tileSheet == "scorpion" ) then 
+		if ( tileSheet == "pest" or tileSheet == "fly" or tileSheet == "scorpion" or tileSheet == "ant" or
+		     tileSheet == "spider" ) then 
 			newObject = PestClass:new();
 			newObject:init( tileSheet, movement, mapArray, xVal, yVal, tileScale, objectArray, hp, atk );
 		elseif ( tileSheet == "undead" or tileSheet == "mummy" or tileSheet == "whiteSkeleton" or 
@@ -377,6 +378,7 @@ function Map:placeObject(objectType, tileSheet, frameNum, xVal, yVal, passable, 
 		if (tileSheet == "potion") or 
 		   (tileSheet == "armor")  or 
 		   (tileSheet == "weapon") or 
+		   (tileSheet == "shield") or
 		   (tileSheet == "rkey")   or
 		   (tileSheet == "gkey")   or
 		   (tileSheet == "bkey") then

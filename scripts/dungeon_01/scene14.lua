@@ -34,6 +34,11 @@ function scene:create()
 		-- Extra Item Args: power
 		[1] = {"door",  "door",      1, 7, 9, true, false,  "scene13", 7, 2}, -- bottom
 		[2] = {"enemy", "redDemon",  2, 7, 4, true, false, 100, 25, "STAND"}, -- boss
+		[3] = {"item", "decor",     16, 3, 3, false, false},  -- white skull
+		[4] = {"item", "decor",     17, 3, 6, false, false},  -- pile of white bones
+		[5] = {"item", "decor",     18, 9, 2, false, false},  -- white animal skull
+		[6] = {"item", "decor",     19, 10, 3, false, false},  -- white rib cage
+		[7] = {"item", "decor",     16, 9, 6, false, false},  -- white skull
 	}
 end
 

@@ -33,7 +33,7 @@ function scene:create()
 		-- Extra Enemy Args: HP, ATK, movement
 		-- Extra Item Args: power
 		[1] = {"door", "door",    1, 13, 5, true,  false, "scene03", 2, 5}, -- right	
-		[2] = {"enemy","demon",   1, 6, 5, true, false, 45, 12, "STAND"}, -- tier 3
+		[2] = {"enemy","demon",   1, 6, 5, true, false, 45, 12, "RANDOM"}, -- tier 3
 		[3] = {"item", "armor",   4, 4, 2, true, false, 20},  -- todo: add chest with legendary armor
 		[4] = {"item", "decor",   3, 7, 2, false, false},  -- bookcase
 		[5] = {"item", "decor",   4, 8, 2, false, false},  -- bookcase

@@ -34,7 +34,12 @@ function scene:create()
 		-- Extra Item Args: power
 		[1] = {"door", "door",    1, 7, 1, true, false,  "scene13", 7, 8}, -- top
 		[2] = {"door", "door",    1, 7, 9, true, false,  "scene01", 7, 2}, -- bottom
-		[3] = {"item", "weapon",  1, 2, 7, true, false, 10}, -- standard
+		[3] = {"enemy", "spider", 1, 5, 4, true, false, 20, 5, "RANDOM"}, -- Enemy12.1 (tier 1)
+		[4] = {"enemy", "spider", 1, 9, 4, true, false, 20, 5, "RANDOM"}, -- Enemy12.2 (tier 1)
+		[5] = {"enemy", "spider", 1, 3, 5, true, false, 20, 5, "RANDOM"}, -- Enemy12.3 (tier 1)
+		[6] = {"enemy", "spider", 1, 7, 4, true, false, 20, 5, "RANDOM"}, -- Enemy12.4 (tier 1)
+		[7] = {"enemy", "spider", 1, 10, 6, true, false, 20, 5, "RANDOM"}, -- Enemy12.5 (tier 1)
+		[8] = {"item", "weapon",  3, 2, 7, true, false, 10}, -- standard
 	}
 end
 

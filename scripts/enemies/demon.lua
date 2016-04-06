@@ -13,7 +13,7 @@ local IMAGE_HEIGHT = 16;
 local sheetOptions = {
 	frames = {
 		{ x = 0.1, y = 0.5, width = IMAGE_WIDTH, height = IMAGE_HEIGHT }, -- green dragon 1
-        { x = 0.1, y = 145, width = IMAGE_WIDTH, height = IMAGE_HEIGHT }, -- green dragon 2
+        { x = 0.1, y = 144, width = IMAGE_WIDTH, height = IMAGE_HEIGHT }, -- green dragon 2
 		{ x = 0.1, y = 16, width = IMAGE_WIDTH, height = IMAGE_HEIGHT }, -- red demon 1
         { x = 0.1, y = 160, width = IMAGE_WIDTH, height = IMAGE_HEIGHT }, -- red demon 2
 	}

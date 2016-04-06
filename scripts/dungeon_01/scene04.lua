@@ -33,9 +33,14 @@ function scene:create()
 		-- Extra Enemy Args: HP, ATK, movement
 		-- Extra Item Args: power
 		[1] = {"door", "door",   1, 7, 9, true, false,  "scene03", 7, 2}, -- bottom		
-		[2] = {"enemy","dementor",  1, 5, 4, true, false, 30, 8, "STAND"}, -- tier 2
+		[2] = {"enemy","dementor",  1, 3, 4, true, false, 30, 8, "STAND"}, -- tier 2
 		[3] = {"item", "armor",  1, 2, 2, true, false, 10}, -- standard
 		[4] = {"item", "bkey",   1, 11, 3, true, false}, -- blue key 
+		[5] = {"item", "decor",  9, 2, 5, true, false}, -- bar left piece
+		[6] = {"item", "decor",  10, 3, 5, true, false}, -- bar center piece
+		[7] = {"item", "decor",  11, 4, 5, true, false}, -- bar left piece
+		[8] = {"item", "decor",  12, 5, 2, true, false}, -- bar top piece
+		[9] = {"item", "decor",  14, 5, 3, true, false}, -- bar bottom piece
 	}
 end
 

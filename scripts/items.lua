@@ -71,6 +71,13 @@ local ItemOptionsTable = {
 				{ x =     0, y = 111.5,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- chair #1
 				{ x =    16, y = 111.5,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- round table
 				{ x =    32, y = 111.5,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- chair #2
+				{ x =     0, y =   160,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- bar left piece
+				{ x =    16, y =   160,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- bar center piece
+				{ x =    32, y =   160,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- bar right piece
+				{ x =    48, y =   160,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- bar top piece (vertical)
+				{ x =    64, y =   160,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- bar center piece (vertical)
+				{ x =    80, y =   160,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- bar bottom piece (vertical)
+				{ x =    96, y =   175,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- lumber pile
 				{ x =     0, y =   192,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- white skull
 				{ x =    16, y =   192,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- pile of white bones
 				{ x =     0, y =   207,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- white animal skull

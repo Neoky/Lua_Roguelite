@@ -35,7 +35,7 @@ function scene:create()
 		[1] = {"door", "door",    1, 1, 5, false, false, "scene01", 12, 5}, -- left
 		[2] = {"door", "door",    1, 13, 5, true, false, "scene08", 2, 5}, -- right
 		[3] = {"door", "door",    1, 7, 1, true, false,  "scene09", 7, 8}, -- top
-		[4] = {"item", "armor",   4, 10, 7, true, false, 10}, -- standard 
+		[4] = {"item", "armor",   3, 10, 7, true, false, 10}, -- standard 
 	}
 end
 

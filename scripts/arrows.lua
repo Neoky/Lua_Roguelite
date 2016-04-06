@@ -102,7 +102,17 @@ function Arrows:new(o)
 			player.hpMax = player.hpMax + armor.power;
 			player:restoreHP(armor.power)
 			armor:remove();
-			o.map:markForRemoval("item", originalX, originalY)			
+			o.map:markForRemoval("item", originalX, originalY)
+		elseif objectList[x][y] and objectList[x][y].tag == "shield" then
+			print("SHIELD DETECTED")
+			local shield = objectList[x][y]
+			local originalX = shield.xOrigin
+			local originalY = shield.yOrigin
+
+			player.hpMax = player.hpMax + shield.power;
+			player:restoreHP(shield.power)
+			shield:remove();
+			o.map:markForRemoval("item", originalX, originalY)		
 		elseif objectList[x][y] and objectList[x][y].tag == "potion" then
 			print("POTION DETECTED")
 			local potion = objectList[x][y]

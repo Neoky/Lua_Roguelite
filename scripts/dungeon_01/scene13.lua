@@ -34,8 +34,8 @@ function scene:create()
 		-- Extra Item Args: power
 		[1] = {"door", "door",    1, 7, 1, true, false,  "scene14", 7, 8, "red"}, -- top
 		[2] = {"door", "door",    1, 7, 9, true, false,  "scene12", 7, 2}, -- bottom
-		[3] = {"item", "shield",  1, 2, 7, true, false, 10}, -- standard
-		[4] = {"item", "potion",  1, 12, 4, true, false, 10}, -- standard
+		[3] = {"item", "armor",   2, 2, 7, true, false, 10}, -- standard
+		[4] = {"item", "potion",  2, 12, 4, true, false, 10}, -- standard
 	}
 end
 
