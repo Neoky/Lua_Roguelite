@@ -162,4 +162,8 @@ function Player:destroy()
 	self.yPos = nil
 end
 
+function Player:delete()
+	loadtable.delete("rogue_save.json")
+end
+
 return Player;

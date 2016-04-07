@@ -60,6 +60,17 @@ function M.changeDefault(location)
 	return true
 end
 
+function M.delete(location)
+    local destDir = system.DocumentsDirectory  -- Location where the file is stored
+    local result, reason = os.remove( system.pathForFile( location, destDir ) )
+
+    if result then
+       print( "File removed" )
+    else
+       print( "File does not exist", reason )  --> File does not exist    apple.txt: No such file or directory
+    end
+end
+
 function M.print_r ( t ) 
     local print_r_cache={}
     local function sub_print_r(t,indent)

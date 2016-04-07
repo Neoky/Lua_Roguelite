@@ -5,7 +5,7 @@ local ItemsTable = require("scripts.items");
 local iOptions =
 {
 	frames = {
-		{ x = 16,  y =  0,  width = 16, height = 16}, -- Arrow
+		{ x = 16,  y =  0,  width = 16, height = 15}, -- Arrow
 	}
 };
 local iconSheet = graphics.newImageSheet( "images/Commissions/Icons.png", iOptions );
@@ -26,8 +26,10 @@ function Arrows:new(o)
 		-- script to play a sword swing at enemies
 		e.target.alpha=0
 		local sword = display.newImage( ItemsTable.weaponLng.sheet, 2)  -- frame 2 is long sword
-		sword.x = (o.player.body.x + e.target.x)/2
-		sword.y = (o.player.body.y + e.target.y)/2
+		sword.x = (o.player.body.x + e.target.xTag)
+		sword.y = (o.player.body.y + e.target.yTag)
+		--sword.x = o.player.body.x
+		--sword.y = o.player.body.y
 		sword.rotation = e.target.rotation-90
 		sword:scale(tileScale,tileScale)
 		local removeSword = function() e.target.alpha=0.50 return sword:removeSelf() end
@@ -239,10 +241,14 @@ function Arrows:setArrows(xVal, yVal)
 		--Check if there is an object present, or if there is, make sure its passable
 		--if objectArray[xVal][yVal-1] and objectArray[xVal][yVal-1].passable then
 		upArrow = display.newImage( iconSheet, 1)
-		upArrow.x = mapArray[xVal][yVal-1].x
-		upArrow.y = mapArray[xVal][yVal-1].y
+		--upArrow.x = mapArray[xVal][yVal-1].x
+		--upArrow.y = mapArray[xVal][yVal-1].y
+		upArrow.x = display.contentWidth-125
+		upArrow.y = display.contentHeight-150
+		upArrow.xTag = 0
+		upArrow.yTag = -50
 		upArrow.xVal, upArrow.yVal = xVal, yVal-1
-		upArrow.alpha = 0.50
+		--upArrow.alpha = 0.50
 
 		upArrow:toFront()
 
@@ -256,10 +262,14 @@ function Arrows:setArrows(xVal, yVal)
 	if (mapArray[xVal][yVal+1] ~= nil) and mapArray[xVal][yVal+1].passable == true then
 		--if (objectArray[xVal][yVal+1] and objectArray[xVal][yVal+1].passable) then
 		downArrow = display.newImage( iconSheet, 1)
-		downArrow.x = mapArray[xVal][yVal+1].x
-		downArrow.y = mapArray[xVal][yVal+1].y
+		--downArrow.x = mapArray[xVal][yVal+1].x
+		--downArrow.y = mapArray[xVal][yVal+1].y
+		downArrow.x = display.contentWidth-125
+		downArrow.y = display.contentHeight-75
+		downArrow.xTag = 0
+		downArrow.yTag = 50
 		downArrow.xVal, downArrow.yVal = xVal, yVal+1
-		downArrow.alpha = 0.50
+		--downArrow.alpha = 0.50
 
 		downArrow:rotate( 180 )
 
@@ -275,10 +285,14 @@ function Arrows:setArrows(xVal, yVal)
 	if (xVal > 1) and mapArray[xVal-1][yVal].passable == true then	
 		--if (objectArray[xVal-1][yVal] and objectArray[xVal-1][yVal].passable) then
 		leftArrow = display.newImage( iconSheet, 1)
-		leftArrow.x = mapArray[xVal-1][yVal].x
-		leftArrow.y = mapArray[xVal-1][yVal].y
+		--leftArrow.x = mapArray[xVal-1][yVal].x
+		--leftArrow.y = mapArray[xVal-1][yVal].y
+		leftArrow.x = display.contentWidth-200
+		leftArrow.y = display.contentHeight-110
+		leftArrow.xTag = -50
+		leftArrow.yTag = 0
 		leftArrow.xVal, leftArrow.yVal = xVal-1, yVal
-		leftArrow.alpha = 0.50
+		--leftArrow.alpha = 0.50
 
 		leftArrow:rotate( -90 )
 
@@ -295,10 +309,14 @@ function Arrows:setArrows(xVal, yVal)
 		--print(xVal, table.getn(mapArray))
 		--if (objectArray[xVal+1][yVal] and objectArray[xVal+1][yVal].passable) then
 		rightArrow = display.newImage( iconSheet, 1)
-		rightArrow.x = mapArray[xVal+1][yVal].x
-		rightArrow.y = mapArray[xVal+1][yVal].y
+		--rightArrow.x = mapArray[xVal+1][yVal].x
+		--rightArrow.y = mapArray[xVal+1][yVal].y
+		rightArrow.x = display.contentWidth-50
+		rightArrow.y = display.contentHeight-110
+		rightArrow.xTag = 50
+		rightArrow.yTag = 0
 		rightArrow.xVal, rightArrow.yVal = xVal+1, yVal
-		rightArrow.alpha = 0.50
+		--rightArrow.alpha = 0.50
 
 		rightArrow:rotate( 90 )
 
