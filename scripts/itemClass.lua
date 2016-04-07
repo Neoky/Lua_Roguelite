@@ -191,6 +191,8 @@ function ItemClass:remove()
 	--print("[ItemClass:remove] entered for " .. self.tag);
 	if self.shape ~= nil then
 		-- remove image from tile
+		local sfx = audio.loadStream( "audio/pickup.wav" )
+		audio.play( sfx, { channel=2, loops=0, fadein=0 } )
 		self.shape:removeSelf();
 		self.shape = nil;	
 	end
