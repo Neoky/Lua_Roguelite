@@ -32,6 +32,8 @@ function Arrows:new(o)
 		--sword.y = o.player.body.y
 		sword.rotation = e.target.rotation-90
 		sword:scale(tileScale,tileScale)
+		local sfx = audio.loadStream( "audio/hit.wav" )
+		audio.play( sfx, { channel=2, loops=0, fadein=0 } )
 		local removeSword = function() e.target.alpha=0.50 return sword:removeSelf() end
 		transition.to(sword, {rotation=e.target.rotation, time=500, onComplete=removeSword})
 	end
@@ -180,6 +182,8 @@ function Arrows:new(o)
 					self.lostObj = nil;
 				end
 
+				local sfx = audio.loadStream( "audio/jump.wav" )
+				audio.play( sfx, { channel=2, loops=0, fadein=0 } )
 				o:setArrows(event.target.xVal, event.target.yVal)
 
 				--TODO:Call player functions to handle combat/picking up items

@@ -106,6 +106,8 @@ function EnemyClass:remove ()
 		-- remove image from tile
 		self.shape:removeSelf();
 		self.shape = nil;	
+		local sfx = audio.loadStream( "audio/explosion.wav" )
+		audio.play( sfx, { channel=2, loops=0, fadein=0 } )
 	end
 	-- remove object from array
 	self.objectArray[self.mapX][self.mapY] = nil;
