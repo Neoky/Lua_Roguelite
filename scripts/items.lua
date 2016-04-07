@@ -45,10 +45,14 @@ local ItemOptionsTable = {
 	{
 		options = {
 			frames = {
-				{ x =    0, y = -1,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- square chest closed
-				{ x =    0, y = 47,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- square chest open
-				{ x = 15.5, y =  0,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- round top chest closed
-				{ x = 15.5, y = 48,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- round top chest open
+				{ x =    0, y = -1,    width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- square chest closed
+				{ x =    0, y = 47,    width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- square chest open
+				{ x = 15.5, y =  0,    width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- round top chest closed
+				{ x = 15.5, y = 48,    width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- round top chest open
+				{ x =    0, y = 16,    width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- gray barrel closed
+				{ x =    0, y = 63.5,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- gray barrel open
+				{ x = 15.5, y = 16,    width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- gold barrel closed
+				{ x = 15.5, y = 64,    width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- gold barrel open
 			}
 		},
 	}, -- chest

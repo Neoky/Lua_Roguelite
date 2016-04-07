@@ -132,6 +132,12 @@ function Arrows:new(o)
 			local originalX = chest.xOrigin
 			local originalY = chest.yOrigin
 
+			-- shows chest contents and then removes the chest
+			if chest:openChest() == false then
+				-- chest is empty so do nothing
+				return true, false;
+			end
+
 			-- update player stats based on chest contents
 			if chest.contents == "armor" then
 				player.hpMax = player.hpMax + chest.power;
@@ -140,7 +146,6 @@ function Arrows:new(o)
 				player.attack = player.attack + chest.power;
 			end
 
-			chest:openChest(); -- shows chest contents and then removes the chest
 			o.map:markForRemoval("item", originalX, originalY)	
 			return true, false;	-- do not move player
 		elseif objectList[x][y] and objectList[x][y].pushable == true then
@@ -236,8 +241,8 @@ end
 --  Nothing
 ------------------------
 function Arrows:setArrows(xVal, yVal)
-	print(xVal .. "," .. yVal)
-	print(self.map.mapArray[xVal][yVal].passable, self.map.mapArray[xVal][yVal].pushable)
+	print("Player x,y = " .. xVal .. "," .. yVal)
+	print("passable, pushable = " .. tostring(self.map.mapArray[xVal][yVal].passable), tostring(self.map.mapArray[xVal][yVal].pushable))
 
 	if upArrow ~= nil then
 		upArrow:removeSelf( )

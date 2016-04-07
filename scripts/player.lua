@@ -11,7 +11,7 @@ map={} - The map should be the parent of the player, so I want to store it to re
 
 local loadtable = require('scripts.saveGame')
 
-Player = {tag="player", hpCur=100, hpMax=100, attack=2, keys=0, rKey=0, gKey=0, bKey=0, xPos=1, yPos=1, map={}, tileSheet={}, arrows={}}
+Player = {tag="player", hpCur=60, hpMax=60, attack=15, keys=0, rKey=0, gKey=0, bKey=0, xPos=1, yPos=1, map={}, tileSheet={}, arrows={}}
 
 local spriteOpt =
 {

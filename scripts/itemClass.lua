@@ -112,6 +112,10 @@ function ItemClass:spawn()
 		elseif self.color == "green" then self.shape:setFillColor(0,1,0,0.8);
 		elseif self.color == "blue" then self.shape:setFillColor(0,0,1,0.8); 
 		end
+	elseif self.tag == "chest" and not self.contents then
+		-- for an empty container (barrel), change the tag so the player 
+		-- will not perform a chest interaction on the item
+		self.tag = "barrel";
 	end
 end
 
@@ -208,12 +212,16 @@ end
 --Arguments:
 --  
 --Returns:
---  
+--  returns true if successfully opened chest and showed
+--  contents; false otherwise
 ------------------------
 function ItemClass:openChest()
 	if self.tag ~= "chest" then
 		print("Error: item is not a chest");
-		return;
+		return false;
+	elseif not self.contents then
+		print("Error: chest is empty");
+		return false;
 	end
 
 	local chestItem;
@@ -222,7 +230,7 @@ function ItemClass:openChest()
 	elseif self.contents == "weapon" then
 		chestItem = display.newImage( sheetList["weapon"], 2 );
 	else
-		print("Error: chest contains unexpected contents: " .. self.contents);
+		print("Error: chest contains unknown contents");
 		self.remove();  -- remove the chest
 		return;
 	end
@@ -234,6 +242,8 @@ function ItemClass:openChest()
 	-- display contents and then remove contents and the chest
 	local removeItem = function() chestItem:removeSelf(); self:remove(); end
 	transition.to(chestItem, {y=chestItem.y-5, time=3000, onComplete=removeItem});
+
+	return true;
 end
 
 

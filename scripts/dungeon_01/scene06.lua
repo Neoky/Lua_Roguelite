@@ -44,6 +44,12 @@ function scene:create()
 		[10] = {"item", "decor",  6, 8, 4, false, true},  -- chair
 		[11] = {"item", "decor",  7, 9, 4, false, true},  -- round table
 		[12] = {"item", "decor",  8, 10, 4, false, true},  -- chair
+		[13] = {"item",  "decor",  5, 7, 8, false, false},  -- bookcase
+		[14] = {"item",  "decor",  3, 8, 8, false, false},  -- bookcase
+		[15] = {"item",  "decor",  4, 9, 8, false, false},  -- bookcase
+		[16] = {"item",  "decor",  3, 10, 8, false, false},  -- bookcase
+		[17] = {"item",  "decor",  4, 11, 8, false, false},  -- bookcase
+		[18] = {"item",  "decor",  5, 12, 8, false, false},  -- bookcase
 	}
 end
 

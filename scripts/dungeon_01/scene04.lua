@@ -38,9 +38,16 @@ function scene:create()
 		[4] = {"item", "bkey",   1, 11, 3, true, false}, -- blue key 
 		[5] = {"item", "decor",  9, 2, 5, false, false}, -- bar left piece
 		[6] = {"item", "decor",  10, 3, 5, false, false}, -- bar center piece
-		[7] = {"item", "decor",  11, 4, 5, false, false}, -- bar left piece
+		[7] = {"item", "decor",  11, 4, 5, false, false}, -- bar right piece
 		[8] = {"item", "decor",  12, 5, 2, false, false}, -- bar top piece
 		[9] = {"item", "decor",  14, 5, 3, false, false}, -- bar bottom piece
+		[10] = {"item", "chest",  6, 7, 2, false, true}, -- gray barrel
+		[11] = {"item", "chest",  5, 8, 2, false, true}, -- gray barrel
+		[12] = {"item", "chest",  5, 9, 2, false, true}, -- gray barrel
+		[13] = {"item", "chest",  7, 11, 7, false, true}, -- gold barrel
+		[14] = {"item", "chest",  7, 11, 8, false, true}, -- gold barrel
+		[15] = {"item", "chest",  8, 12, 7, false, true}, -- gold barrel
+		[16] = {"item", "chest",  7, 12, 8, false, true}, -- gold barrel
 	}
 end
 
