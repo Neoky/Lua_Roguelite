@@ -150,6 +150,9 @@ function Arrows:new(o)
 			if itemMoved == true then return false;
 			else return true, false;
 			end
+		elseif objectList[x][y] and objectList[x][y].passable == false and objectList[x][y].tag ~= "door" then
+			print("NON-PASSABLE ITEM DETECTED")
+			return true, false;	-- do not move player
 		elseif objectList[x][y] and objectList[x][y].tag == "door" then
 			print("DOOR DETECTED")
 			local door = objectList[x][y]

@@ -27,7 +27,7 @@ local MAX_Y_POS = 9;
 
 ----- Base Class declaration -----
 
-local ItemClass = {tag="item", power=0, passable=true, pushable=false, color="", xOrigin = nil, yOrigin = nil};
+local ItemClass = {tag="item", power=0, passable=false, pushable=false, color="", xOrigin = nil, yOrigin = nil};
 
 
 function ItemClass:new (o) --constructor

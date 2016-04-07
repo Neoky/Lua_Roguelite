@@ -395,6 +395,9 @@ function Map:placeObject(objectType, tileSheet, frameNum, xVal, yVal, passable, 
 		-- create item class object
 		newObject = ItemClass:new();
 		newObject:init(tileSheet, frameNum, power, mapArray, objectArray, xVal, yVal, tileScale);
+		
+		newObject.passable = passable
+		newObject.pushable = pushable
 
 		if ( newObject ~= nil ) then
 			-- create image of item on tile
