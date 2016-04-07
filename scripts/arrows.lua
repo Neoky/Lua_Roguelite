@@ -121,7 +121,24 @@ function Arrows:new(o)
 
 			player:restoreHP(potion.power)
 			potion:remove();
-			o.map:markForRemoval("item", originalX, originalY)			
+			o.map:markForRemoval("item", originalX, originalY)	
+		elseif objectList[x][y] and objectList[x][y].tag == "chest" then
+			print("CHEST DETECTED")
+			local chest = objectList[x][y]
+			local originalX = chest.xOrigin
+			local originalY = chest.yOrigin
+
+			-- update player stats based on chest contents
+			if chest.contents == "armor" then
+				player.hpMax = player.hpMax + chest.power;
+				player:restoreHP(chest.power)
+			elseif chest.contents == "weapon" then 
+				player.attack = player.attack + chest.power;
+			end
+
+			chest:openChest(); -- shows chest contents and then removes the chest
+			o.map:markForRemoval("item", originalX, originalY)	
+			return true, false;	-- do not move player
 		elseif objectList[x][y] and objectList[x][y].pushable == true then
 			print("PUSHABLE DETECTED")
 			local pushable = objectList[x][y]

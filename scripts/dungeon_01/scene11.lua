@@ -52,7 +52,7 @@ function scene:create()
 		-- Extra Item Args: power
 		[1] = {"door",  "door",    1, 7, 9, true, false,  "scene10", 7, 2}, -- bottom
 		[2] = {"enemy", "demon",   1, 7, 5, true, false, 45, 12, "RANDOM"}, -- tier 3
-		[3] = {"item",  "weapon",  2, 7, 2, true, false, 20},  -- Todo: add chest with legendary weapon 
+		[3] = {"item",  "chestWeapon",   3, 7, 2, false, false, 20}, -- round chest containing legendary weapon
 	}
 end
 

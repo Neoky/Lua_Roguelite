@@ -32,18 +32,18 @@ function scene:create()
 		-- Extra Door Args: toScene, toX, toY, lock color
 		-- Extra Enemy Args: HP, ATK, movement
 		-- Extra Item Args: power
-		[1] = {"door", "door",    1, 13, 5, true,  false, "scene03", 2, 5}, -- right	
-		[2] = {"enemy","demon",   1, 6, 5, true, false, 45, 12, "RANDOM"}, -- tier 3
-		[3] = {"item", "armor",   4, 4, 2, true, false, 20},  -- todo: add chest with legendary armor
-		[4] = {"item", "decor",   3, 7, 2, false, false},  -- bookcase
-		[5] = {"item", "decor",   4, 8, 2, false, false},  -- bookcase
-		[6] = {"item", "decor",   5, 9, 2, false, false},  -- bookcase
-		[7] = {"item", "decor",   5, 10, 2, false, false},  -- bookcase
-		[8] = {"item", "decor",   3, 11, 2, false, false},  -- bookcase
-		[9] = {"item", "decor",   4, 12, 2, false, false},  -- bookcase
-		[10] = {"item", "decor",  6, 8, 4, false, false},  -- chair
-		[11] = {"item", "decor",  7, 9, 4, false, false},  -- round table
-		[12] = {"item", "decor",  8, 10, 4, false, false},  -- chair
+		[1] = {"door",  "door",   1, 13, 5, true,  false, "scene03", 2, 5}, -- right	
+		[2] = {"enemy", "demon",  1, 6, 5, true, false, 45, 12, "RANDOM"}, -- tier 3
+		[3] = {"item",  "chestArmor",  3, 4, 2, false, false, 20},  -- round chest containing legendary armor
+		[4] = {"item",  "decor",  3, 7, 2, false, false},  -- bookcase
+		[5] = {"item",  "decor",  4, 8, 2, false, false},  -- bookcase
+		[6] = {"item",  "decor",  5, 9, 2, false, false},  -- bookcase
+		[7] = {"item",  "decor",  5, 10, 2, false, false},  -- bookcase
+		[8] = {"item",  "decor",  3, 11, 2, false, false},  -- bookcase
+		[9] = {"item",  "decor",  4, 12, 2, false, false},  -- bookcase
+		[10] = {"item", "decor",  6, 8, 4, true, false},  -- chair
+		[11] = {"item", "decor",  7, 9, 4, true, false},  -- round table
+		[12] = {"item", "decor",  8, 10, 4, true, false},  -- chair
 	}
 end
 

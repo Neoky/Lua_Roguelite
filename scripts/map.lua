@@ -83,8 +83,7 @@ local sheetList =
 		["trap"]   = ItemsTable.trap.sheet,
 		["armor"]  = ItemsTable.armor.sheet,
 		["boot"]  = ItemsTable.boot.sheet,
-		["chestClosed"]  = ItemsTable.chestClosed.sheet,
-		["chestOpen"]  = ItemsTable.chestOpen.sheet,
+		["chest"]  = ItemsTable.chest.sheet,
 		["hat"]  = ItemsTable.hat.sheet,
 		["key"]  = ItemsTable.key.sheet,
 		["potion"]  = ItemsTable.potion.sheet,
@@ -379,6 +378,8 @@ function Map:placeObject(objectType, tileSheet, frameNum, xVal, yVal, passable, 
 		   (tileSheet == "armor")  or 
 		   (tileSheet == "weapon") or 
 		   (tileSheet == "shield") or
+		   (tileSheet == "chestArmor")  or
+		   (tileSheet == "chestWpn")  or
 		   (tileSheet == "rkey")   or
 		   (tileSheet == "gkey")   or
 		   (tileSheet == "bkey") then

@@ -1,18 +1,18 @@
 local ItemsTable = require("scripts.items");
 
+
 --Array used to keep track of created image sheets, use the text strings when passing into functions
 --  in order to get the correct image sheet
 local sheetList = 
 {
-	["door"]   = ItemsTable.door.sheet,
-	["decor"]  = ItemsTable.decor.sheet,
-	["trap"]   = ItemsTable.trap.sheet,
-	["armor"]  = ItemsTable.armor.sheet,
-	["boot"]  = ItemsTable.boot.sheet,
-	["chestClosed"]  = ItemsTable.chestClosed.sheet,
-	["chestOpen"]  = ItemsTable.chestOpen.sheet,
-	["hat"]  = ItemsTable.hat.sheet,
-	["key"]  = ItemsTable.key.sheet,
+	["door"]    = ItemsTable.door.sheet,
+	["decor"]   = ItemsTable.decor.sheet,
+	["trap"]    = ItemsTable.trap.sheet,
+	["armor"]   = ItemsTable.armor.sheet,
+	["boot"]    = ItemsTable.boot.sheet,
+	["chest"]   = ItemsTable.chest.sheet,
+	["hat"]     = ItemsTable.hat.sheet,
+	["key"]     = ItemsTable.key.sheet,
 	["potion"]  = ItemsTable.potion.sheet,
 	["shield"]  = ItemsTable.shield.sheet,
 	["weapon"]  = ItemsTable.weapon.sheet,
@@ -65,9 +65,14 @@ function ItemClass:init(typeArg, fNumArg, powerArg, mapArray, objArray, mapX, ma
 	elseif self.tag == "armor" then self.power = 10;
 	elseif self.tag == "weapon" then self.power = 10;
 	elseif self.tag == "trap" then self.power = 10;
-	elseif self.tag == "decor" then 
-		-- allow player to push some items in room
-		self.pushable = true;
+	elseif self.tag == "chestArmor" then
+		-- assign chest contents and rename tag to generic 'chest'
+		self.contents = "armor";
+		self.tag = "chest";
+	elseif self.tag == "chestWeapon" then
+		-- assign chest contents and rename tag to generic 'chest'
+		self.contents = "weapon";
+		self.tag = "chest";
 	elseif self.tag == "rkey" then
 		-- assign key color and rename tag to generic 'key'
 		self.color = "red";
@@ -183,12 +188,7 @@ end
 --  
 ------------------------
 function ItemClass:remove()
-	print("[ItemClass:remove] entered for " .. self.tag);
-
-	--if self.tag == "trap" then
-	--	return;  -- do not remove traps until player leaves room
-	--end
-
+	--print("[ItemClass:remove] entered for " .. self.tag);
 	if self.shape ~= nil then
 		-- remove image from tile
 		self.shape:removeSelf();
@@ -196,6 +196,42 @@ function ItemClass:remove()
 	end
 	-- remove object from array
 	self.objectArray[self.mapX][self.mapY] = nil;
+end
+
+------------------------
+--Function:    openChest
+--Description: 
+--  Script to display the contents of the chest before removing the chest.
+--
+--Arguments:
+--  
+--Returns:
+--  
+------------------------
+function ItemClass:openChest()
+	if self.tag ~= "chest" then
+		print("Error: item is not a chest");
+		return;
+	end
+
+	local chestItem;
+	if self.contents == "armor" then
+		chestItem = display.newImage( sheetList["armor"], 4 );
+	elseif self.contents == "weapon" then
+		chestItem = display.newImage( sheetList["weapon"], 2 );
+	else
+		print("Error: chest contains unexpected contents: " .. self.contents);
+		self.remove();  -- remove the chest
+		return;
+	end
+
+	chestItem.x = mapArray[self.mapX][self.mapY].x;
+	chestItem.y = mapArray[self.mapX][self.mapY].y-15;
+	chestItem:scale(self.tileScale-1, self.tileScale-1);
+	
+	-- display contents and then remove contents and the chest
+	local removeItem = function() chestItem:removeSelf(); self:remove(); end
+	transition.to(chestItem, {y=chestItem.y-5, time=3000, onComplete=removeItem});
 end
 
 

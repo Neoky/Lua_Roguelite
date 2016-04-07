@@ -41,24 +41,17 @@ local ItemOptionsTable = {
 			}
 		},
 	}, -- boot
-	chestClosed =
+	chest =
 	{
 		options = {
 			frames = {
-				{ x =    0, y = -1,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- square chest
-				{ x = 15.5, y =  0,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- round top chest
+				{ x =    0, y = -1,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- square chest closed
+				{ x =    0, y = 47,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- square chest open
+				{ x = 15.5, y =  0,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- round top chest closed
+				{ x = 15.5, y = 48,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- round top chest open
 			}
 		},
-	}, -- chestClosed
-	chestOpen=
-	{
-		options = {
-			frames = {
-				{ x =    0, y = -1,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- square chest
-				{ x = 15.5, y =  0,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- round top chest
-			}
-		},
-	}, -- chestOpen
+	}, -- chest
 	decor =
 	{
 		options = {
@@ -200,16 +193,11 @@ ItemsTable = {
 		sheet = graphics.newImageSheet( "images/Items/Boot.png", 
 			ItemOptionsTable.boot.options ),
 	}, -- boot
-	chestClosed =
+	chest =
 	{
-		sheet = graphics.newImageSheet( "images/Items/Chest0.png", 
-			ItemOptionsTable.chestClosed.options ),
-	}, -- chestClosed
-	chestOpen =
-	{
-		sheet = graphics.newImageSheet( "images/Items/Chest1.png", 
-			ItemOptionsTable.chestOpen.options ),
-	}, -- chestOpen
+		sheet = graphics.newImageSheet( "images/Items/ChestCombined.png", 
+			ItemOptionsTable.chest.options ),
+	}, -- chest
 	decor =
 	{
 		sheet = graphics.newImageSheet( "images/Objects/Decor0.png", 
