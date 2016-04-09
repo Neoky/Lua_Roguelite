@@ -6,7 +6,7 @@ local Map = require("scripts.map")
 local map
 
 --Specifiy the current scene
-local sceneName = 3
+local sceneName = 12
 
 
 function scene:create()
