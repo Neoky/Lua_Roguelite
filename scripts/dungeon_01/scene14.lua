@@ -18,10 +18,8 @@ function scene:create()
 	
 	--List to add map elements (holes, different color tiles, etc.)
 	creatorList = 
-	{--[[
-		--type, frameNum, x, y, passable
-		[1] = {"tile", 2, 3, 4, true},
-		[2] = {"tile", 2, 5, 5, true},]]
+	{
+
 	}
 
 
@@ -61,24 +59,26 @@ function scene:show( event )
 
 
 		local found = false
+		local index = nil
 		for _ in pairs(params.sList) do
-			if _ == sceneName then
+			if params.sList[_].scene == sceneName then
 				found = true
+				index = _
 			end
 		end
+
 
 		if found == true then
 			map.sceneList = params.sList
 
-			map.enemyList = params.sList[sceneName].enemyList
-			map.itemList  = params.sList[sceneName].itemList
+			map.enemyList = params.sList[index].enemyList
+			map.itemList  = params.sList[index].itemList
 
-		else
-			
+		else			
 			map.sceneList = params.sList
 
-			newScene = {enemyList = {}, itemList = {}}
-			table.insert(map.sceneList, sceneName, newScene)		
+			newScene = {scene = sceneName, enemyList = {}, itemList = {}}
+			table.insert(map.sceneList, newScene)		
 		end
 
 		map:generateMap(1, "grayWall", creatorList, objectList)		
@@ -89,17 +89,7 @@ function scene:show( event )
 		-- Called when the scene is now on screen
 		-- Insert code here to make the scene come alive
 		-- Example: start timers, begin animation, play audio, etc.
-		--[[
-		local function movePlayer(event)
-			if event.phase == "began" then
-				map1.player:move(event.target.xVal,event.target.yVal)
-			end
-		end
-		map1.leftArrow:addEventListener("touch", movePlayer)
-		map1.upArrow:addEventListener("touch", movePlayer)
-		map1.rightArrow:addEventListener("touch", movePlayer)
-		map1.downArrow:addEventListener("touch", movePlayer)
-		]]--
+
 	end
 end
 

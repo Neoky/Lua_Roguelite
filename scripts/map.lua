@@ -111,6 +111,7 @@ function Map:new(o)
 
 	self.mapArray = {}
 	self.objectArray = {}
+	self.sceneList = {}
 	self.enemyList = {}
 	self.itemList = {}
 
@@ -741,8 +742,12 @@ function Map:transition(x, y)
 	self.player = nil
 
 	--Save the current enemyList and itemList to the scene list matching the current scene
-	self.sceneList[self.currentScene].enemyList = self.enemyList
-	self.sceneList[self.currentScene].itemList = self.itemList
+	for _ in pairs(self.sceneList) do 
+		if self.sceneList[_].scene == self.currentScene then
+			self.sceneList[_].enemyList = self.enemyList
+			self.sceneList[_].itemList = self.itemList
+		end
+	end
 
 	--Pass the start position of the player and the list of scene information
 	local Options = 
