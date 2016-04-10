@@ -103,6 +103,11 @@ local ItemOptionsTable = {
 				{ x =    64, y =   144,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- sleeping bag (vertical)
 				{ x =    80, y =   144,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- sleeping bag (horizontal)
 				{ x =  47.1, y =   287.5,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- square tombstone
+				{ x =    16, y =   335,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- water fountain
+				{ x =  -0.5, y =   303,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- spider web full
+				{ x =    16, y =   303,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- spider web top left
+				{ x =    32, y =   303,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- spider web top right
+				{ x =    48, y =   320,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- statue
 			}
 		},
 	}, -- decor

@@ -38,6 +38,11 @@ function scene:create()
 		[6] = {"enemy", "spider", 1, 7, 4, true, false, 20, 5, "RANDOM"}, -- Enemy12.4 (tier 1)
 		[7] = {"enemy", "spider", 1, 10, 6, true, false, 20, 5, "RANDOM"}, -- Enemy12.5 (tier 1)
 		[8] = {"item", "weapon",  3, 2, 7, true, false, 10}, -- standard
+		[9] = {"item", "decor",  46, 2, 2, false, false}, -- spider web left
+		[10] = {"item", "decor",  47, 12, 2, false, false}, -- spider web right
+		[11] = {"item", "decor",  45, 8, 5, false, false}, -- spider web full
+		[12] = {"item", "decor",  45, 4, 7, false, false}, -- spider web full
+		[13] = {"item", "decor",  45, 9, 8, false, false}, -- spider web full
 	}
 end
 

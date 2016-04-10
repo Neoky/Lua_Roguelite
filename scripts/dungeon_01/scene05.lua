@@ -34,6 +34,13 @@ function scene:create()
 		[2] = {"enemy","whiteGhost",  1, 6, 5, true, false, 30, 8, "PATROL_HORZ"}, -- tier 2
 		[3] = {"item", "rkey",    1, 2, 7, true, false}, -- red key 	
 		[4] = {"item", "potion",  1, 2, 4, true, false, 10}, -- standard
+		[5] = {"item",  "decor", 44, 8, 7, false, false}, -- water fountain
+		[6] = {"item",  "decor", 48, 9, 7, false, false}, -- statue 
+		[7] = {"item",  "decor", 48, 9, 2, false, false}, -- statue
+		[8] = {"item",  "decor", 48, 4, 3, false, false}, -- statue
+		[9] = {"item",  "decor", 48, 2, 6, false, false}, -- statue 
+		[10] = {"item",  "decor", 48, 12, 6, false, false}, -- statue 
+		[11] = {"item",  "decor", 48, 5, 8, false, false}, -- statue 
 	}
 end
 
