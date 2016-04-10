@@ -44,10 +44,24 @@ function scene:show( event )
 
 	if ( phase == "will" ) then
 		-- Called when the scene is still off screen (but is about to come on screen)
+
+		--Check for previous screen if player died and is restarting
+		local previousScene = composer.getSceneName( "previous" )
+		if(previousScene~=nil) then
+			print("Removing Scene")
+		    --composer.removeScene(previousScene)
+		    composer.removeHidden()
+		end
+
+		-- delete previous save data at game start.
+		local player = require('scripts.player')
+		player.delete()
+
 	elseif ( phase == "did" ) then
 		-- Called when the scene is now on screen
 		-- Insert code here to make the scene come alive
 		-- Example: start timers, begin animation, play audio, etc.
+
 		start_game = function() composer.gotoScene( 'scripts.dungeon_01.scene01') end;
 		start:addEventListener( "tap", start_game )
 		credits_screen = function() composer.gotoScene( 'scripts.credits') end;
