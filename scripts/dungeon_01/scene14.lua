@@ -31,12 +31,20 @@ function scene:create()
 		-- Extra Enemy Args: HP, ATK, movement
 		-- Extra Item Args: power
 		[1] = {"door",  "door",      1, 7, 9, true, false,  "scene13", 7, 2}, -- bottom
+		[1] = {"door",  "door",      1, 7, 1, true, false,  "winScreen", 7, 2}, -- bottom
 		[2] = {"enemy", "redDemon",  2, 7, 4, true, false, 100, 25, "STAND"}, -- boss
 		[3] = {"item", "decor",     16, 3, 3, false, false},  -- white skull
 		[4] = {"item", "decor",     17, 3, 6, false, false},  -- pile of white bones
 		[5] = {"item", "decor",     18, 9, 2, false, false},  -- white animal skull
 		[6] = {"item", "decor",     19, 10, 3, false, false},  -- white rib cage
 		[7] = {"item", "decor",     16, 9, 6, false, false},  -- white skull
+		-- Walls around boss
+		[8] = {"item", "decor",      16, 6, 2, false, false},  -- white skull
+		[9] = {"item", "decor",      17, 6, 3, false, false},  -- white skull
+		[10] = {"item", "decor",     18, 6, 4, false, false},  -- white skull
+		[11] = {"item", "decor",     17, 8, 2, false, false},  -- white skull
+		[12] = {"item", "decor",     19, 8, 3, false, false},  -- white skull
+		[13] = {"item", "decor",     16, 8, 4, false, false},  -- white skull
 	}
 end
 
