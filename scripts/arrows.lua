@@ -113,6 +113,15 @@ function Arrows:new(o)
 					self.lostObj = nil;
 				end
 
+			    if ( event.keyName == "up" ) then
+		            event.target = upArrow;
+	            elseif ( event.keyName == "down" ) then
+		            event.target = downArrow;
+	            elseif ( event.keyName == "right" ) then
+		            event.target = rightArrow;
+	            elseif ( event.keyName == "left" ) then
+		            event.target = leftArrow;
+			    end
 				o:setArrows(event.target.xVal, event.target.yVal)
 
 				--TODO:Call player functions to handle combat/picking up items
@@ -182,6 +191,7 @@ function Arrows:setArrows(xVal, yVal)
 		self.upArrow = upArrow
 
 		upArrow:addEventListener("touch", movePlayer)
+		upArrow:addEventListener("key", movePlayer)
 		--end
 	end
 
