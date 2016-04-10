@@ -380,7 +380,7 @@ function Map:placeObject(objectType, tileSheet, frameNum, xVal, yVal, passable, 
 		   (tileSheet == "weapon") or 
 		   (tileSheet == "shield") or
 		   (tileSheet == "chestArmor")  or
-		   (tileSheet == "chestWpn")  or
+		   (tileSheet == "chestWeapon")  or
 		   (tileSheet == "rkey")   or
 		   (tileSheet == "gkey")   or
 		   (tileSheet == "bkey") then

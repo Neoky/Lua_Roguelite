@@ -241,7 +241,7 @@ function ItemClass:openChest()
 	
 	-- display contents and then remove contents and the chest
 	local removeItem = function() chestItem:removeSelf(); self:remove(); end
-	transition.to(chestItem, {y=chestItem.y-5, time=3000, onComplete=removeItem});
+	transition.to(chestItem, {y=chestItem.y-5, time=2000, onComplete=removeItem});
 
 	return true;
 end
