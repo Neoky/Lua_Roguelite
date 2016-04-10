@@ -4,7 +4,9 @@ local scene = composer.newScene()
 local Map = require("scripts.map")
 
 local map
-local sceneName = 2
+
+--Specifiy the current scene
+local sceneName = 6
 
 
 function scene:create()
@@ -13,12 +15,13 @@ function scene:create()
 	local sceneGroup = self.view
 
 	map = Map:new()
-
+	
 	--List to add map elements (holes, different color tiles, etc.)
 	creatorList = 
 	{
 
 	}
+
 
 	--List to add objects layered on top of map
 	objectList = 
@@ -27,12 +30,25 @@ function scene:create()
 		-- Extra Door Args: toScene, toX, toY, lock color
 		-- Extra Enemy Args: HP, ATK, movement
 		-- Extra Item Args: power
-		[1] = {"door", "door",  1, 1, 5, false, false, "scene03", 12, 5}, -- left
-		[2] = {"door", "door",  1, 13, 5, true,  false, "scene01", 2, 5}, -- right
-		[3] = {"enemy","whiteSkeleton",  1, 5, 5, true, false, 30, 8, "PATROL_VERT"}, -- Enemy2.1 (tier 2)
-		[4] = {"enemy","greenSkeleton",  1, 9, 5, true, false, 30, 8, "PATROL_VERT"}, -- Enemy2.2 (tier 2)
+		[1] = {"door",  "door",   1, 13, 5, true,  false, "scene03", 2, 5}, -- right	
+		[2] = {"enemy", "demon",  1, 6, 5, true, false, 45, 12, "RANDOM"}, -- tier 3
+		[3] = {"item",  "chestArmor",  3, 4, 2, false, false, 20},  -- round chest containing legendary armor
+		[4] = {"item",  "decor",  3, 7, 2, false, false},  -- bookcase
+		[5] = {"item",  "decor",  4, 8, 2, false, false},  -- bookcase
+		[6] = {"item",  "decor",  5, 9, 2, false, false},  -- bookcase
+		[7] = {"item",  "decor",  5, 10, 2, false, false},  -- bookcase
+		[8] = {"item",  "decor",  3, 11, 2, false, false},  -- bookcase
+		[9] = {"item",  "decor",  4, 12, 2, false, false},  -- bookcase
+		[10] = {"item", "decor",  6, 8, 4, false, true},  -- chair
+		[11] = {"item", "decor",  7, 9, 4, false, true},  -- round table
+		[12] = {"item", "decor",  8, 10, 4, false, true},  -- chair
+		[13] = {"item",  "decor",  5, 7, 8, false, false},  -- bookcase
+		[14] = {"item",  "decor",  3, 8, 8, false, false},  -- bookcase
+		[15] = {"item",  "decor",  4, 9, 8, false, false},  -- bookcase
+		[16] = {"item",  "decor",  3, 10, 8, false, false},  -- bookcase
+		[17] = {"item",  "decor",  4, 11, 8, false, false},  -- bookcase
+		[18] = {"item",  "decor",  5, 12, 8, false, false},  -- bookcase
 	}
-
 end
 
 
@@ -75,6 +91,7 @@ function scene:show( event )
 			newScene = {scene = sceneName, enemyList = {}, itemList = {}}
 			table.insert(map.sceneList, newScene)		
 		end
+
 
 		map:generateMap(1, "grayWall", creatorList, objectList)		
 

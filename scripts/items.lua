@@ -11,6 +11,14 @@ local IMAGE_HEIGHT = 16;
 local ItemsTable = {};
 
 local ItemOptionsTable = {
+	ammo =
+	{
+		options = {
+			frames = {
+				{ x =  0, y = 80,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- black dot
+			}
+		},
+	}, -- ammo
 	armor =
 	{
 		options = {
@@ -33,24 +41,21 @@ local ItemOptionsTable = {
 			}
 		},
 	}, -- boot
-	chestClosed =
+	chest =
 	{
 		options = {
 			frames = {
-				{ x =    0, y = -1,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- square chest
-				{ x = 15.5, y =  0,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- round top chest
+				{ x =    0, y = -1,    width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- square chest closed
+				{ x =    0, y = 47,    width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- square chest open
+				{ x = 15.5, y =  0,    width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- round top chest closed
+				{ x = 15.5, y = 48,    width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- round top chest open
+				{ x =    0, y = 16,    width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- gray barrel closed
+				{ x =    0, y = 63.5,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- gray barrel open
+				{ x = 15.5, y = 16,    width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- gold barrel closed
+				{ x = 15.5, y = 64,    width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- gold barrel open
 			}
 		},
-	}, -- chestClosed
-	chestOpen=
-	{
-		options = {
-			frames = {
-				{ x =    0, y = -1,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- square chest
-				{ x = 15.5, y =  0,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- round top chest
-			}
-		},
-	}, -- chestOpen
+	}, -- chest
 	decor =
 	{
 		options = {
@@ -63,6 +68,13 @@ local ItemOptionsTable = {
 				{ x =     0, y = 111.5,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- chair #1
 				{ x =    16, y = 111.5,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- round table
 				{ x =    32, y = 111.5,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- chair #2
+				{ x =     0, y =   160,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- bar left piece
+				{ x =    16, y =   160,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- bar center piece
+				{ x =    32, y =   160,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- bar right piece
+				{ x =    48, y =   160,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- bar top piece (vertical)
+				{ x =    64, y =   160,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- bar center piece (vertical)
+				{ x =    80, y =   160,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- bar bottom piece (vertical)
+				{ x =    96, y =   175,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- lumber pile
 				{ x =     0, y =   192,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- white skull
 				{ x =    16, y =   192,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- pile of white bones
 				{ x =     0, y =   207,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- white animal skull
@@ -157,10 +169,24 @@ local ItemOptionsTable = {
 			}
 		},
 	}, -- weapon
+	weaponLng=
+	{
+		options = {
+			frames = {
+				{ x = 96,  y =  0,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- trident
+				{ x = 32,  y = 16,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- long sword
+			}
+		},
+	}, -- weaponLng
 
 };  -- end ItemOptionsTable
 
 ItemsTable = {
+	ammo =
+	{
+		sheet = graphics.newImageSheet( "images/Items/Ammo.png", 
+			ItemOptionsTable.ammo.options ),
+	}, -- ammo
 	armor =
 	{
 		sheet = graphics.newImageSheet( "images/Items/Armor.png", 
@@ -171,16 +197,11 @@ ItemsTable = {
 		sheet = graphics.newImageSheet( "images/Items/Boot.png", 
 			ItemOptionsTable.boot.options ),
 	}, -- boot
-	chestClosed =
+	chest =
 	{
-		sheet = graphics.newImageSheet( "images/Items/Chest0.png", 
-			ItemOptionsTable.chestClosed.options ),
-	}, -- chestClosed
-	chestOpen =
-	{
-		sheet = graphics.newImageSheet( "images/Items/Chest1.png", 
-			ItemOptionsTable.chestOpen.options ),
-	}, -- chestOpen
+		sheet = graphics.newImageSheet( "images/Items/ChestCombined.png", 
+			ItemOptionsTable.chest.options ),
+	}, -- chest
 	decor =
 	{
 		sheet = graphics.newImageSheet( "images/Objects/Decor0.png", 
@@ -221,6 +242,11 @@ ItemsTable = {
 		sheet = graphics.newImageSheet( "images/Items/MedWep.png", 
 			ItemOptionsTable.weapon.options ),
 	}, -- weapon
+	weaponLng =
+	{
+		sheet = graphics.newImageSheet( "images/Items/LongWep.png", 
+			ItemOptionsTable.weaponLng.options ),
+	}, -- weaponLng
 
 };  -- end ItemsTable
 

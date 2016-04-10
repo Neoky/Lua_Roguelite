@@ -4,20 +4,42 @@ local scene = composer.newScene()
 local Map = require("scripts.map")
 
 local map
-local sceneName = 1
+
+--Specifiy the current scene
+local sceneName = 10
+
 
 function scene:create()
 	print("**CREATING SCENE ".. sceneName .. "**")
 
 	local sceneGroup = self.view
 
-
 	map = Map:new()
-
+	
 	--List to add map elements (holes, different color tiles, etc.)
 	creatorList = 
 	{
 		-- Args: type, frameNum, x, y, passable
+		[1] = {"tile", 3, 8, 2, false}, -- lava
+		[2] = {"tile", 3, 8, 3, false}, -- lava
+		[3] = {"tile", 3, 8, 4, false}, -- lava
+		[4] = {"tile", 3, 8, 5, false}, -- lava
+		[5] = {"tile", 3, 9, 2, false}, -- lava
+		[6] = {"tile", 3, 9, 3, false}, -- lava
+		[7] = {"tile", 3, 9, 4, false}, -- lava
+		[8] = {"tile", 3, 9, 5, false}, -- lava
+		[9] = {"tile", 3, 10, 2, false}, -- lava
+		[10] = {"tile", 3, 10, 3, false}, -- lava
+		[11] = {"tile", 3, 10, 4, false}, -- lava
+		[12] = {"tile", 3, 10, 5, false}, -- lava
+		[13] = {"tile", 3, 11, 2, false}, -- lava
+		[14] = {"tile", 3, 11, 3, false}, -- lava
+		[15] = {"tile", 3, 11, 4, false}, -- lava
+		[16] = {"tile", 3, 11, 5, false}, -- lava
+		[17] = {"tile", 3, 12, 2, false}, -- lava
+		[18] = {"tile", 3, 12, 3, false}, -- lava
+		[19] = {"tile", 3, 12, 4, false}, -- lava
+		[20] = {"tile", 3, 12, 5, false}, -- lava
 	}
 
 
@@ -28,13 +50,10 @@ function scene:create()
 		-- Extra Door Args: toScene, toX, toY, lock color
 		-- Extra Enemy Args: HP, ATK, movement
 		-- Extra Item Args: power
-		[1] = {"door",  "door",  1, 1, 5, false, false, "scene02", 12, 5}, -- left
-		[2] = {"door",  "door",  1, 13, 5, true, false, "scene07", 2, 5}, -- right
-		[3] = {"door",  "door",  1, 7, 1, true, false,  "scene12", 7, 8}, -- top	
-		[4] = {"enemy", "fly",   1, 5, 4, true, false, 20, 5, "RANDOM"}, -- Enemy1.1 (tier 1)
-		[5] = {"enemy", "fly",   1, 9, 4, true, false, 20, 5, "RANDOM"}, -- Enemy1.2 (tier 1)
+		[1] = {"door", "door",    1, 7, 1, true, false,  "scene11", 7, 8, "green"}, -- top
+		[2] = {"door", "door",    1, 7, 9, true, false,  "scene08", 7, 2}, -- bottom
+		[3] = {"door", "door",    1, 1, 5, false, false, "scene09", 12, 5}, -- left
 	}
-
 end
 
 
@@ -43,55 +62,44 @@ function scene:show( event )
 
 	local sceneGroup = self.view
 	local phase = event.phase
-
-  	local params = event.params
+	local params = event.params
 
 	if ( phase == "will" ) then
 		-- Called when the scene is still off screen (but is about to come on screen)
 		map.currentScene = sceneName
 
-		if(params ~= nil) then
-		    local previousScene = composer.getSceneName( "previous" )
-		    if(previousScene~=nil) then
-		        composer.removeScene(previousScene)
-		    end
-
-			local found = false
-			local index = nil
-			for _ in pairs(params.sList) do
-				if params.sList[_].scene == sceneName then
-					found = true
-					index = _
-				end
-			end
-
-			if found == true then		
-				map.sceneList = params.sList
-		
-				map.enemyList = params.sList[index].enemyList
-				map.itemList  = params.sList[index].itemList
-
-			else			
-				map.sceneList = params.sList
-
-				newScene = {scene = sceneName, enemyList = {}, itemList = {}}
-				table.insert(map.sceneList, newScene)				
-			end
-
-			map:generateMap(1, "grayWall", creatorList, objectList)		
-
-			player = map:placePlayer("player", 1, params.startX, params.startY)
-		else
-			--Special case the first scenario when there won't be a scene list yet 
-			map:generateMap(1, "grayWall", creatorList, objectList)
-
-			newScene = {scene = sceneName, enemyList = {}, itemList = {}}
-			table.insert(map.sceneList, newScene)
-
-			player = map:placePlayer("player", 1, 7, 8)
+		local previousScene = composer.getSceneName( "previous" )
+		if(previousScene~=nil) then
+		    composer.removeScene(previousScene)
 		end
 
 
+		local found = false
+		local index = nil
+		for _ in pairs(params.sList) do
+			if params.sList[_].scene == sceneName then
+				found = true
+				index = _
+			end
+		end
+
+
+		if found == true then
+			map.sceneList = params.sList
+
+			map.enemyList = params.sList[index].enemyList
+			map.itemList  = params.sList[index].itemList
+
+		else			
+			map.sceneList = params.sList
+
+			newScene = {scene = sceneName, enemyList = {}, itemList = {}}
+			table.insert(map.sceneList, newScene)		
+		end
+
+		map:generateMap(1, "grayWall", creatorList, objectList)		
+
+		player = map:placePlayer("player", 1, params.startX, params.startY)
 
 	elseif ( phase == "did" ) then
 		-- Called when the scene is now on screen

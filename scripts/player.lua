@@ -11,7 +11,7 @@ map={} - The map should be the parent of the player, so I want to store it to re
 
 local loadtable = require('scripts.saveGame')
 
-Player = {tag="player", hpCur=100, hpMax=100, attack=2, keys=0, rKey=0, gKey=0, bKey=0, xPos=1, yPos=1, map={}, tileSheet={}, arrows={}}
+Player = {tag="player", hpCur=60, hpMax=60, attack=15, keys=0, rKey=0, gKey=0, bKey=0, xPos=1, yPos=1, map={}, tileSheet={}, arrows={}}
 
 local spriteOpt =
 {
@@ -72,6 +72,24 @@ function Player:restoreHP(d)
 	end
 end
 
+function Player:haveKey(doorColor)
+	-- return false if player has no keys
+	if self.keys == 0 then return false; 
+	end
+
+	-- verify if player has key that matches door color
+	if doorColor == "red" and self.rKey > 0 then
+		return true;
+	elseif doorColor == "green" and self.gKey > 0 then
+		return true;
+	elseif doorColor == "blue" and self.bKey > 0 then
+		return true;
+	end
+
+	-- player does not have key to locked door
+	return false;  
+end
+
 function Player:move(xPos, yPos)
 	if self.map.mapArray then
 		--Save this to update the current map's objectArray
@@ -128,6 +146,24 @@ function Player:load()
 	self.bKey = t.bKey
 	self.xPos = t.xPos
 	self.yPos = t.yPos
+end
+
+function Player:destroy()
+	self.body:removeSelf()
+
+	self.attack = nil
+	self.hpCur = nil
+	self.hpMax = nil
+	self.keys = nil
+	self.rKey = nil
+	self.gKey = nil
+	self.bKey = nil
+	self.xPos = nil
+	self.yPos = nil
+end
+
+function Player:delete()
+	loadtable.delete("rogue_save.json")
 end
 
 return Player;

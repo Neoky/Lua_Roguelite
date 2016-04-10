@@ -7,7 +7,7 @@
 
 -- Room boundaries
 local MIN_X_POS = 1;
-local MAX_X_POS = 11;
+local MAX_X_POS = 12;
 local MIN_Y_POS = 1;
 local MAX_Y_POS = 8;
 
@@ -45,16 +45,21 @@ function EnemyMovement:init(typeArg, mapArrayArg, x, y, objArrayArg)
 	self.type = typeArg;  -- movement pattern (PATROL, RANDOM, etc.)
 	self.mapArray = mapArrayArg;  -- save reference to room map
 	self.objectArray = objArrayArg;
+	coinFlip = math.random();
 
 	-- initialize attributes for patrol movements
 	if self.type == "PATROL_HORZ" then
 		self.lastMove = LEFT;
+		if coinFlip > 0.5 then self.lastMove = RIGHT;
+		end
 
 		-- set x coordinate boundaries
 		self.minX = math.max( MIN_X_POS, (x-3) );
 		self.maxX = math.min( MAX_X_POS, (x+3) );
 	elseif self.type == "PATROL_VERT" then
 		self.lastMove = UP;
+		if coinFlip > 0.5 then self.lastMove = DOWN;
+		end
 
 		-- set y coordinate boundaries
 		self.minY = math.max( MIN_Y_POS, (y-3) );
@@ -341,16 +346,17 @@ function EnemyMovement:getNextMove(x, y, playerX, playerY)
 		return "ATTACK", x, y; -- stay in current tile and attack player
 	end
 
+	-- moving enemies can look at distant tiles for player
 	if self.type ~= "STAND" then
-		-- moving enemies can look at distant tiles for player
 		foundPlayer, newX, newY = self:playerDistantSearch(x, y, playerX, playerY);
 		if foundPlayer == true then
-			print("[EnemyMovement:getNextMove] going into SEEK mode");
-			self:setType("SEEK");
-			return true, newX, newY;
-		elseif self.type == "SEEK" then
-			-- somehow lost player during SEEK mode so return to RANDOM mode
-			print("[EnemyMovement:getNextMove] returning to RANDOM mode");
+			-- enemy found player so enemy will try to follow the player
+			print("Enemy spotted player so now going into FOLLOW mode");
+			self:setType("FOLLOW");
+			return true, newX, newY;  -- move closer to player
+		elseif self.type == "FOLLOW" then
+			-- enemy somehow lost player during FOLLOW mode so return to RANDOM mode
+			print("Enemy lost player so returning to RANDOM mode");
 			self:setType("RANDOM");
 		end
 	end

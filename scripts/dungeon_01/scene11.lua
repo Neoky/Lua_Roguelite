@@ -4,7 +4,9 @@ local scene = composer.newScene()
 local Map = require("scripts.map")
 
 local map
-local sceneName = 2
+
+--Specifiy the current scene
+local sceneName = 11
 
 
 function scene:create()
@@ -13,12 +15,33 @@ function scene:create()
 	local sceneGroup = self.view
 
 	map = Map:new()
-
+	
 	--List to add map elements (holes, different color tiles, etc.)
 	creatorList = 
 	{
-
+		-- Args: type, frameNum, x, y, passable
+		[1] = {"tile", 3, 8, 5, false}, -- lava
+		[2] = {"tile", 3, 8, 6, false}, -- lava
+		[3] = {"tile", 3, 8, 7, false}, -- lava
+		[4] = {"tile", 3, 8, 8, false}, -- lava
+		[5] = {"tile", 3, 9, 5, false}, -- lava
+		[6] = {"tile", 3, 9, 6, false}, -- lava
+		[7] = {"tile", 3, 9, 7, false}, -- lava
+		[8] = {"tile", 3, 9, 8, false}, -- lava
+		[9] = {"tile", 3, 10, 5, false}, -- lava
+		[10] = {"tile", 3, 10, 6, false}, -- lava
+		[11] = {"tile", 3, 10, 7, false}, -- lava
+		[12] = {"tile", 3, 10, 8, false}, -- lava
+		[13] = {"tile", 3, 11, 5, false}, -- lava
+		[14] = {"tile", 3, 11, 6, false}, -- lava
+		[15] = {"tile", 3, 11, 7, false}, -- lava
+		[16] = {"tile", 3, 11, 8, false}, -- lava
+		[17] = {"tile", 3, 12, 5, false}, -- lava
+		[18] = {"tile", 3, 12, 6, false}, -- lava
+		[19] = {"tile", 3, 12, 7, false}, -- lava
+		[20] = {"tile", 3, 12, 8, false}, -- lava
 	}
+
 
 	--List to add objects layered on top of map
 	objectList = 
@@ -27,12 +50,10 @@ function scene:create()
 		-- Extra Door Args: toScene, toX, toY, lock color
 		-- Extra Enemy Args: HP, ATK, movement
 		-- Extra Item Args: power
-		[1] = {"door", "door",  1, 1, 5, false, false, "scene03", 12, 5}, -- left
-		[2] = {"door", "door",  1, 13, 5, true,  false, "scene01", 2, 5}, -- right
-		[3] = {"enemy","whiteSkeleton",  1, 5, 5, true, false, 30, 8, "PATROL_VERT"}, -- Enemy2.1 (tier 2)
-		[4] = {"enemy","greenSkeleton",  1, 9, 5, true, false, 30, 8, "PATROL_VERT"}, -- Enemy2.2 (tier 2)
+		[1] = {"door",  "door",    1, 7, 9, true, false,  "scene10", 7, 2}, -- bottom
+		[2] = {"enemy", "demon",   1, 7, 5, true, false, 45, 12, "RANDOM"}, -- tier 3
+		[3] = {"item",  "chestWeapon",   3, 7, 2, false, false, 20}, -- round chest containing legendary weapon
 	}
-
 end
 
 

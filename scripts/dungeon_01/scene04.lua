@@ -4,7 +4,9 @@ local scene = composer.newScene()
 local Map = require("scripts.map")
 
 local map
-local sceneName = 2
+
+--Specifiy the current scene
+local sceneName = 4
 
 
 function scene:create()
@@ -13,12 +15,13 @@ function scene:create()
 	local sceneGroup = self.view
 
 	map = Map:new()
-
+	
 	--List to add map elements (holes, different color tiles, etc.)
 	creatorList = 
 	{
 
 	}
+
 
 	--List to add objects layered on top of map
 	objectList = 
@@ -27,12 +30,23 @@ function scene:create()
 		-- Extra Door Args: toScene, toX, toY, lock color
 		-- Extra Enemy Args: HP, ATK, movement
 		-- Extra Item Args: power
-		[1] = {"door", "door",  1, 1, 5, false, false, "scene03", 12, 5}, -- left
-		[2] = {"door", "door",  1, 13, 5, true,  false, "scene01", 2, 5}, -- right
-		[3] = {"enemy","whiteSkeleton",  1, 5, 5, true, false, 30, 8, "PATROL_VERT"}, -- Enemy2.1 (tier 2)
-		[4] = {"enemy","greenSkeleton",  1, 9, 5, true, false, 30, 8, "PATROL_VERT"}, -- Enemy2.2 (tier 2)
+		[1] = {"door", "door",   1, 7, 9, true, false,  "scene03", 7, 2}, -- bottom		
+		[2] = {"enemy","dementor",  1, 3, 4, true, false, 30, 8, "STAND"}, -- tier 2
+		[3] = {"item", "armor",  1, 2, 2, true, false, 10}, -- standard
+		[4] = {"item", "bkey",   1, 11, 3, true, false}, -- blue key 
+		[5] = {"item", "decor",  9, 2, 5, false, false}, -- bar left piece
+		[6] = {"item", "decor",  10, 3, 5, false, false}, -- bar center piece
+		[7] = {"item", "decor",  11, 4, 5, false, false}, -- bar right piece
+		[8] = {"item", "decor",  12, 5, 2, false, false}, -- bar top piece
+		[9] = {"item", "decor",  14, 5, 3, false, false}, -- bar bottom piece
+		[10] = {"item", "chest",  6, 7, 2, false, true}, -- gray barrel
+		[11] = {"item", "chest",  5, 8, 2, false, true}, -- gray barrel
+		[12] = {"item", "chest",  5, 9, 2, false, true}, -- gray barrel
+		[13] = {"item", "chest",  7, 11, 7, false, true}, -- gold barrel
+		[14] = {"item", "chest",  7, 11, 8, false, true}, -- gold barrel
+		[15] = {"item", "chest",  8, 12, 7, false, true}, -- gold barrel
+		[16] = {"item", "chest",  7, 12, 8, false, true}, -- gold barrel
 	}
-
 end
 
 

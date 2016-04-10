@@ -5,7 +5,6 @@
 --  This file holds ...
 ---------------
 
-local EnemyTable = require("scripts.enemy");
 local EnemyMovement = require("scripts.enemyMovement");
 
 local MIN_X_POS = 0;
@@ -19,7 +18,7 @@ local MAX_Y_POS = 8;
 -- HP = hit points
 -- ATK = attack points
 local EnemyClass = {tag="enemy", moved=false, mapArray={}, movePattern="STAND", HP=10, ATK=3, 
-	passable=true, pushable=false};
+	passable=true, pushable=false, xOrigin = nil, yOrigin = nil};
 
 
 function EnemyClass:new (o) --constructor
@@ -32,15 +31,21 @@ end
 ------------------------
 --Function:    init
 --Description: 
---  Initializes the class attributes
+--  Initializes the class attributes.
 --
 --Arguments:
 --
 --Returns:
 --  
 ------------------------
-function EnemyClass:init (frameNumArg, movePatternArg, mapArrayArg, mapX, mapY, tileScale, objArray)
-	self.frameNum = frameNumArg;
+function EnemyClass:init (typeArg, movePatternArg, mapArrayArg, mapX, mapY, tileScale, objArray, hpArg, atkArg)
+	self.type = typeArg;
+	-- if enemy type is set to a default value then assign it to a specific enemy type
+	if self.type == "undead" then self.type = "mummy"; 
+	elseif self.type == "demon" then self.type = "greenDragon";
+	elseif self.type == "pest" then self.type = "mummy";
+	end
+
 	self.movePattern = movePatternArg;
 
 	self.mapArray = mapArrayArg;
@@ -48,12 +53,19 @@ function EnemyClass:init (frameNumArg, movePatternArg, mapArrayArg, mapX, mapY, 
 	self.mapY = mapY;
 	self.tileScale = tileScale;
 	self.objectArray = objArray;
+
+	self.xOrigin = mapX;
+	self.yOrigin = mapY;
+
+	self.HP = hpArg;
+	self.ATK = atkArg;
+
 end
 
 ------------------------
 --Function:    spawn
 --Description: 
---  Creates image of enemy on tile
+--  Creates image of enemy on tile and initializes movement.
 --
 --Arguments:
 --
@@ -62,7 +74,10 @@ end
 ------------------------
 function EnemyClass:spawn()
 	-- create enemy image on given tile location 
-	self.shape = display.newImage( self.sheet, self.frameNum );
+	self.shape = display.newSprite(self.spriteSheet, self.spriteSeqData);
+	self.shape:setSequence(self.type);
+	self.shape:play(); -- start animation
+
 	self.shape.x = self.mapArray[self.mapX][self.mapY].x;
 	self.shape.y = self.mapArray[self.mapX][self.mapY].y;
 	self.shape:scale(self.tileScale,self.tileScale);
@@ -76,7 +91,8 @@ end
 ------------------------
 --Function:    remove
 --Description: 
---  Removes the image of the enemy
+--  Removes the image of the enemy and removes enemy object from object 
+--  array.
 --
 --Arguments:
 --
@@ -86,77 +102,116 @@ end
 function EnemyClass:remove ()
 	--print("[EnemyClass:remove] entered for " .. self.type);
 	if self.shape ~= nil then
+		self.shape:pause();  -- pause animation
 		-- remove image from tile
 		self.shape:removeSelf();
 		self.shape = nil;	
+		local sfx = audio.loadStream( "audio/explosion.wav" )
+		audio.play( sfx, { channel=2, loops=0, fadein=0 } )
 	end
 	-- remove object from array
 	self.objectArray[self.mapX][self.mapY] = nil;
 end
 
 
-
 ------------------------
 --Function:    move
 --Description: 
---  Moves the enemy to another tile based on its movement type
+--  Performs the next move for the enemy.
 --
 --Arguments:
---
+--  Player coordinates
 --Returns:
 --  
 ------------------------
 function EnemyClass:move(playerX, playerY)
-	print("[EnemyClass:move] entered for " .. self.type .. " with player pos " .. playerX .. "," .. playerY);
+	--print("[EnemyClass:move] entered for " .. self.type .. " with player pos " .. playerX .. "," .. playerY);
 
-	local validMove = "FALSE";
+	local nextMove = "FALSE";
 	local newX, newY = 0, 0;
 
-	-- get next valid move for enemy
-	validMove, newX, newY = self.moveMgr:getNextMove( self.mapX, self.mapY, playerX, playerY );
+	if self.moved == true then 
+		return;  -- enemy has already moved during current turn
+	end
 
-	if "ATTACK" == validMove and self.objectArray[playerX][playerY] ~= nil then
+	-- get next move for enemy
+	nextMove, newX, newY = self.moveMgr:getNextMove( self.mapX, self.mapY, playerX, playerY );
+
+	-- set flag so enemy is only moved once per turn
+	self.moved = true;  
+
+	if "ATTACK" == nextMove and self.objectArray[playerX][playerY] ~= nil then
 		print("Enemy is attacking player with ATK " .. self.ATK .. "!");
 		-- perform attack
 		player = self.objectArray[playerX][playerY];
 		player:reduceHP(self.ATK);
-		return validMove, newX, newY;
-	elseif "FALSE" == validMove then
-		print("[EnemyClass:move] Cannot move from current position for " .. self.type .. "!");
-		return "FALSE", 0, 0;
+		self:battleAnimation(playerX, playerY);
+		return;
+	elseif "FALSE" == nextMove then
+		print("Error: Enemy cannot move from current position for " .. self.type .. "!");
+		return;
 	elseif newX == self.mapX and newY == self.mapY then
-		-- enemy has not moved from current position
-		--print("[EnemyClass:move] Standing in current position for " .. self.type);
-		return "FALSE", 0, 0;
+		-- enemy is standing in current position
+		return;
 	end
 	
 	-- move enemy image to new tile location 
-	print("[EnemyClass:move] Moving from " .. self.mapX .. "," .. self.mapY .. " to " .. newX .. "," .. newY .. " for " .. self.type);
+	oldX, oldY = self.mapX, self.mapY
+	--print("[EnemyClass:move] Moving " .. self.type .. " from " .. oldX .. "," .. oldY .. " to " .. newX .. "," .. newY);
 	self.mapX, self.mapY = newX, newY;
 	self.shape.x = mapArray[self.mapX][self.mapY].x;
 	self.shape.y = mapArray[self.mapX][self.mapY].y;
-	return "TRUE", newX, newY;
+
+	-- update enemy location in object array if enemy moved
+	self.objectArray[newX][newY] = objectArray[oldX][oldY];
+	self.objectArray[oldX][oldY] = nil;	
 end
 
 ------------------------
---Function:    Attack
+--Function:    battleAnimation
 --Description: 
---  Performs an Attack on a target in a nearby tile
+--  Script to attack player with a weapon.
 --
 --Arguments:
---
+--  Player coordinates
 --Returns:
 --  
 ------------------------
-function EnemyClass:attack(targetX, targetY)
-	print("[EnemyClass:attack] entered for " .. self.type);
-	self.mapArray[targetX][targetY]:hit(self.ATK);
+function EnemyClass:battleAnimation(pX, pY)
+	-- determine direction of player to perform battle animation
+	local rotation = 0;
+	local deltaX, deltaY = 0, 0; 
+	if pX == (self.mapX-1) then
+		rotation = -135;
+		deltaX = -50;  -- left
+	elseif pX == (self.mapX+1) then
+		rotation = 45;
+		deltaX = 50;  -- right
+	elseif pY == (self.mapY-1) then
+		rotation = -45; 
+		deltaY = -50;  -- up
+	elseif pY == (self.mapY+1) then
+		rotation = 135; 
+		deltaY = 50;  -- down
+	else 
+		print("Error: invalid direction for enemy battle animation");
+		return;
+	end
+
+	local sword = display.newImage( self.wpnSheet, self.wpnFrameNum );
+	sword.x = mapArray[self.mapX][self.mapY].x;
+	sword.y = mapArray[self.mapX][self.mapY].y;
+	sword:scale(self.tileScale-1, self.tileScale-1);
+	
+	sword.rotation = sword.rotation+rotation;
+	local removeSword = function() return sword:removeSelf() end
+	transition.to(sword, {x=sword.x+deltaX, y=sword.y+deltaY, time=500, onComplete=removeSword})
 end
 
 ------------------------
 --Function:    hit
 --Description: 
---  Called when the enemy has been Attacked
+--  Called when the enemy has been attacked.
 --
 --Arguments:
 --
@@ -164,7 +219,7 @@ end
 --  
 ------------------------
 function EnemyClass:hit(damage)
-	print("[EnemyClass:hit] entered for " .. self.type);
+	print("Enemy has been hit with damage " .. damage);
 
 	self.HP = self.HP - damage;
 	if self.HP <= 0 then
@@ -172,6 +227,7 @@ function EnemyClass:hit(damage)
 		self:remove();
 	end
 end
+
 
 ----- end Bass Class declaration -----
 
