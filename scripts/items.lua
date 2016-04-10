@@ -82,7 +82,7 @@ local ItemOptionsTable = {
 				{ x =  -0.5, y =   271,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- RIP tombstone
 				{ x =  31.5, y =   271,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- skull tombstone
 				{ x =  47.5, y =   271,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- blank tombstone
-				{ x =    16, y =   144,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- bed (vertical)
+				{ x =    16, y =   144,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- bed (horizontal)
 				{ x =    80, y =    48,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- silver pot with orange stripe
 				{ x =    96, y =    48,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- broken pot
 				{ x =    48, y = 111.5,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- silver chair #1
@@ -100,6 +100,9 @@ local ItemOptionsTable = {
 				{ x =    16, y =   128,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- white wall candles
 				{ x =    64, y =   128,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- black wall candle
 				{ x =    80, y =   128,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- black wall candles
+				{ x =    64, y =   144,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- sleeping bag (vertical)
+				{ x =    80, y =   144,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- sleeping bag (horizontal)
+				{ x =  47.1, y =   287.5,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- square tombstone
 			}
 		},
 	}, -- decor
@@ -112,7 +115,8 @@ local ItemOptionsTable = {
 				{ x =  0, y =  16,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, --metal door	
 				{ x = 16, y =  16,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, --metal locked door	
 				{ x =  0, y =  80,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, --open path
-				{ x = 32, y =  64,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, --door lock ONLY				
+				{ x = 32, y =  64,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, --door lock ONLY
+				{ x = 80, y =  80,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, --open sky portal				
 			}
 		},
 	}, -- door
@@ -136,6 +140,23 @@ local ItemOptionsTable = {
 			}
 		},
 	}, -- key
+	light =
+	{
+		options = {
+			frames = {
+				{ x =  32, y =  0,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- candlelight	
+				{ x =  48, y =  0,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- lantern	
+			}
+		},
+	}, -- light
+	ore =
+	{
+		options = {
+			frames = {
+				{ x =  80, y =  32,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- blue ore	
+			}
+		},
+	}, -- ore
 	potion =
 	{
 		options = {
@@ -150,6 +171,16 @@ local ItemOptionsTable = {
 			}
 		},
 	}, -- potion
+	scroll =
+	{
+		options = {
+			frames = {
+				{ x =    0, y =  0,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- white scroll 
+				{ x =   16, y =  0,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- gray scroll 
+				{ x =   31, y =  0,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- brown scroll 
+			}
+		},
+	}, -- scroll
 	shield =
 	{
 		options = {
@@ -240,11 +271,26 @@ ItemsTable = {
 		sheet = graphics.newImageSheet( "images/Items/Key.png", 
 			ItemOptionsTable.key.options ),
 	}, -- key
+	light =
+	{
+		sheet = graphics.newImageSheet( "images/Items/Light.png", 
+			ItemOptionsTable.light.options ),
+	}, -- light
+	ore =
+	{
+		sheet = graphics.newImageSheet( "images/Objects/Ore0.png", 
+			ItemOptionsTable.ore.options ),
+	}, -- light
 	potion =
 	{
 		sheet = graphics.newImageSheet( "images/Items/Potion.png", 
 			ItemOptionsTable.potion.options ),
 	}, -- potion
+	scroll =
+	{
+		sheet = graphics.newImageSheet( "images/Items/Scroll.png", 
+			ItemOptionsTable.scroll.options ),
+	}, -- scroll
 	shield =
 	{
 		sheet = graphics.newImageSheet( "images/Items/Shield.png", 

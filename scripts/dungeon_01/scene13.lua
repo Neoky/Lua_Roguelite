@@ -32,8 +32,43 @@ function scene:create()
 		-- Extra Item Args: power
 		[1] = {"door", "door",    1, 7, 1, true, false,  "scene14", 7, 8, "red"}, -- top
 		[2] = {"door", "door",    1, 7, 9, true, false,  "scene12", 7, 2}, -- bottom
-		[3] = {"item", "armor",   2, 2, 7, true, false, 10}, -- standard
-		[4] = {"item", "potion",  2, 12, 4, true, false, 10}, -- standard
+		[3] = {"item", "armor",   2, 2, 5, true, false, 10}, -- standard
+		[4] = {"item", "potion",  2, 12, 5, true, false, 10}, -- standard
+		[5] = {"item", "decor",  43, 2, 2, true, false}, -- square tombstone
+		[6] = {"item", "decor",  43, 5, 2, false, true}, -- square tombstone
+		[7] = {"item", "decor",  43, 9, 2, false, true}, -- square tombstone
+		[8] = {"item", "decor",  43, 12, 2, false, true}, -- square tombstone
+		[9] = {"item", "decor",  43, 2, 3, false, true}, -- square tombstone
+		[10] = {"item", "decor",  43, 4, 3, false, true}, -- square tombstone
+		[11] = {"item", "decor",  43, 5, 3, false, true}, -- square tombstone
+		[12] = {"item", "decor",  43, 6, 3, false, true}, -- square tombstone
+		[13] = {"item", "decor",  43, 7, 3, true, false}, -- square tombstone
+		[14] = {"item", "decor",  43, 8, 3, false, true}, -- square tombstone
+		[15] = {"item", "decor",  43, 9, 3, false, true}, -- square tombstone
+		[16] = {"item", "decor",  43, 10, 3, false, true}, -- square tombstone
+		[17] = {"item", "decor",  43, 12, 3, false, true}, -- square tombstone
+		[18] = {"item", "decor",  43, 3, 4, false, true}, -- square tombstone
+		[19] = {"item", "decor",  43, 6, 4, false, true}, -- square tombstone
+		[20] = {"item", "decor",  43, 8, 4, false, true}, -- square tombstone
+		[21] = {"item", "decor",  43, 11, 4, false, true}, -- square tombstone
+		[22] = {"item", "decor",  43, 6, 5, false, true}, -- square tombstone
+		[23] = {"item", "decor",  43, 8, 5, false, true}, -- square tombstone
+		[24] = {"item", "decor",  43, 2, 6, false, true}, -- square tombstone
+		[25] = {"item", "decor",  43, 3, 6, false, true}, -- square tombstone
+		[26] = {"item", "decor",  43, 4, 6, false, true}, -- square tombstone
+		[27] = {"item", "decor",  43, 5, 6, false, true}, -- square tombstone
+		[28] = {"item", "decor",  43, 6, 6, false, true}, -- square tombstone
+		[29] = {"item", "decor",  43, 8, 6, false, true}, -- square tombstone
+		[30] = {"item", "decor",  43, 9, 6, false, true}, -- square tombstone
+		[31] = {"item", "decor",  43, 10, 6, false, true}, -- square tombstone
+		[32] = {"item", "decor",  43, 11, 6, false, true}, -- square tombstone
+		[33] = {"item", "decor",  43, 12, 6, false, true}, -- square tombstone
+		[34] = {"item", "decor",  43, 3, 7, false, true}, -- square tombstone
+		[35] = {"item", "decor",  43, 5, 7, false, true}, -- square tombstone
+		[36] = {"item", "decor",  43, 9, 7, false, true}, -- square tombstone
+		[37] = {"item", "decor",  43, 11, 7, false, true}, -- square tombstone
+		[38] = {"item", "decor",  43, 4, 8, false, true}, -- square tombstone
+		[39] = {"item", "decor",  43, 10, 8, false, true}, -- square tombstone
 	}
 end
 
