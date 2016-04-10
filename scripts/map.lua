@@ -846,6 +846,8 @@ function Map:transition(x, y)
 						objectArray[i][j]:removeLock()
 					end
 					objectArray[i][j].shape:removeSelf()
+				else
+					objectArray[i][j]:removeSelf()				
 				end
 			end
 		end
@@ -873,6 +875,9 @@ function Map:transition(x, y)
 	print("Transitioning to " .. objectArray[x][y].toScene)
 
 	if objectArray[x][y].toScene == "winScreen" then
+		infoScreenGroup:removeSelf();
+		infoScreenGroup = nil
+
 		scene = 'scripts.winScreen'
 		print("going to winscreen")
 	else

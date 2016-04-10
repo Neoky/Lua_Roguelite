@@ -45,14 +45,6 @@ function scene:show( event )
 	if ( phase == "will" ) then
 		-- Called when the scene is still off screen (but is about to come on screen)
 
-		--Check for previous screen if player died and is restarting
-		local previousScene = composer.getSceneName( "previous" )
-		if(previousScene~=nil) then
-			print("Removing Scene")
-		    --composer.removeScene(previousScene)
-		    composer.removeHidden()
-		end
-
 		-- delete previous save data at game start.
 		local player = require('scripts.player')
 		player.delete()
