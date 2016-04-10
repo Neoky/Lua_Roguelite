@@ -231,13 +231,13 @@ function Arrows:new(o)
 	    --print( message )
 
 	    if ( event.keyName == "up" ) then
-            t.target = upArrow;
+            t.target = o.upArrow;
         elseif ( event.keyName == "down" ) then
-            t.target = downArrow;
+            t.target = o.downArrow;
         elseif ( event.keyName == "right" ) then
-            t.target = rightArrow;
+            t.target = o.rightArrow;
         elseif ( event.keyName == "left" ) then
-            t.target = leftArrow;
+            t.target = o.leftArrow;
 	    end
 	    
         if event.phase == "down" then

@@ -17,5 +17,5 @@ local music = require('scripts.music')
 -- ssfx http://www.superflashbros.net/as3sfxr/
 
 local composer = require("composer")
-composer.gotoScene( 'scripts.dungeon_01.scene01')
---composer.gotoScene( 'scripts.title_screen')
+--composer.gotoScene( 'scripts.dungeon_01.scene01')
+composer.gotoScene( 'scripts.title_screen')
