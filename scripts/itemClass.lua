@@ -16,6 +16,9 @@ local sheetList =
 	["potion"]  = ItemsTable.potion.sheet,
 	["shield"]  = ItemsTable.shield.sheet,
 	["weapon"]  = ItemsTable.weapon.sheet,
+	["scroll"]  = ItemsTable.scroll.sheet,
+	["light"]   = ItemsTable.light.sheet,
+	["ore"]     = ItemsTable.ore.sheet,
 };
 
 -- Room boundaries

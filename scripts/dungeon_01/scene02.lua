@@ -31,6 +31,22 @@ function scene:create()
 		[2] = {"door", "door",  1, 13, 5, true,  false, "scene01", 2, 5}, -- right
 		[3] = {"enemy","whiteSkeleton",  1, 5, 5, true, false, 30, 8, "PATROL_VERT"}, -- Enemy2.1 (tier 2)
 		[4] = {"enemy","greenSkeleton",  1, 9, 5, true, false, 30, 8, "PATROL_VERT"}, -- Enemy2.2 (tier 2)
+		[5] = {"item",  "scroll",        1, 3, 2, false, true}, -- white scroll
+		[6] = {"item",  "scroll",        2, 11, 2, false, true}, -- gray scroll
+		[7] = {"item",  "scroll",        3, 10, 8, false, true}, -- brown scroll
+		[8] = {"item",  "light",         2, 9, 2, false, true}, -- lantern
+		[9] = {"item",  "decor",         41, 8, 2, false, true}, -- sleeping bag
+		[10] = {"item", "decor",         41, 10, 2, false, true}, -- sleeping bag
+		[11] = {"item", "ore",           1, 2, 2, false, false}, -- ore
+		[12] = {"item", "ore",           1, 2, 3, false, false}, -- ore
+		[13] = {"item", "ore",           1, 3, 3, false, false}, -- ore
+		[14] = {"item", "ore",           1, 4, 3, false, false}, -- ore
+		[15] = {"item", "ore",           1, 4, 2, false, false}, -- ore
+		[16] = {"item", "ore",           1, 9, 8, false, false}, -- ore
+		[17] = {"item", "ore",           1, 9, 7, false, false}, -- ore
+		[18] = {"item", "ore",           1, 10, 7, false, false}, -- ore
+		[19] = {"item", "ore",           1, 11, 7, false, false}, -- ore
+		[20] = {"item", "ore",           1, 12, 7, false, false}, -- ore
 	}
 
 end
