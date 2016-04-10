@@ -102,6 +102,7 @@ local ItemOptionsTable = {
 				{ x =    80, y =   128,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- black wall candles
 				{ x =    64, y =   144,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- sleeping bag (vertical)
 				{ x =    80, y =   144,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- sleeping bag (horizontal)
+				{ x =  47.1, y =   287.5,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- square tombstone
 			}
 		},
 	}, -- decor
@@ -114,7 +115,8 @@ local ItemOptionsTable = {
 				{ x =  0, y =  16,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, --metal door	
 				{ x = 16, y =  16,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, --metal locked door	
 				{ x =  0, y =  80,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, --open path
-				{ x = 32, y =  64,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, --door lock ONLY				
+				{ x = 32, y =  64,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, --door lock ONLY
+				{ x = 80, y =  80,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, --open sky portal				
 			}
 		},
 	}, -- door
