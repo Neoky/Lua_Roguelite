@@ -68,7 +68,7 @@ function Arrows:new(o)
 		elseif objectList[x][y] and objectList[x][y].tag == "trap" then
 			print("TRAP DETECTED")
 			local trap = objectList[x][y]
-			player.hpCur = player.hpCur - trap.power;
+			player:reduceHP(trap.power);
 			self.lostObj = trap; -- save trap object before player steps onto it
 		elseif objectList[x][y] and objectList[x][y].tag == "key" then
 			local key = objectList[x][y]
@@ -191,7 +191,16 @@ function Arrows:new(o)
 			local interaction = false
 			local transitionFlag = false
 			interaction,transitionFlag = interactionCheck(event, event.target.xVal,event.target.yVal)
-			if interaction == false then
+
+			if player.hpCur == 0 then
+				transitionFlag = true
+				--o.map:updateInfoScreen()
+				--Player has died from the last movement. Show game over screen.
+				--if(self.lostObj ~= nil) then
+				--	self.lostObj.shape:removeSelf()
+				--end
+				o.map:gameOver()
+			elseif interaction == false then
 				oldX, oldY = o.player:move(event.target.xVal,event.target.yVal)
 				
 				if self.lostObj ~= nil and self.lostObj.mapX == oldX and self.lostObj.mapY == oldY then

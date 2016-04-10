@@ -32,6 +32,7 @@ local sizeX = ( display.actualContentWidth  / roomWidth)
 local sizeY = ( display.actualContentHeight / roomHeight)
 
 --Set up Information View
+local infoScreenGroup = nil
 local hpText = nil
 local atkText = nil
 local keysText = nil
@@ -608,6 +609,8 @@ end
 function Map:updateInfoScreen()
 
 	if(hpText == nil) then 	
+		infoScreenGroup = display.newGroup()
+
 		hpText = display.newText ( 
 		{
 			text="HP: ", 
@@ -615,16 +618,20 @@ function Map:updateInfoScreen()
 			y = 100, 
 			fontSize = 30
 		});
+
+		infoScreenGroup:insert(hpText)
 	end
 
 	if(atkText == nil) then 	
 		atkText = display.newText ( 
 		{
 			text="Atk: ", 
-			x = xx - 185, 
+			x = xx - 130, 
 			y = hpText.y + 50, 
 			fontSize = 30
 		});
+
+		infoScreenGroup:insert(atkText)
 	end
 
 	if(keysText == nil) then 	
@@ -635,6 +642,8 @@ function Map:updateInfoScreen()
 			y = atkText.y + 70, 
 			fontSize = 30
 		});
+
+		infoScreenGroup:insert(keysText)
 	end
 
 	if(rKeyText == nil) then 	
@@ -648,6 +657,8 @@ function Map:updateInfoScreen()
 
 		rKeyText.anchorX = 1
 		rKeyText.anchorY = 1
+
+		infoScreenGroup:insert(rKeyText)
 	end
 
 	if(gKeyText == nil) then 	
@@ -661,6 +672,8 @@ function Map:updateInfoScreen()
 
 		gKeyText.anchorX = 1
 		gKeyText.anchorY = 1
+
+		infoScreenGroup:insert(gKeyText)
 	end
 
 	if(bKeyText == nil) then 	
@@ -674,6 +687,8 @@ function Map:updateInfoScreen()
 
 		bKeyText.anchorX = 1
 		bKeyText.anchorY = 1
+
+		infoScreenGroup:insert(bKeyText)
 	end
 
 	--This is actual update part
@@ -719,6 +734,78 @@ function Map:placePlayer(tileSheet, frameNum, xVal, yVal)
 end
 
 ------------------------
+--Function:    gameOver
+--Description: 
+--  Shows game over text and restarts the game
+--
+--Arguments:
+--  None
+--
+--Returns:
+--  None
+------------------------
+function Map:gameOver(x, y)
+	print("Game Over")
+	hpText.text = "HP: " .. 0 .. " / " .. self.player.hpMax
+
+	--Remove player and arrows from this scene
+	arrows:destroy()
+	arrows = nil
+
+	objectArray[self.player.xPos][self.player.yPos] = nil
+	self.player:destroy()
+	self.player = nil
+--[[
+
+	for i in pairs(objectArray) do
+		for j in pairs(objectArray[i]) do
+			if objectArray[i][j] ~= nil then
+				objectArray[i][j].shape:removeSelf()
+			end
+		end
+	end
+
+	for i in pairs(mapArray) do
+		for j in pairs(mapArray[i]) do
+			mapArray[i][j]:removeSelf()
+		end
+	end
+
+
+
+	infoScreenGroup:removeSelf();
+	infoScreenGroup = nil
+
+	--hpText = nil
+	--atkText = nil
+
+	--rKeyText = nil
+	--gKeyText = nil
+	--bKeyText = nil
+
+
+	--Pass the start position of the player and the list of scene information
+	local Options = 
+		{ effect = "fade",
+		  time = 500,
+		}
+
+	print("Transitioning to Title Screen")
+
+	scene = 'scripts.title_screen'
+
+	composer.gotoScene( scene, Options);
+]]--
+
+	gameOverBox = display.newRect(display.contentCenterX - 120, display.contentCenterX/2 , 700, 100)
+	gameOverBox:setFillColor( 0,0,0)
+
+	gameOverText = display.newEmbossedText( "GAME OVER", gameOverBox.x, gameOverBox.y, native.systemFontBold, 100 )
+	gameOverText:setFillColor( 1,1,1 )
+
+end
+
+------------------------
 --Function:    transition
 --Description: 
 --  transitions the player to the next scene. Usually triggered from a door
@@ -749,6 +836,30 @@ function Map:transition(x, y)
 		end
 	end
 
+
+	--Remove object images
+	for i in pairs(objectArray) do
+		for j in pairs(objectArray[i]) do
+			if objectArray[i][j] ~= nil then
+				if objectArray[i][j].shape ~= nil then
+					if objectArray[i][j].locked ~= nil and objectArray[i][j].locked == true then
+						objectArray[i][j]:removeLock()
+					end
+					objectArray[i][j].shape:removeSelf()
+				end
+			end
+		end
+	end
+
+	--Remove tile images
+	for i in pairs(mapArray) do
+		for j in pairs(mapArray[i]) do
+			mapArray[i][j]:removeSelf()
+		end
+	end
+
+
+
 	--Pass the start position of the player and the list of scene information
 	local Options = 
 		{ effect = "fade",
@@ -763,8 +874,7 @@ function Map:transition(x, y)
 
 	scene = 'scripts.dungeon_01.' .. objectArray[x][y].toScene
 
-	composer.gotoScene( scene, Options);
-
+	composer.gotoScene( scene, Options)
 end
 
 

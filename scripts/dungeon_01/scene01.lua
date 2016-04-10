@@ -82,6 +82,12 @@ function scene:show( event )
 
 			player = map:placePlayer("player", 1, params.startX, params.startY)
 		else
+		    local previousScene = composer.getSceneName( "previous" )
+		    if(previousScene~=nil) then
+		    	--The previous scene should be the title screen
+		        composer.removeScene(previousScene)
+		    end
+
 			--Special case the first scenario when there won't be a scene list yet 
 			map:generateMap(1, "grayWall", creatorList, objectList)
 
