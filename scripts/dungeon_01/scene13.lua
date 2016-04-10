@@ -42,7 +42,7 @@ function scene:create()
 		[10] = {"item", "decor",  43, 4, 3, false, true}, -- square tombstone
 		[11] = {"item", "decor",  43, 5, 3, false, true}, -- square tombstone
 		[12] = {"item", "decor",  43, 6, 3, false, true}, -- square tombstone
-		[13] = {"item", "decor",  43, 7, 3, true, false}, -- square tombstone
+		[13] = {"item", "decor",  43, 7, 3, false, true}, -- square tombstone
 		[14] = {"item", "decor",  43, 8, 3, false, true}, -- square tombstone
 		[15] = {"item", "decor",  43, 9, 3, false, true}, -- square tombstone
 		[16] = {"item", "decor",  43, 10, 3, false, true}, -- square tombstone
