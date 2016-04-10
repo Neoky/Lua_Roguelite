@@ -53,11 +53,8 @@ function scene:create()
 		[18] = {"item",  "decor",    40, 9, 1, false, false}, -- wall candles
 		[19] = {"item", "decor",     40, 10, 1, false, false}, -- wall candles
 		[20] = {"item", "decor",     40, 11, 1, false, false}, -- wall candles
-		[21] = {"item", "decor",     16, 3, 3, false, false},  -- white skull
-		[22] = {"item", "decor",    17, 3, 6, false, false},  -- pile of white bones
-		[23] = {"item", "decor",    18, 9, 2, false, false},  -- white animal skull
-		[24] = {"item", "decor",    19, 10, 3, false, false},  -- white rib cage
-		[25] = {"item", "decor",    16, 9, 6, false, false},  -- white skull
+
+
 	}
 end
 

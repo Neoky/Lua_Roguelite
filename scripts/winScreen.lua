@@ -7,9 +7,9 @@ local credits, jonathan, martin, steven, insert_more, title_screen;
 function scene:create()
 	local sceneGroup = self.view
 	--Examples (these can be used to create each separate level)--
-	congrats = display.newText( "Congrats!", display.contentCenterX, 100, native.systemFontBold, 100 )
+	congrats = display.newText( "Congrats!", display.contentCenterX, display.contentCenterY - 50, native.systemFontBold, 100 )
 	congrats:setFillColor( 1,1,1 )
-	youWin = display.newText( "You Win!!!", display.contentCenterX, display.contentCenterY-100, native.systemFont, 72 )
+	youWin = display.newText( "You Win!!!", display.contentCenterX, congrats.y + 100, native.systemFont, 72 )
 	youWin:setFillColor( 1,1,1 )
 
 	sceneGroup:insert(congrats)
@@ -29,8 +29,8 @@ function scene:show( event )
 		-- Called when the scene is now on screen
 		-- Insert code here to make the scene come alive
 		-- Example: start timers, begin animation, play audio, etc.
-		title_screen = function() composer.gotoScene( 'scripts.title_screen') end;
-		Runtime:addEventListener( "tap", title_screen )
+		--title_screen = function() composer.gotoScene( 'scripts.title_screen') end;
+		--Runtime:addEventListener( "tap", title_screen )
 	end
 end
 
@@ -47,7 +47,7 @@ function scene:hide( event )
 		-- Example: stop timers, stop animation, stop audio, etc.
 	elseif ( phase == "did" ) then
 		-- Called immediately after scene goes off screen
-		Runtime:removeEventListener( "tap", title_screen )
+		--Runtime:removeEventListener( "tap", title_screen )
 	end
 end
 
