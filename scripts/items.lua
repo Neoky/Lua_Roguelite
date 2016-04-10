@@ -65,9 +65,9 @@ local ItemOptionsTable = {
 				{ x =     0, y =    64,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- empty bookcase
 				{ x =    80, y =    64,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- bookcase with books #1
 				{ x =    96, y =    64,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- bookcase with books #2
-				{ x =     0, y = 111.5,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- chair #1
-				{ x =    16, y = 111.5,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- round table
-				{ x =    32, y = 111.5,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- chair #2
+				{ x =     0, y = 111.5,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- brown chair #1
+				{ x =    16, y = 111.5,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- brown round table
+				{ x =    32, y = 111.5,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- brown chair #2
 				{ x =     0, y =   160,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- bar left piece
 				{ x =    16, y =   160,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- bar center piece
 				{ x =    32, y =   160,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- bar right piece
@@ -82,6 +82,24 @@ local ItemOptionsTable = {
 				{ x =  -0.5, y =   271,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- RIP tombstone
 				{ x =  31.5, y =   271,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- skull tombstone
 				{ x =  47.5, y =   271,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- blank tombstone
+				{ x =    16, y =   144,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- bed (vertical)
+				{ x =    80, y =    48,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- silver pot with orange stripe
+				{ x =    96, y =    48,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- broken pot
+				{ x =    48, y = 111.5,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- silver chair #1
+				{ x =    64, y = 112.5,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- square silver table
+				{ x =    32, y =   128,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- single candle
+				{ x =   112, y =    64,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- broken bookcase
+				{ x =     0, y =    80,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- blank sign post
+				{ x =    16, y =    80,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- written sign post
+				{ x =    48, y =    80,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- broken sign post
+				{ x =     0, y =    96,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- generic vendor
+				{ x =    16, y =    96,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- bread vendor
+				{ x =    32, y =    96,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- weapon vendor
+				{ x =    80, y =    96,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- potion vendor
+				{ x =     0, y =   128,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- white wall candle
+				{ x =    16, y =   128,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- white wall candles
+				{ x =    64, y =   128,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- black wall candle
+				{ x =    80, y =   128,  width = IMAGE_WIDTH, height = IMAGE_HEIGHT}, -- black wall candles
 			}
 		},
 	}, -- decor

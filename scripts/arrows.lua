@@ -216,8 +216,10 @@ function Arrows:new(o)
 					self.lostObj = nil;
 				end
 
+
 				local sfx = audio.loadStream( "audio/jump.wav" )
 				audio.play( sfx, { channel=2, loops=0, fadein=0 } )
+
 				o:setArrows(event.target.xVal, event.target.yVal)
 
 				--TODO:Call player functions to handle combat/picking up items
@@ -231,6 +233,28 @@ function Arrows:new(o)
 			end
 		end
 	end
+
+	function keyPlayer(event)
+
+	    --local message = "Key '" .. event.keyName .. "' was pressed " .. event.phase
+	    --print( message )
+
+	    if ( event.keyName == "up" ) then
+            t.target = o.upArrow;
+        elseif ( event.keyName == "down" ) then
+            t.target = o.downArrow;
+        elseif ( event.keyName == "right" ) then
+            t.target = o.rightArrow;
+        elseif ( event.keyName == "left" ) then
+            t.target = o.leftArrow;
+	    end
+	    
+        if event.phase == "down" then
+        	event.phase = "began"
+        	event.target = t.target
+	    	movePlayer(event)
+    	end
+    end
 
 	return o
 end
@@ -294,6 +318,7 @@ function Arrows:setArrows(xVal, yVal)
 		self.upArrow = upArrow
 
 		upArrow:addEventListener("touch", movePlayer)
+		--upArrow:addEventListener("key", movePlayer)
 		--end
 	end
 
@@ -366,6 +391,7 @@ function Arrows:setArrows(xVal, yVal)
 		rightArrow:addEventListener("touch", movePlayer)	
 		--end
 	end
+	Runtime:addEventListener( "key", keyPlayer )
 end
 
 ------------------------

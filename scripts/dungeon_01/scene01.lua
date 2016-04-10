@@ -33,6 +33,18 @@ function scene:create()
 		[3] = {"door",  "door",  1, 7, 1, true, false,  "scene12", 7, 8}, -- top	
 		[4] = {"enemy", "fly",   1, 5, 4, true, false, 20, 5, "RANDOM"}, -- Enemy1.1 (tier 1)
 		[5] = {"enemy", "fly",   1, 9, 4, true, false, 20, 5, "RANDOM"}, -- Enemy1.2 (tier 1)
+		[6] = {"item",  "decor", 38, 3, 1, false, false}, -- wall candles
+		[7] = {"item",  "decor", 38, 4, 1, false, false}, -- wall candles
+		[8] = {"item",  "decor", 38, 5, 1, false, false}, -- wall candles
+		[9] = {"item",  "decor", 38, 9, 1, false, false}, -- wall candles
+		[10] = {"item", "decor", 38, 10, 1, false, false}, -- wall candles
+		[11] = {"item", "decor", 38, 11, 1, false, false}, -- wall candles
+		[12] = {"item",  "decor", 31, 6, 2, false, false}, -- blank sign post
+		[13] = {"item",  "decor", 32, 8, 2, false, false}, -- broken sign post
+		[14] = {"item",  "decor", 34, 2, 3, false, false}, -- bread vendor
+		[15] = {"item",  "decor", 35, 12, 3, false, false}, -- bread vendor
+		[16] = {"item",  "decor", 36, 12, 7, false, false}, -- bread vendor
+		[17] = {"item",  "decor", 33, 2, 7, false, false}, -- bread vendor
 	}
 
 end

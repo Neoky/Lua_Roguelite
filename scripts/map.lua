@@ -872,7 +872,12 @@ function Map:transition(x, y)
 
 	print("Transitioning to " .. objectArray[x][y].toScene)
 
-	scene = 'scripts.dungeon_01.' .. objectArray[x][y].toScene
+	if objectArray[x][y].toScene == "winScreen" then
+		scene = 'scripts.winScreen'
+		print("going to winscreen")
+	else
+		scene = 'scripts.dungeon_01.' .. objectArray[x][y].toScene
+	end
 
 	composer.gotoScene( scene, Options)
 end
