@@ -34,6 +34,15 @@ function scene:create()
 		[2] = {"door", "door",    1, 13, 5, true, false, "scene08", 2, 5}, -- right
 		[3] = {"door", "door",    1, 7, 1, true, false,  "scene09", 7, 8}, -- top
 		[4] = {"item", "armor",   3, 10, 7, true, false, 10}, -- standard 
+		[5] = {"item", "decor",   23, 2, 7, false, false}, -- bed 
+		[6] = {"item", "decor",   24, 2, 8, false, false}, -- silver pot 
+		[7] = {"item", "decor",   25, 3, 8, false, false}, -- broken pot
+		[8] = {"item", "decor",   26, 7, 6, false, true}, -- silver chair
+		[9] = {"item", "decor",   27, 8, 6, false, true}, -- silver square table
+		[10] = {"item", "decor",  28, 6, 6, false, false}, -- single candle
+		[11] = {"item", "decor",  29, 6, 8, false, true}, -- broken bookcase
+		[12] = {"item", "decor",  29, 7, 8, false, true}, -- broken bookcase
+		[13] = {"item", "decor",  5, 8, 8, false, true}, -- broken bookcase
 	}
 end
 

@@ -33,6 +33,7 @@ function scene:create()
 		[1] = {"door",  "door",      1, 7, 9, true, false,  "scene13", 7, 2}, -- bottom
 		[1] = {"door",  "door",      1, 7, 1, true, false,  "winScreen", 7, 2}, -- bottom
 		[2] = {"enemy", "redDemon",  2, 7, 4, true, false, 100, 25, "STAND"}, -- boss
+		
 		[3] = {"item", "decor",     16, 3, 3, false, false},  -- white skull
 		[4] = {"item", "decor",     17, 3, 6, false, false},  -- pile of white bones
 		[5] = {"item", "decor",     18, 9, 2, false, false},  -- white animal skull
@@ -45,6 +46,18 @@ function scene:create()
 		[11] = {"item", "decor",     17, 8, 2, false, false},  -- white skull
 		[12] = {"item", "decor",     19, 8, 3, false, false},  -- white skull
 		[13] = {"item", "decor",     16, 8, 4, false, false},  -- white skull
+
+		[14] = {"item",  "decor",    40, 3, 1, false, false}, -- wall candles
+		[15] = {"item",  "decor",    40, 4, 1, false, false}, -- wall candles
+		[16] = {"item",  "decor",    40, 5, 1, false, false}, -- wall candles
+		[17] = {"item",  "decor",    40, 9, 1, false, false}, -- wall candles
+		[18] = {"item", "decor",     40, 10, 1, false, false}, -- wall candles
+		[19] = {"item", "decor",     40, 11, 1, false, false}, -- wall candles
+		[20] = {"item", "decor",     16, 3, 3, false, false},  -- white skull
+		[21] = {"item", "decor",    17, 3, 6, false, false},  -- pile of white bones
+		[22] = {"item", "decor",    18, 9, 2, false, false},  -- white animal skull
+		[23] = {"item", "decor",    19, 10, 3, false, false},  -- white rib cage
+		[24] = {"item", "decor",    16, 9, 6, false, false},  -- white skull
 	}
 end
 
