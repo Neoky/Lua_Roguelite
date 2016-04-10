@@ -5,10 +5,6 @@
 --  Entry point for the application
 ---------------
 
--- delete previous save data at game start.
-local player = require('scripts.player')
-player.delete()
-
 -- auto starts background music.
 -- comment out to remove music. sound fx will still play.
 local music = require('scripts.music')
