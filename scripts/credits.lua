@@ -15,13 +15,15 @@ function scene:create()
 	martin:setFillColor( 1,1,1 )
 	steven = display.newText( "Steven Muller", display.contentCenterX, display.contentCenterY + 100, native.systemFont, 72 )
 	steven:setFillColor( 1,1,1 )
-	insert_more = display.newText( "Insert Other Sources", display.contentCenterX, display.contentCenterY + 200, native.systemFont, 72 )
+	insert_more = display.newText( "DawnBringer for the Tile Set", display.contentCenterX, display.contentCenterY + 200, native.systemFont, 32 )
+	insert_more2 = display.newText( "Music by Jay Man @ https://ourmusicbox.com/", display.contentCenterX, display.contentCenterY + 232, native.systemFont, 32 )
 	insert_more:setFillColor( 1,1,1 )
 	sceneGroup:insert(credits)
 	sceneGroup:insert(jonathan)
 	sceneGroup:insert(martin)
 	sceneGroup:insert(steven)
 	sceneGroup:insert(insert_more)
+	sceneGroup:insert(insert_more2)
 end
 
 
