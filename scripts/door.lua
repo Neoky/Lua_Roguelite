@@ -17,16 +17,7 @@ function Door:new (o) --constructor
 	return o;
 end
 
-------------------------
---Function:    spawn
---Description: 
---  
---s
---Arguments:
---
---Returns:
---  
-------------------------
+
 function Door:spawn(frameNum, mapX, mapY, mapArray, toScene, toX, toY, color, tileScale)
 	self.tag = "door"
 
@@ -58,16 +49,7 @@ function Door:spawn(frameNum, mapX, mapY, mapArray, toScene, toX, toY, color, ti
 
 end
 
-------------------------
---Function:    
---Description: 
---  
---
---Arguments:
---
---Returns:
---  
-------------------------
+
 function Door:addLock(color)
 
 	self.locked = true
@@ -92,16 +74,6 @@ function Door:addLock(color)
 end
 
 
-------------------------
---Function:    
---Description: 
---  
---
---Arguments:
---
---Returns:
---  
-------------------------
 function Door:removeLock()
 	self.locked = false
 	self.passable = true

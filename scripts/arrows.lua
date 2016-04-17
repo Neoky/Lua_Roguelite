@@ -234,7 +234,6 @@ function Arrows:new(o)
 
 				o:setArrows(event.target.xVal, event.target.yVal)
 
-				--TODO:Call player functions to handle combat/picking up items
 
 			else
 				o.player:move(o.player.xPos, o.player.yPos)
@@ -403,7 +402,7 @@ function Arrows:setArrows(xVal, yVal)
 		rightArrow:addEventListener("touch", movePlayer)	
 		--end
 	end
-	Runtime:addEventListener( "key", keyPlayer )
+	--Runtime:addEventListener( "key", keyPlayer )
 end
 
 ------------------------

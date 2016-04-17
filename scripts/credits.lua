@@ -6,7 +6,7 @@ local credits, jonathan, martin, steven, insert_more, title_screen;
 
 function scene:create()
 	local sceneGroup = self.view
-	--Examples (these can be used to create each separate level)--
+
 	credits = display.newText( "Credits", display.contentCenterX, 100, native.systemFontBold, 100 )
 	credits:setFillColor( 1,1,1 )
 	jonathan = display.newText( "Jonathan Bryant", display.contentCenterX, display.contentCenterY-100, native.systemFont, 72 )
@@ -15,8 +15,8 @@ function scene:create()
 	martin:setFillColor( 1,1,1 )
 	steven = display.newText( "Steven Muller", display.contentCenterX, display.contentCenterY + 100, native.systemFont, 72 )
 	steven:setFillColor( 1,1,1 )
-	insert_more = display.newText( "DawnBringer for the Tile Set", display.contentCenterX, display.contentCenterY + 200, native.systemFont, 32 )
-	insert_more2 = display.newText( "Music by Jay Man @ https://ourmusicbox.com/", display.contentCenterX, display.contentCenterY + 232, native.systemFont, 32 )
+	insert_more = display.newText( "DawnLike Tile Set by DragonDePlatino/DawnBringer @ OpenGameArt.org", display.contentCenterX, display.contentCenterY + 200, native.systemFont, 32 )
+	insert_more2 = display.newText( "Music by Jay Man @ https://ourmusicbox.com/", display.contentCenterX, display.contentCenterY + 240, native.systemFont, 32 )
 	insert_more:setFillColor( 1,1,1 )
 	sceneGroup:insert(credits)
 	sceneGroup:insert(jonathan)

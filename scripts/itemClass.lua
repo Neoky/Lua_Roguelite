@@ -64,7 +64,7 @@ function ItemClass:init(typeArg, fNumArg, powerArg, mapArray, objArray, mapX, ma
 	self.yOrigin = mapY;
 
 	-- Populate attributes based on item type
-	if self.tag == "potion" then self.power = 10;
+	if self.tag == "potion" then self.power = 20;
 	elseif self.tag == "armor" then self.power = 10;
 	elseif self.tag == "weapon" then self.power = 10;
 	elseif self.tag == "trap" then self.power = 10;

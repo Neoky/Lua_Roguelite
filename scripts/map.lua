@@ -17,8 +17,6 @@ local DemonClass = require("scripts.enemies.demon");
 local UndeadClass = require("scripts.enemies.undead");
 local PestClass = require("scripts.enemies.pest");
 
---local File = require('scripts.saveGame')
-
 local Map = {player={}, arrows={}, mapArray={}, objectArray={},  sceneList = {}, enemyList = {}, itemList = {}, currentScene = nil}
 
 local xx = display.contentWidth
