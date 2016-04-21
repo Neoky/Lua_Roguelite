@@ -2,7 +2,7 @@
 --File: enemyMovement.lua
 --
 --Description:
---  This file holds ...
+--  This file holds the movements implementation for enemies
 ---------------
 
 -- Room boundaries

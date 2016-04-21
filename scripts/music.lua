@@ -1,3 +1,9 @@
+---------------
+--File: music.lua
+--
+--Description:
+--  This file loads the background music into the game
+---------------
 
 tracks = {
 	"audio/150413_Been_Thru_It_All---free_download.mp3",

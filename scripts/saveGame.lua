@@ -1,5 +1,12 @@
--- Code below is blatantly copied from:
--- https://github.com/robmiracle/Simple-Table-Load-Save-Functions-for-Corona-SDK
+---------------
+--File: saveGame.lua
+--
+--Description:
+--  This file handles saving the player's information between rooms
+--
+--  Code below is copied from:
+--  https://github.com/robmiracle/Simple-Table-Load-Save-Functions-for-Corona-SDK
+---------------
 
 local M = {}
 local json = require("json")

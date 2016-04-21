@@ -2,7 +2,7 @@
 --File: pest.lua
 --
 --Description:
---  This file holds ...
+--  This file holds the the enemy subclass for a pest
 ---------------
 
 local ItemsTable = require("scripts.items");

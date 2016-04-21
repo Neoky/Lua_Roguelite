@@ -1,3 +1,10 @@
+---------------
+--File: title_screen.lua
+--
+--Description:
+--  This file handles the title screen for the game
+---------------
+
 
 local composer = require("composer")
 local scene = composer.newScene()
@@ -31,8 +38,6 @@ function scene:create()
 	sceneGroup:insert(title)
 	sceneGroup:insert(start)
 	sceneGroup:insert(credits)
---local spriteSheet = graphics.newImageSheet( "images/Characters/PlayerCombined.png", spriteOpt );
-	--spriteSheet = graphics.newImageSheet( "images/Examples/Dungeon.gif")
 end
 
 

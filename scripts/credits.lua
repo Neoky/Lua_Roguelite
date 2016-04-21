@@ -1,3 +1,9 @@
+---------------
+--File: credits.lua
+--
+--Description:
+--  This file handles the screen that shows the games credits
+---------------
 
 local composer = require("composer")
 local scene = composer.newScene()
@@ -17,6 +23,7 @@ function scene:create()
 	steven:setFillColor( 1,1,1 )
 	insert_more = display.newText( "DawnLike Tile Set by DragonDePlatino/DawnBringer @ OpenGameArt.org", display.contentCenterX, display.contentCenterY + 200, native.systemFont, 32 )
 	insert_more2 = display.newText( "Music by Jay Man @ https://ourmusicbox.com/", display.contentCenterX, display.contentCenterY + 240, native.systemFont, 32 )
+	insert_more3 = display.newText( "Sound Effects generated from ww.superflashbros.net/as3sfxr/", display.contentCenterX, display.contentCenterY + 280, native.systemFont, 32 )
 	insert_more:setFillColor( 1,1,1 )
 	sceneGroup:insert(credits)
 	sceneGroup:insert(jonathan)
@@ -24,6 +31,7 @@ function scene:create()
 	sceneGroup:insert(steven)
 	sceneGroup:insert(insert_more)
 	sceneGroup:insert(insert_more2)
+	sceneGroup:insert(insert_more3)	
 end
 
 

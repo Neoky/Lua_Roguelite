@@ -1,3 +1,9 @@
+---------------
+--File: player.lua
+--
+--Description:
+--  This file hold he implementaion of the player class
+---------------
 
 --[[ Player variables ------------------
 hpCur - is the player's current HP.

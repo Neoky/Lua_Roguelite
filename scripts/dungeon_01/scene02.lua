@@ -1,4 +1,9 @@
-
+---------------
+--File: scene02.lua
+--
+--Description:
+--  Handles the map information for the scene
+---------------
 local composer = require("composer")
 local scene = composer.newScene()
 local Map = require("scripts.map")

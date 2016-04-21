@@ -1,3 +1,10 @@
+---------------
+--File: door.lua
+--
+--Description:
+--  This file holds the implementation of doors
+---------------
+
 local ItemsTable = require("scripts.items");
 
 --Array used to keep track of created image sheets, use the text strings when passing into functions

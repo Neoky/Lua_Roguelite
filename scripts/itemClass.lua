@@ -1,3 +1,11 @@
+---------------
+--File: itemClass.lua
+--
+--Description:
+--  This file holds the implementation of items
+---------------
+
+
 local ItemsTable = require("scripts.items");
 
 
@@ -200,6 +208,7 @@ function ItemClass:remove()
 		-- remove image from tile
 		local sfx = audio.loadStream( "audio/pickup.wav" )
 		audio.play( sfx, { channel=2, loops=0, fadein=0 } )
+		
 		self.shape:removeSelf();
 		self.shape = nil;	
 	end
@@ -244,7 +253,7 @@ function ItemClass:openChest()
 	
 	-- display contents and then remove contents and the chest
 	local removeItem = function() chestItem:removeSelf(); self:remove(); end
-	transition.to(chestItem, {y=chestItem.y-5, time=2000, onComplete=removeItem});
+	transition.to(chestItem, {y=chestItem.y-5, time=1000, onComplete=removeItem});
 
 	return true;
 end

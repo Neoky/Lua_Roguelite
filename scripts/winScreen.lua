@@ -6,7 +6,7 @@ local credits, jonathan, martin, steven, insert_more, title_screen;
 
 function scene:create()
 	local sceneGroup = self.view
-	--Examples (these can be used to create each separate level)--
+
 	congrats = display.newText( "Congrats!", display.contentCenterX, display.contentCenterY - 50, native.systemFontBold, 100 )
 	congrats:setFillColor( 1,1,1 )
 	youWin = display.newText( "You Win!!!", display.contentCenterX, congrats.y + 100, native.systemFont, 72 )
@@ -34,6 +34,12 @@ function scene:show( event )
 	end
 end
 
+---------------
+--File: winScreen.lua
+--
+--Description:
+--  This file handles the end game, "Win Screen".
+---------------
 
 -- "scene:hide()"
 function scene:hide( event )
@@ -47,7 +53,6 @@ function scene:hide( event )
 		-- Example: stop timers, stop animation, stop audio, etc.
 	elseif ( phase == "did" ) then
 		-- Called immediately after scene goes off screen
-		--Runtime:removeEventListener( "tap", title_screen )
 	end
 end
 

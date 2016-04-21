@@ -3,7 +3,8 @@
 --
 --Description:
 --  This file holds all of the map generation functionality that can be 
---  used when creating the levels in the game
+--  used when creating the levels in the game. 
+--  It also handles mantaining map layout informaiton as well scene transitions
 ---------------
 local composer = require("composer")
 
@@ -753,47 +754,6 @@ function Map:gameOver(x, y)
 	objectArray[self.player.xPos][self.player.yPos] = nil
 	self.player:destroy()
 	self.player = nil
---[[
-
-	for i in pairs(objectArray) do
-		for j in pairs(objectArray[i]) do
-			if objectArray[i][j] ~= nil then
-				objectArray[i][j].shape:removeSelf()
-			end
-		end
-	end
-
-	for i in pairs(mapArray) do
-		for j in pairs(mapArray[i]) do
-			mapArray[i][j]:removeSelf()
-		end
-	end
-
-
-
-	infoScreenGroup:removeSelf();
-	infoScreenGroup = nil
-
-	--hpText = nil
-	--atkText = nil
-
-	--rKeyText = nil
-	--gKeyText = nil
-	--bKeyText = nil
-
-
-	--Pass the start position of the player and the list of scene information
-	local Options = 
-		{ effect = "fade",
-		  time = 500,
-		}
-
-	print("Transitioning to Title Screen")
-
-	scene = 'scripts.title_screen'
-
-	composer.gotoScene( scene, Options);
-]]--
 
 	gameOverBox = display.newRect(display.contentCenterX - 120, display.contentCenterX/2 , 700, 100)
 	gameOverBox:setFillColor( 0,0,0)

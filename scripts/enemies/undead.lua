@@ -2,7 +2,7 @@
 --File: undead.lua
 --
 --Description:
---  This file holds ...
+--  This file holds the the enemy subclass for an undead
 ---------------
 
 local ItemsTable = require("scripts.items");

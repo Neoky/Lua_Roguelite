@@ -1,11 +1,16 @@
-
+---------------
+--File: scene10.lua
+--
+--Description:
+--  Handles the map information for the scene
+---------------
 local composer = require("composer")
 local scene = composer.newScene()
 local Map = require("scripts.map")
 
 local map
 
---Specifiy the current scene
+--Specify the current scene
 local sceneName = 10
 
 

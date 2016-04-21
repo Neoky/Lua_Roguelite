@@ -2,7 +2,7 @@
 --File: demon.lua
 --
 --Description:
---  This file holds ...
+--  This file holds the the enemy subclass for a demon
 ---------------
 
 local ItemsTable = require("scripts.items");

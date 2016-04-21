@@ -2,7 +2,7 @@
 --File: enemyClass.lua
 --
 --Description:
---  This file holds ...
+--  This file holds the behaviors of the enemy
 ---------------
 
 local EnemyMovement = require("scripts.enemyMovement");

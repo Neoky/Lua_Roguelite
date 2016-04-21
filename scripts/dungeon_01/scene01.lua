@@ -1,3 +1,9 @@
+---------------
+--File: scene01.lua
+--
+--Description:
+--  Handles the map information for the scene
+---------------
 
 local composer = require("composer")
 local scene = composer.newScene()
@@ -45,6 +51,7 @@ function scene:create()
 		[15] = {"item",  "decor", 35, 12, 3, false, false}, -- bread vendor
 		[16] = {"item",  "decor", 36, 12, 7, false, false}, -- bread vendor
 		[17] = {"item",  "decor", 33, 2, 7, false, false}, -- bread vendor
+		--[18] = {"item", "potion",  2, 12, 8, true, false, 10}, -- potion	--Uncomment this for an extra potion in the first room
 	}
 
 end
